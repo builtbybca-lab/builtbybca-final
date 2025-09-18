@@ -1,25 +1,43 @@
-import { Crown, Code, Building } from "lucide-react";
+import { Lightbulb, Users, Rocket, Award, Target, Zap } from "lucide-react";
 
 const WhyJoinSection = () => {
   const reasons = [
     {
-      icon: Crown,
-      title: "Leadership Opportunities",
-      description: "Step into executive roles, lead events, and build your organizational skills.",
-      gradient: "from-orange-500 to-red-500",
+      icon: Lightbulb,
+      title: "Innovation Hub",
+      description: "Access cutting-edge labs and maker spaces where creativity meets technology to solve real-world challenges.",
+      gradient: "from-bca-red/20 to-orange-500/20"
     },
     {
-      icon: Code,
-      title: "Hands-on Learning", 
-      description: "Gain practical skills through coding contests, hackathons, and workshops.",
-      gradient: "from-blue-500 to-purple-500",
+      icon: Users,
+      title: "Expert Faculty",
+      description: "Learn from industry professionals and renowned educators who bring real experience to the classroom.",
+      gradient: "from-bca-red/20 to-purple-500/20"
     },
     {
-      icon: Building,
-      title: "Industry Exposure",
-      description: "Connect with alumni and industry experts through guest lectures and seminars.",
-      gradient: "from-green-500 to-blue-500",
+      icon: Rocket,
+      title: "Launch Your Future",
+      description: "Graduate with skills and connections that open doors to top universities and career opportunities.",
+      gradient: "from-bca-red/20 to-blue-500/20"
     },
+    {
+      icon: Award,
+      title: "Recognition & Awards",
+      description: "Join a community of achievers with national recognition in STEM competitions and research.",
+      gradient: "from-bca-red/20 to-yellow-500/20"
+    },
+    {
+      icon: Target,
+      title: "Focused Learning",
+      description: "Specialized academies tailored to your interests, from computer science to medical technology.",
+      gradient: "from-bca-red/20 to-green-500/20"
+    },
+    {
+      icon: Zap,
+      title: "Fast-Track Success",
+      description: "Accelerated programs and dual enrollment opportunities to get ahead in your chosen field.",
+      gradient: "from-bca-red/20 to-cyan-500/20"
+    }
   ];
 
   return (
@@ -30,8 +48,8 @@ const WhyJoinSection = () => {
           <div className="flex items-center justify-center mb-6">
             <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Why Join Us ?
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            Why Join <span className="text-bca-red">BCA?</span>
           </h2>
           <div className="flex items-center justify-center">
             <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
@@ -39,36 +57,24 @@ const WhyJoinSection = () => {
         </div>
 
         {/* Reasons Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reasons.map((reason, index) => (
             <div
               key={index}
-              className="card-glass p-8 text-center group hover:scale-105 transition-all duration-500 animate-fade-up"
-              style={{ animationDelay: `${index * 0.2}s` }}
+              className="p-6 bg-bca-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-bca-red/30 transition-all duration-300 group"
             >
               {/* Icon with gradient background */}
-              <div className="mb-6 flex justify-center">
-                <div className={`p-4 rounded-2xl bg-gradient-to-br ${reason.gradient} shadow-lg`}>
-                  <reason.icon className="w-8 h-8 text-white" />
-                </div>
+              <div className={`inline-flex p-3 rounded-xl mb-4 bg-gradient-to-br ${reason.gradient}`}>
+                <reason.icon className="w-6 h-6 text-bca-red" />
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-bca-red transition-colors">
+              
+              {/* Content */}
+              <h3 className="text-lg font-bold text-white mb-3 group-hover:text-bca-red transition-colors">
                 {reason.title}
               </h3>
-
-              {/* Description */}
-              <p className="text-bca-gray-light leading-relaxed">
+              <p className="text-bca-gray-light text-sm leading-relaxed">
                 {reason.description}
               </p>
-
-              {/* Decorative Elements */}
-              <div className="mt-6 flex justify-center space-x-2">
-                <div className="w-2 h-2 bg-bca-red rounded-full opacity-60"></div>
-                <div className="w-2 h-2 bg-bca-red rounded-full opacity-40"></div>
-                <div className="w-2 h-2 bg-bca-red rounded-full opacity-20"></div>
-              </div>
             </div>
           ))}
         </div>

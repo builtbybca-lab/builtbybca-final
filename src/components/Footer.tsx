@@ -1,4 +1,5 @@
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const socialLinks = [
@@ -9,17 +10,15 @@ const Footer = () => {
   ];
 
   const quickLinks = [
-    { label: "About Us", href: "#about" },
-    { label: "Events", href: "#events" },
-    { label: "Blogs", href: "#blogs" },
-    { label: "Contact", href: "#contact" },
+    { label: "About Us", href: "/about" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
+    { label: "FAQ", href: "/faq" },
   ];
 
   const supportLinks = [
-    { label: "FAQs", href: "#faq" },
-    { label: "Help Center", href: "#help" },
-    { label: "Privacy Policy", href: "#privacy" },
-    { label: "Terms of Service", href: "#terms" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms & Conditions", href: "/terms" },
   ];
 
   return (
@@ -29,10 +28,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="mb-6">
-              <span className="text-3xl font-bold">
-                <span className="text-white">@BUILTBY.</span>
-                <span className="text-bca-red">BCA</span>
-              </span>
+              <img src="/logo.png" alt="BCA Logo" className="h-12 w-auto" />
             </div>
             <p className="text-bca-gray-light mb-6 leading-relaxed">
               Empowering students through hands-on learning, leadership, and industry exposure.
@@ -57,12 +53,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-bca-gray-light hover:text-bca-red transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -74,12 +70,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {supportLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-bca-gray-light hover:text-bca-red transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -98,19 +94,10 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-bca-red flex-shrink-0" />
                 <a
-                  href="mailto:contact@builtbybca.com"
+                  href="mailto:BUILTBY.BCA@GMAIL.COM"
                   className="text-bca-gray-light hover:text-bca-red transition-colors"
                 >
-                  contact@builtbybca.com
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-bca-red flex-shrink-0" />
-                <a
-                  href="tel:+919876543210"
-                  className="text-bca-gray-light hover:text-bca-red transition-colors"
-                >
-                  +91 98765 43210
+                  BUILTBY.BCA@GMAIL.COM
                 </a>
               </div>
             </div>

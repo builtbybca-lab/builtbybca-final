@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Home, User, BookOpen, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,10 +16,10 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { icon: Home, label: "Home", href: "#" },
-    { icon: User, label: "About", href: "#about" },
-    { icon: BookOpen, label: "Blogs", href: "#blogs" },
-    { icon: Phone, label: "Contact", href: "#contact" },
+    { icon: Home, label: "Home", href: "/" },
+    { icon: User, label: "About", href: "/about" },
+    { icon: BookOpen, label: "Blog", href: "/blog" },
+    { icon: Phone, label: "Contact", href: "/contact" },
   ];
 
   return (
@@ -33,24 +34,23 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <span className="text-2xl font-bold">
-              <span className="text-white">@BUILTBY.</span>
-              <span className="text-bca-red">BCA</span>
-            </span>
+            <Link to="/" className="flex items-center">
+              <img src="/logo.png" alt="BCA Logo" className="h-8 w-auto" />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.label}
-                  href={item.href}
+                  to={item.href}
                   className="btn-ghost flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   <item.icon className="w-4 h-4" />
                   <span>{item.label}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -77,15 +77,15 @@ const Navigation = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-bca-dark-card/95 backdrop-blur-md rounded-lg mt-2 border border-white/10">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.label}
-                  href={item.href}
+                  to={item.href}
                   className="btn-ghost flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium block"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <item.icon className="w-5 h-5" />
                   <span>{item.label}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
