@@ -29,16 +29,16 @@ const HeroSection = () => {
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-up" style={{
+        <h1 style={{
         animationDelay: "0.4s"
-      }}>
+      }} className="text-4xl sm:text-6xl font-bold text-white mb-6 animate-fade-up lg:text-6xl">
           Learn. Build. Grow.
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xl sm:text-2xl text-bca-gray-light max-w-4xl mx-auto mb-12 animate-fade-up" style={{
+        <p style={{
         animationDelay: "0.6s"
-      }}>
+      }} className="text-xl text-bca-gray-light max-w-4xl mx-auto mb-12 animate-fade-up sm:text-base">
           "The official BCA Student Club Of Adichunchanagiri Institute Of Business Management 
           empowering students through hands-on learning, leadership, and industry exposure."
         </p>

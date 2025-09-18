@@ -29,16 +29,7 @@ const PartnersSection = () => {
         </div>
 
         {/* Partners Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
-          {partners.map((partner, index) => (
-            <div key={index} className="flex flex-col items-center p-6 bg-bca-dark-card/30 backdrop-blur-sm rounded-xl border border-white/10 hover:border-bca-red/30 transition-all duration-300">
-              <div className="p-4 bg-bca-red/20 rounded-lg mb-4">
-                <partner.icon className="w-8 h-8 text-bca-red" />
-              </div>
-              <span className="text-white font-medium text-center">{partner.name}</span>
-            </div>
-          ))}
-        </div>
+        
 
         {/* Infinite Scrolling Partners */}
         <div className="overflow-hidden bg-bca-dark-card/30 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
