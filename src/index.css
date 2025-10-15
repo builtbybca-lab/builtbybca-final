@@ -41,9 +41,9 @@ All colors MUST be HSL.
     --radius: 0.75rem;
 
     /* BCA Specific Colors */
-    --bca-red: 0 75% 58%;
-    --bca-red-hover: 0 75% 55%;
-    --bca-red-light: 0 75% 65%;
+    --bca-red: 0 100% 24%;
+    --bca-red-hover: 0 100% 20%;
+    --bca-red-light: 0 100% 35%;
     --bca-dark: 220 13% 8%;
     --bca-dark-card: 220 13% 10%;
     --bca-dark-lighter: 220 13% 15%;

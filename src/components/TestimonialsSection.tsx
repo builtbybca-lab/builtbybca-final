@@ -37,6 +37,51 @@ const TestimonialsSection = () => {
     content: "BCA club's inclusive culture and diverse events provided me with a well-rounded college experience beyond academics.",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face"
   }];
-  return;
+  
+  return (
+    <section className="py-20 px-4 bg-bca-dark">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12 animate-fade-up">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+            Student <span className="text-gradient">Testimonials</span>
+          </h2>
+          <p className="text-bca-gray-light text-lg max-w-2xl mx-auto">
+            Hear from our community members about their experiences
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="card-glass p-6 animate-fade-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="flex items-center mb-4">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full mr-4"
+                />
+                <div>
+                  <h3 className="text-white font-semibold">{testimonial.name}</h3>
+                  <p className="text-bca-gray-light text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+              
+              <div className="flex mb-3">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-bca-red text-bca-red" />
+                ))}
+              </div>
+              
+              <p className="text-bca-gray-light">{testimonial.content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
+
 export default TestimonialsSection;
