@@ -81,7 +81,7 @@ const BlogsSection = () => {
 
         {/* View All Button */}
         <div className="text-center">
-          <Button className="btn-secondary">
+          <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white px-8 py-3 rounded-lg transition-all duration-300">
             View All Blogs
           </Button>
         </div>
