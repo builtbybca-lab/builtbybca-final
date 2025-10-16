@@ -19,7 +19,7 @@ All colors MUST be HSL.
     --popover-foreground: 0 0% 95%;
 
     /* BCA Red Primary */
-    --primary: 0 75% 58%;
+    --primary: 0 100% 24%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 13% 15%;
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --muted: 220 13% 15%;
     --muted-foreground: 220 9% 55%;
 
-    --accent: 0 75% 58%;
+    --accent: 0 100% 24%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -36,7 +36,7 @@ All colors MUST be HSL.
 
     --border: 220 13% 20%;
     --input: 220 13% 15%;
-    --ring: 0 75% 58%;
+    --ring: 0 100% 24%;
 
     --radius: 0.75rem;
 
@@ -89,19 +89,19 @@ All colors MUST be HSL.
     --card-foreground: 0 0% 95%;
     --popover: 220 13% 10%;
     --popover-foreground: 0 0% 95%;
-    --primary: 0 75% 58%;
+    --primary: 0 100% 24%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 13% 15%;
     --secondary-foreground: 0 0% 95%;
     --muted: 220 13% 15%;
     --muted-foreground: 220 9% 55%;
-    --accent: 0 75% 58%;
+    --accent: 0 100% 24%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 20%;
     --input: 220 13% 15%;
-    --ring: 0 75% 58%;
+    --ring: 0 100% 24%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
