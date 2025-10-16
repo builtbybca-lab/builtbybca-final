@@ -31,25 +31,38 @@ const HeroSection = () => {
         {/* Main Headline */}
         <h1 style={{
         animationDelay: "0.4s"
-      }} className="text-4xl sm:text-6xl font-bold text-white mb-6 animate-fade-up lg:text-6xl">
-          Learn. Build. Grow.
+      }} className="text-5xl sm:text-7xl font-bold text-white mb-6 animate-fade-up lg:text-7xl">
+          BuiltByBCA
         </h1>
+
+        {/* Tagline */}
+        <p style={{
+        animationDelay: "0.5s"
+      }} className="text-2xl sm:text-3xl font-semibold text-bca-red mb-4 animate-fade-up">
+          A student tech club for creating, learning & building together
+        </p>
 
         {/* Subtitle */}
         <p style={{
         animationDelay: "0.6s"
-      }} className="text-xl text-bca-gray-light max-w-4xl mx-auto mb-12 animate-fade-up sm:text-base">
-          "The official BCA Student Club Of Adichunchanagiri Institute Of Business Management 
-          empowering students through hands-on learning, leadership, and industry exposure."
+      }} className="text-lg text-bca-gray-light max-w-3xl mx-auto mb-12 animate-fade-up">
+          The official BCA Student Club of Adichunchanagiri Institute Of Business Management 
+          empowering students through hands-on learning, leadership, and industry exposure.
         </p>
 
-        {/* CTA Button */}
-        <div className="mb-16 animate-fade-up" style={{
+        {/* CTA Buttons */}
+        <div className="flex flex-wrap gap-4 justify-center mb-16 animate-fade-up" style={{
         animationDelay: "0.8s"
       }}>
-          <Button className="btn-hero text-lg px-10 py-6 group">
-            Join Now
+          <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white text-lg px-10 py-6 group">
+            Join Us
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </Button>
+          <Button variant="outline" className="border-2 border-[#7a0000] text-white hover:bg-[#7a0000] hover:text-white text-lg px-10 py-6">
+            Become a Member
+          </Button>
+          <Button variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 text-lg px-10 py-6">
+            Explore Projects
           </Button>
         </div>
 
