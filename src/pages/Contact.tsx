@@ -6,35 +6,37 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-
 const Contact = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: ""
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here you would typically send the form data to your backend
     toast({
       title: "Message Sent!",
-      description: "Thank you for reaching out. We'll get back to you soon.",
+      description: "Thank you for reaching out. We'll get back to you soon."
     });
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: ""
+    });
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
-  return (
-    <div className="min-h-screen bg-bca-dark">
+  return <div className="min-h-screen bg-bca-dark">
       <Navigation />
       
       {/* Hero Section */}
@@ -62,60 +64,25 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-white mb-2">Name</label>
-                    <Input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light"
-                      placeholder="Your full name"
-                    />
+                    <Input type="text" name="name" value={formData.name} onChange={handleChange} required className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light" placeholder="Your full name" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-white mb-2">Email</label>
-                    <Input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light"
-                      placeholder="your.email@example.com"
-                    />
+                    <Input type="email" name="email" value={formData.email} onChange={handleChange} required className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light" placeholder="your.email@example.com" />
                   </div>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">Subject</label>
-                  <Input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light"
-                    placeholder="What is this about?"
-                  />
+                  <Input type="text" name="subject" value={formData.subject} onChange={handleChange} required className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light" placeholder="What is this about?" />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">Message</label>
-                  <Textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light"
-                    placeholder="Tell us how we can help you..."
-                  />
+                  <Textarea name="message" value={formData.message} onChange={handleChange} required rows={6} className="bg-bca-dark border-white/20 text-white placeholder:text-bca-gray-light" placeholder="Tell us how we can help you..." />
                 </div>
                 
-                <Button
-                  type="submit"
-                  className="w-full bg-bca-red hover:bg-bca-red-hover text-white"
-                >
+                <Button type="submit" className="w-full bg-bca-red hover:bg-bca-red-hover text-white">
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
                 </Button>
@@ -136,7 +103,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-white mb-1">Email</h4>
-                      <p className="text-bca-gray-light">BUILTBY.BCA@GMAIL.COM</p>
+                      <p className="text-bca-gray-light">builtby.bca@gmail.com</p>
                     </div>
                   </div>
                   
@@ -192,8 +159,6 @@ const Contact = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;
