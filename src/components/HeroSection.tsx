@@ -31,9 +31,7 @@ const HeroSection = () => {
         {/* Main Headline */}
         <h1 style={{
         animationDelay: "0.4s"
-      }} className="text-5xl sm:text-7xl font-bold text-white mb-6 animate-fade-up lg:text-7xl">
-          BuiltByBCA
-        </h1>
+      }} className="text-5xl sm:text-7xl font-bold text-white mb-6 animate-fade-up lg:text-7xl">BuiltBy.BCA</h1>
 
         {/* Tagline */}
         <p style={{
