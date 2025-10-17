@@ -17,8 +17,8 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Welcome Badge */}
         <div className="inline-flex items-center space-x-2 bg-bca-dark-card/60 backdrop-blur-sm border border-bca-red/30 rounded-full px-6 py-3 mb-8 animate-fade-up">
-          <span className="text-2xl">👋</span>
-          <span className="text-bca-gray-light">@Builtby.BCA Welcome's You!</span>
+          
+          <span className="text-bca-gray-light">Learn.Grow.Lead</span>
         </div>
 
         {/* Main Logo/Brand */}
