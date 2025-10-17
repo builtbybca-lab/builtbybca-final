@@ -1,14 +1,50 @@
 const PartnersSection = () => {
   const techCompanies = [
-    { name: "Google", color: "text-blue-500", glow: "shadow-blue-500/50" },
-    { name: "Microsoft", color: "text-sky-400", glow: "shadow-sky-400/50" },
-    { name: "Apple", color: "text-gray-300", glow: "shadow-gray-300/50" },
-    { name: "Amazon", color: "text-orange-400", glow: "shadow-orange-400/50" },
-    { name: "Meta", color: "text-blue-400", glow: "shadow-blue-400/50" },
-    { name: "OpenAI", color: "text-emerald-400", glow: "shadow-emerald-400/50" },
-    { name: "Tesla", color: "text-red-500", glow: "shadow-red-500/50" },
-    { name: "IBM", color: "text-blue-600", glow: "shadow-blue-600/50" },
-    { name: "Intel", color: "text-blue-500", glow: "shadow-blue-500/50" },
+    {
+      name: "Google",
+      logo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Microsoft",
+      logo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Apple",
+      logo: "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Amazon",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Meta",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+      bgColor: "bg-white"
+    },
+    {
+      name: "OpenAI",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Tesla",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+      bgColor: "bg-white"
+    },
+    {
+      name: "IBM",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+      bgColor: "bg-white"
+    },
+    {
+      name: "Intel",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg",
+      bgColor: "bg-white"
+    },
   ];
 
   return <section className="py-20 relative">
@@ -36,12 +72,15 @@ const PartnersSection = () => {
               {[...techCompanies, ...techCompanies, ...techCompanies].map((company, index) => (
                 <div
                   key={index}
-                  className={`flex-shrink-0 mx-8 px-6 py-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10
-                    hover:border-white/30 hover:shadow-lg transition-all duration-300 hover:scale-105 ${company.glow}`}
+                  className={`flex-shrink-0 mx-8 px-8 py-6 rounded-xl ${company.bgColor} backdrop-blur-sm border border-white/10
+                    hover:border-white/30 hover:shadow-2xl transition-all duration-300 hover:scale-105 shadow-lg`}
                 >
-                  <span className={`text-2xl font-bold ${company.color} whitespace-nowrap drop-shadow-lg`}>
-                    {company.name}
-                  </span>
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    className="h-12 w-auto object-contain"
+                    loading="lazy"
+                  />
                 </div>
               ))}
             </div>
