@@ -14,21 +14,21 @@ const Navigation = () => {
   }, []);
   const navItems = [{
     label: "About",
-    href: "/#about"
+    href: "/about"
   }, {
     label: "Projects",
-    href: "/#projects"
+    href: "/projects"
   }, {
     label: "Events",
-    href: "/#events"
+    href: "/events"
   }, {
     label: "Team",
-    href: "/#team"
+    href: "/team"
   }, {
-    label: "Blog / Updates",
-    href: "/#blogs"
+    label: "Blog",
+    href: "/blog"
   }, {
-    label: "Contact / Join",
+    label: "Contact",
     href: "/contact"
   }];
   return <nav className="sticky top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-6">
@@ -47,18 +47,18 @@ const Navigation = () => {
 
               {/* Center: Desktop Navigation Links */}
               <div className="hidden lg:flex items-center justify-center flex-1 space-x-8 px-8">
-                {navItems.map(item => <a key={item.label} href={item.href} className="text-white/90 hover:text-white text-[15px] font-medium transition-colors whitespace-nowrap">
+                {navItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white text-[15px] font-medium transition-colors whitespace-nowrap">
                     {item.label}
-                  </a>)}
+                  </Link>)}
               </div>
 
               {/* Right: Join Us Button */}
               <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
-                <a href="#contact">
+                <Link to="/contact">
                   <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium px-7 h-11 rounded-full transition-all hover:scale-[1.02] shadow-md">
                     Join Us
                   </Button>
-                </a>
+                </Link>
               </div>
 
               {/* Mobile menu button */}
@@ -72,17 +72,17 @@ const Navigation = () => {
             {/* Mobile Navigation */}
             {isMobileMenuOpen && <div className="lg:hidden pb-4">
                 <div className="pt-2 pb-3 space-y-1">
-                  {navItems.map(item => <a key={item.label} href={item.href} className="text-white/90 hover:text-white hover:bg-white/5 flex items-center px-4 py-3 rounded-lg text-base font-medium block transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                  {navItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white hover:bg-white/5 flex items-center px-4 py-3 rounded-lg text-base font-medium block transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                       {item.label}
-                    </a>)}
-                  
+                    </Link>)}
+
                   {/* Mobile Join Us Button */}
                   <div className="pt-4 px-2 border-t border-white/10 mt-3">
-                    <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                       <Button className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium h-11 rounded-full">
                         Join Us
                       </Button>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>}
