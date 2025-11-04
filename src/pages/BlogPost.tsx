@@ -41,12 +41,25 @@ const BlogPost = () => {
         .from("blog_posts")
         .select("*")
         .eq("slug", slug)
-        .eq("is_published", true)
+        .eq("published", true)
         .maybeSingle();
 
       if (error) throw error;
       if (!data) throw new Error("Post not found");
-      return data as BlogPostFull;
+      return {
+        id: data.id,
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        author: data.author_name,
+        author_avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
+        author_bio: 'Tech enthusiast and writer',
+        date: data.created_at,
+        category: data.category,
+        hero_image_url: data.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        tags: [],
+        read_time: '5 min read'
+      } as BlogPostFull;
     },
     enabled: !!slug,
   });
@@ -58,14 +71,22 @@ const BlogPost = () => {
 
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, slug, excerpt, thumbnail_url, category, read_time")
+        .select("id, title, slug, excerpt, image_url, category")
         .eq("category", post.category)
         .neq("id", post.id)
-        .eq("is_published", true)
+        .eq("published", true)
         .limit(3);
 
       if (error) throw error;
-      return data as RelatedPost[];
+      return (data || []).map(p => ({
+        id: p.id,
+        title: p.title,
+        slug: p.slug,
+        excerpt: p.excerpt,
+        thumbnail_url: p.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        category: p.category,
+        read_time: '5 min read'
+      })) as RelatedPost[];
     },
     enabled: !!post,
   });

@@ -35,7 +35,20 @@ const Team = () => {
         .order("display_order", { ascending: true });
 
       if (error) throw error;
-      return data as TeamMember[];
+      return (data || []).map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role,
+        bio: m.bio || '',
+        full_bio: m.bio || '',
+        category: 'Core Team',
+        image_url: m.image_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
+        linkedin_url: m.linkedin_url,
+        github_url: m.github_url,
+        instagram_url: undefined,
+        twitter_url: undefined,
+        display_order: m.display_order
+      })) as TeamMember[];
     },
   });
 

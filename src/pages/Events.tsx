@@ -34,10 +34,24 @@ const Events = () => {
       const { data, error } = await supabase
         .from("events")
         .select("*")
-        .order("date", { ascending: false });
+        .order("date", { ascending: false});
 
       if (error) throw error;
-      return data as Event[];
+      return (data || []).map(e => ({
+        id: e.id,
+        title: e.title,
+        description: e.description,
+        short_description: e.description?.substring(0, 100) || '',
+        date: e.date,
+        location: e.location || 'TBA',
+        category: e.event_type,
+        image_url: e.image_url || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87',
+        gallery_images: [],
+        speakers: [],
+        outcomes: '',
+        is_upcoming: new Date(e.date) > new Date(),
+        popularity_score: 0
+      })) as Event[];
     },
   });
 

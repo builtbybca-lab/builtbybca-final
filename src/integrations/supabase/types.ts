@@ -14,16 +14,243 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          author_name: string
+          category: string
+          content: string
+          created_at: string | null
+          excerpt: string
+          id: string
+          image_url: string | null
+          published: boolean | null
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          author_name: string
+          category: string
+          content: string
+          created_at?: string | null
+          excerpt: string
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string
+          category?: string
+          content?: string
+          created_at?: string | null
+          excerpt?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean | null
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          created_at: string | null
+          date: string
+          description: string
+          event_type: string
+          id: string
+          image_url: string | null
+          location: string | null
+          registration_link: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          description: string
+          event_type: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          registration_link?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          description?: string
+          event_type?: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          registration_link?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          approved: boolean | null
+          built_by: string
+          created_at: string | null
+          description: string
+          display_order: number | null
+          featured: boolean | null
+          full_description: string
+          github_url: string | null
+          id: string
+          live_demo_url: string | null
+          name: string
+          screenshots: string[] | null
+          tags: string[] | null
+          tech_stack: string[] | null
+          thumbnail_url: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          built_by: string
+          created_at?: string | null
+          description: string
+          display_order?: number | null
+          featured?: boolean | null
+          full_description: string
+          github_url?: string | null
+          id?: string
+          live_demo_url?: string | null
+          name: string
+          screenshots?: string[] | null
+          tags?: string[] | null
+          tech_stack?: string[] | null
+          thumbnail_url: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          built_by?: string
+          created_at?: string | null
+          description?: string
+          display_order?: number | null
+          featured?: boolean | null
+          full_description?: string
+          github_url?: string | null
+          id?: string
+          live_demo_url?: string | null
+          name?: string
+          screenshots?: string[] | null
+          tags?: string[] | null
+          tech_stack?: string[] | null
+          thumbnail_url?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          display_order: number | null
+          github_url: string | null
+          id: string
+          image_url: string | null
+          linkedin_url: string | null
+          name: string
+          role: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name: string
+          role: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +377,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

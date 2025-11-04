@@ -15,6 +15,7 @@ import Terms from "./pages/Terms";
 import Events from "./pages/Events";
 import Team from "./pages/Team";
 import Projects from "./pages/Projects";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/team" element={<Team />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/faq" element={<FAQ />} />

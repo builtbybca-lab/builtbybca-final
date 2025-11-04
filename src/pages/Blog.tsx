@@ -29,12 +29,22 @@ const Blog = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, slug, excerpt, author, date, category, thumbnail_url, read_time")
-        .eq("is_published", true)
-        .order("date", { ascending: false });
+        .select("id, title, slug, excerpt, author_name, created_at, category, image_url")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data as BlogPost[];
+      return (data || []).map(post => ({
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        author: post.author_name,
+        date: post.created_at,
+        category: post.category,
+        thumbnail_url: post.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        read_time: '5 min read'
+      })) as BlogPost[];
     },
   });
 

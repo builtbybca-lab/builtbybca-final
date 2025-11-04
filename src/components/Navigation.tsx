@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -52,13 +55,36 @@ const Navigation = () => {
                   </Link>)}
               </div>
 
-              {/* Right: Join Us Button */}
+              {/* Right: Auth Buttons */}
               <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
-                <Link to="/contact">
-                  <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium px-7 h-11 rounded-full transition-all hover:scale-[1.02] shadow-md">
-                    Join Us
-                  </Button>
-                </Link>
+                {user ? (
+                  <>
+                    <span className="text-white/70 text-sm">
+                      {user.email}
+                    </span>
+                    {isAdmin && (
+                      <Link to="/admin">
+                        <Button variant="ghost" className="text-white hover:text-white/80">
+                          Admin Panel
+                        </Button>
+                      </Link>
+                    )}
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => signOut()}
+                      className="text-white hover:text-white/80"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Link to="/auth">
+                    <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium px-7 h-11 rounded-full transition-all hover:scale-[1.02] shadow-md">
+                      Join Us
+                    </Button>
+                  </Link>
+                )}
               </div>
 
               {/* Mobile menu button */}
@@ -76,13 +102,38 @@ const Navigation = () => {
                       {item.label}
                     </Link>)}
 
-                  {/* Mobile Join Us Button */}
+                  {/* Mobile Auth Buttons */}
                   <div className="pt-4 px-2 border-t border-white/10 mt-3">
-                    <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Button className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium h-11 rounded-full">
-                        Join Us
-                      </Button>
-                    </Link>
+                    {user ? (
+                      <>
+                        <div className="text-white/70 text-sm mb-3 px-2">
+                          {user.email}
+                        </div>
+                        {isAdmin && (
+                          <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Button className="w-full mb-2 bg-bca-red hover:bg-bca-red-hover text-white">
+                              Admin Panel
+                            </Button>
+                          </Link>
+                        )}
+                        <Button 
+                          className="w-full bg-bca-dark-card text-white hover:bg-bca-dark-lighter"
+                          onClick={() => {
+                            signOut();
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Logout
+                        </Button>
+                      </>
+                    ) : (
+                      <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium h-11 rounded-full">
+                          Join Us
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>}
