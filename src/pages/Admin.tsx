@@ -12,6 +12,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
+import { ImageUpload } from '@/components/ui/ImageUpload';
 import {
   Dialog,
   DialogContent,
@@ -238,24 +239,43 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      // Validation
+      if (!data.title?.trim()) throw new Error('Title is required');
+      if (!data.content?.trim()) throw new Error('Content is required');
+      if (!data.author_name?.trim()) throw new Error('Author name is required');
+      if (!data.category?.trim()) throw new Error('Category is required');
+      
+      // Auto-generate slug from title if empty
+      const slug = data.slug?.trim() || data.title.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+      
+      const postData = { ...data, slug };
+      
       if (post) {
         const { error } = await supabase
           .from('blog_posts')
-          .update(data)
+          .update(postData)
           .eq('id', post.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('blog_posts').insert([data]);
+        const { error } = await supabase.from('blog_posts').insert([postData]);
         if (error) throw error;
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
+      queryClient.invalidateQueries({ queryKey: ['blog_posts'] });
       toast({ title: 'Success', description: `Blog post ${post ? 'updated' : 'created'} successfully` });
       onClose();
     },
-    onError: () => {
-      toast({ title: 'Error', description: 'Failed to save blog post', variant: 'destructive' });
+    onError: (error: any) => {
+      console.error('Save error:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.message || 'Failed to save blog post', 
+        variant: 'destructive' 
+      });
     },
   });
 
@@ -319,11 +339,11 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Image URL</Label>
-          <Input
-            id="image_url"
+          <Label htmlFor="image_url">Blog Image</Label>
+          <ImageUpload
             value={formData.image_url}
-            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+            onChange={(url) => setFormData({ ...formData, image_url: url })}
+            bucket="blog-images"
           />
         </div>
         <div className="flex items-center space-x-2">
@@ -464,6 +484,12 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      // Validation
+      if (!data.title?.trim()) throw new Error('Title is required');
+      if (!data.description?.trim()) throw new Error('Description is required');
+      if (!data.date) throw new Error('Date is required');
+      if (!data.event_type?.trim()) throw new Error('Event type is required');
+      
       const eventData = { ...data, date: new Date(data.date).toISOString() };
       if (event) {
         const { error } = await supabase.from('events').update(eventData).eq('id', event.id);
@@ -475,8 +501,17 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
       toast({ title: 'Success', description: `Event ${event ? 'updated' : 'created'} successfully` });
       onClose();
+    },
+    onError: (error: any) => {
+      console.error('Save error:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.message || 'Failed to save event', 
+        variant: 'destructive' 
+      });
     },
   });
 
@@ -529,11 +564,11 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Image URL</Label>
-          <Input
-            id="image_url"
+          <Label htmlFor="image_url">Event Image</Label>
+          <ImageUpload
             value={formData.image_url}
-            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+            onChange={(url) => setFormData({ ...formData, image_url: url })}
+            bucket="event-images"
           />
         </div>
         <div>
@@ -677,6 +712,10 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      // Validation
+      if (!data.name?.trim()) throw new Error('Name is required');
+      if (!data.role?.trim()) throw new Error('Role is required');
+      
       if (member) {
         const { error } = await supabase.from('team_members').update(data).eq('id', member.id);
         if (error) throw error;
@@ -687,8 +726,17 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-team'] });
+      queryClient.invalidateQueries({ queryKey: ['team_members'] });
       toast({ title: 'Success', description: `Team member ${member ? 'updated' : 'added'} successfully` });
       onClose();
+    },
+    onError: (error: any) => {
+      console.error('Save error:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.message || 'Failed to save team member', 
+        variant: 'destructive' 
+      });
     },
   });
 
@@ -724,11 +772,11 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Image URL</Label>
-          <Input
-            id="image_url"
+          <Label htmlFor="image_url">Profile Picture</Label>
+          <ImageUpload
             value={formData.image_url}
-            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+            onChange={(url) => setFormData({ ...formData, image_url: url })}
+            bucket="team-images"
           />
         </div>
         <div>
@@ -796,6 +844,7 @@ const ProjectsManager = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
       toast({ title: 'Success', description: 'Project status updated' });
     },
   });
@@ -807,6 +856,7 @@ const ProjectsManager = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
       toast({ title: 'Success', description: 'Project deleted successfully' });
     },
   });
