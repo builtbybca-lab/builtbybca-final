@@ -251,17 +251,11 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
-      queryClient.invalidateQueries({ queryKey: ['blog-posts'] });
       toast({ title: 'Success', description: `Blog post ${post ? 'updated' : 'created'} successfully` });
       onClose();
     },
-    onError: (error: any) => {
-      console.error('Blog post save error:', error);
-      toast({ 
-        title: 'Error', 
-        description: error.message || 'Failed to save blog post', 
-        variant: 'destructive' 
-      });
+    onError: () => {
+      toast({ title: 'Error', description: 'Failed to save blog post', variant: 'destructive' });
     },
   });
 
