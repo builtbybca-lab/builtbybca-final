@@ -86,8 +86,8 @@ const Events = () => {
             </div>
 
             <div className="flex gap-2">
-              
-              <Button variant={sortBy === "popularity" ? "default" : "outline"} onClick={() => setSortBy("popularity")} size="sm" className={`${sortBy === "popularity" ? "bg-bca-red text-white" : "border-white/20 text-white hover:bg-bca-red/20"}`}>​Others </Button>
+              <Button variant={sortBy === "date" ? "default" : "outline"} onClick={() => setSortBy("date")} size="sm" className={`${sortBy === "date" ? "bg-bca-red text-white" : "border-white/20 text-white hover:bg-bca-red/20"}`}>Date</Button>
+              <Button variant={sortBy === "popularity" ? "default" : "outline"} onClick={() => setSortBy("popularity")} size="sm" className={`${sortBy === "popularity" ? "bg-bca-red text-white" : "border-white/20 text-white hover:bg-bca-red/20"}`}>Popular</Button>
             </div>
           </div>
         </div>
@@ -95,13 +95,34 @@ const Events = () => {
 
       <section className="pb-24 px-4">
         <div className="max-w-7xl mx-auto">
-          {isLoading ? <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-              {[...Array(12)].map((_, i) => <div key={i} className="break-inside-avoid mb-4 bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse" style={{
-            height: `${200 + Math.random() * 300}px`
-          }} />)}
-            </div> : filteredEvents.length === 0 || filteredEvents.every(e => !e.gallery_images || e.gallery_images.length === 0) ? <div className="text-center py-16">
-              <p className="text-bca-gray-light text-lg">No event images available yet. Check back soon!</p>
-            </div> : <PinterestGallery images={filteredEvents.flatMap(event => event.gallery_images || [])} />}
+          {isLoading ? (
+            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+              {[...Array(12)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="break-inside-avoid mb-4 bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse" 
+                  style={{ height: `${200 + Math.random() * 300}px` }} 
+                />
+              ))}
+            </div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-bca-gray-light text-lg">No events found for this category.</p>
+            </div>
+          ) : filteredEvents.every(e => !e.gallery_images || e.gallery_images.length === 0) ? (
+            <div className="text-center py-16">
+              <div className="max-w-md mx-auto">
+                <p className="text-bca-gray-light text-lg mb-4">
+                  No event photos have been uploaded yet.
+                </p>
+                <p className="text-bca-gray-light/70 text-sm">
+                  Event galleries will appear here once photos are added through the admin panel.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <PinterestGallery images={filteredEvents.flatMap(event => event.gallery_images || [])} />
+          )}
         </div>
       </section>
 
