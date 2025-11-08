@@ -65,11 +65,12 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="blog" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="blog">Blog Posts</TabsTrigger>
             <TabsTrigger value="events">Events</TabsTrigger>
             <TabsTrigger value="team">Team Members</TabsTrigger>
             <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
           </TabsList>
 
           <TabsContent value="blog">
@@ -86,6 +87,10 @@ const Admin = () => {
 
           <TabsContent value="projects">
             <ProjectsManager />
+          </TabsContent>
+
+          <TabsContent value="testimonials">
+            <TestimonialsManager />
           </TabsContent>
         </Tabs>
       </main>
@@ -922,6 +927,229 @@ const ProjectsManager = () => {
         </div>
       )}
     </div>
+  );
+};
+
+// Testimonials Manager Component
+const TestimonialsManager = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingTestimonial, setEditingTestimonial] = useState<any>(null);
+
+  const { data: testimonials, isLoading } = useQuery({
+    queryKey: ['admin-testimonials'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('testimonials').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      toast({ title: 'Success', description: 'Testimonial deleted successfully' });
+    },
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Testimonials</h2>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={() => setEditingTestimonial(null)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Testimonial
+            </Button>
+          </DialogTrigger>
+          <TestimonialDialog
+            testimonial={editingTestimonial}
+            onClose={() => {
+              setIsDialogOpen(false);
+              setEditingTestimonial(null);
+            }}
+          />
+        </Dialog>
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {testimonials?.map((testimonial) => (
+            <Card key={testimonial.id}>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-4">
+                    {testimonial.avatar_url && (
+                      <img 
+                        src={testimonial.avatar_url} 
+                        alt={testimonial.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    )}
+                    <div>
+                      <CardTitle>{testimonial.name}</CardTitle>
+                      <CardDescription>{testimonial.role}</CardDescription>
+                      <div className="flex items-center mt-1">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <span key={i} className="text-yellow-500">★</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setEditingTestimonial(testimonial);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => deleteMutation.mutate(testimonial.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{testimonial.content}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TestimonialDialog = ({ testimonial, onClose }: { testimonial: any; onClose: () => void }) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: testimonial?.name || '',
+    role: testimonial?.role || '',
+    content: testimonial?.content || '',
+    rating: testimonial?.rating || 5,
+    avatar_url: testimonial?.avatar_url || '',
+    display_order: testimonial?.display_order || 0,
+  });
+
+  const saveMutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      if (testimonial?.id) {
+        const { error } = await supabase
+          .from('testimonials')
+          .update(data)
+          .eq('id', testimonial.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('testimonials').insert(data);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
+      toast({ title: 'Success', description: 'Testimonial saved successfully' });
+      onClose();
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveMutation.mutate(formData);
+  };
+
+  return (
+    <DialogContent className="max-w-2xl">
+      <DialogHeader>
+        <DialogTitle>{testimonial ? 'Edit Testimonial' : 'Add Testimonial'}</DialogTitle>
+      </DialogHeader>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="role">Role</Label>
+          <Input
+            id="role"
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
+            value={formData.content}
+            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            rows={4}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="rating">Rating (1-5)</Label>
+          <Input
+            id="rating"
+            type="number"
+            min="1"
+            max="5"
+            value={formData.rating}
+            onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
+            required
+          />
+        </div>
+        <div>
+          <Label>Avatar Image (Optional)</Label>
+          <ImageUpload
+            value={formData.avatar_url}
+            onChange={(url) => setFormData({ ...formData, avatar_url: url })}
+            bucket="team-images"
+          />
+        </div>
+        <div>
+          <Label htmlFor="display_order">Display Order</Label>
+          <Input
+            id="display_order"
+            type="number"
+            value={formData.display_order}
+            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+          />
+        </div>
+        <DialogFooter>
+          <Button type="submit" disabled={saveMutation.isPending}>
+            {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+            Save Testimonial
+          </Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
   );
 };
 

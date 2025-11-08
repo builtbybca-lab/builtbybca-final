@@ -34,6 +34,11 @@ const Navigation = () => {
     label: "Contact",
     href: "/contact"
   }];
+
+  const authenticatedNavItems = user ? [...navItems, {
+    label: "Submit Project",
+    href: "/submit-project"
+  }] : navItems;
   return <nav className="sticky top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-6">
       <div className="max-w-7xl mx-auto">
         {/* Rounded Container with Enhanced Blur */}
@@ -50,7 +55,7 @@ const Navigation = () => {
 
               {/* Center: Desktop Navigation Links */}
               <div className="hidden lg:flex items-center justify-center flex-1 space-x-8 px-8">
-                {navItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white text-[15px] font-medium transition-colors whitespace-nowrap">
+                {authenticatedNavItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white text-[15px] font-medium transition-colors whitespace-nowrap">
                     {item.label}
                   </Link>)}
               </div>
@@ -98,7 +103,7 @@ const Navigation = () => {
             {/* Mobile Navigation */}
             {isMobileMenuOpen && <div className="lg:hidden pb-4">
                 <div className="pt-2 pb-3 space-y-1">
-                  {navItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white hover:bg-white/5 flex items-center px-4 py-3 rounded-lg text-base font-medium block transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                  {authenticatedNavItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white hover:bg-white/5 flex items-center px-4 py-3 rounded-lg text-base font-medium block transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                       {item.label}
                     </Link>)}
 

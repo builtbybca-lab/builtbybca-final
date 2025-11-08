@@ -19,7 +19,11 @@ const Auth = () => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
+      if (event === 'SIGNED_IN' && session?.user) {
+        toast({
+          title: "Welcome!",
+          description: "You've been logged in successfully.",
+        });
         navigate("/");
       }
     });
@@ -31,7 +35,7 @@ const Auth = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,12 +49,7 @@ const Auth = () => {
         });
 
         if (error) throw error;
-
-        toast({
-          title: "Success!",
-          description: "You've been logged in successfully.",
-        });
-        navigate("/");
+        // Navigation will be handled by onAuthStateChange
       } else {
         const { error } = await supabase.auth.signUp({
           email,
