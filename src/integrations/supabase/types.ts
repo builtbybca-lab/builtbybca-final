@@ -65,6 +65,7 @@ export type Database = {
           date: string
           description: string
           event_type: string
+          gallery_images: string[] | null
           id: string
           image_url: string | null
           location: string | null
@@ -76,6 +77,7 @@ export type Database = {
           date: string
           description: string
           event_type: string
+          gallery_images?: string[] | null
           id?: string
           image_url?: string | null
           location?: string | null
@@ -87,6 +89,7 @@ export type Database = {
           date?: string
           description?: string
           event_type?: string
+          gallery_images?: string[] | null
           id?: string
           image_url?: string | null
           location?: string | null

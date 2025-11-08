@@ -6,6 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { PinterestGallery } from "@/components/ui/PinterestGallery";
 
 interface Event {
   id: string;
@@ -46,7 +47,7 @@ const Events = () => {
         location: e.location || 'TBA',
         category: e.event_type,
         image_url: e.image_url || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87',
-        gallery_images: [],
+        gallery_images: e.gallery_images || [],
         speakers: [],
         outcomes: '',
         is_upcoming: new Date(e.date) > new Date(),
@@ -73,10 +74,10 @@ const Events = () => {
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Our <span className="text-bca-red">Events</span>
+            Event <span className="text-bca-red">Gallery</span>
           </h1>
           <p className="text-xl text-bca-gray-light max-w-3xl mx-auto mb-8">
-            Discover past and upcoming events that showcase innovation, collaboration, and learning.
+            Explore moments from our events through this visual gallery.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -130,68 +131,23 @@ const Events = () => {
       <section className="pb-24 px-4">
         <div className="max-w-7xl mx-auto">
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
+            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+              {[...Array(12)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse"
-                  style={{ height: `${300 + Math.random() * 200}px` }}
+                  className="break-inside-avoid mb-4 bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse"
+                  style={{ height: `${200 + Math.random() * 300}px` }}
                 />
               ))}
             </div>
-          ) : filteredEvents.length === 0 ? (
+          ) : filteredEvents.length === 0 || filteredEvents.every(e => !e.gallery_images || e.gallery_images.length === 0) ? (
             <div className="text-center py-16">
-              <p className="text-bca-gray-light text-lg">No events found matching your criteria.</p>
+              <p className="text-bca-gray-light text-lg">No event images available yet. Check back soon!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEvents.map((event) => (
-                <article
-                  key={event.id}
-                  className="bg-bca-dark-card/50 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-bca-red/30 transition-all duration-300 group cursor-pointer"
-                  onClick={() => setSelectedEvent(event)}
-                >
-                  <div className="relative overflow-hidden" style={{ height: `${250 + Math.random() * 150}px` }}>
-                    <img
-                      src={event.image_url}
-                      alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                      <p className="text-white text-sm">{event.short_description}</p>
-                    </div>
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-bca-red text-white px-3 py-1 rounded-full text-sm font-medium">
-                        {event.category}
-                      </span>
-                    </div>
-                    {event.is_upcoming && (
-                      <div className="absolute top-4 right-4">
-                        <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                          Upcoming
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-bca-red transition-colors line-clamp-2">
-                      {event.title}
-                    </h3>
-
-                    <div className="flex items-center text-sm text-bca-gray-light mb-2">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      <span>{new Date(event.date).toLocaleDateString()}</span>
-                    </div>
-
-                    <div className="flex items-center text-sm text-bca-gray-light">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      <span>{event.location}</span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <PinterestGallery 
+              images={filteredEvents.flatMap(event => event.gallery_images || [])} 
+            />
           )}
         </div>
       </section>
@@ -270,21 +226,6 @@ const Events = () => {
                 </div>
               )}
 
-              {selectedEvent.gallery_images && selectedEvent.gallery_images.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-4">Gallery</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {selectedEvent.gallery_images.map((img, index) => (
-                      <img
-                        key={index}
-                        src={img}
-                        alt={`Gallery ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </DialogContent>

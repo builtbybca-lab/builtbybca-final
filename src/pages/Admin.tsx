@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { ImageUpload } from '@/components/ui/ImageUpload';
+import { MultiImageUpload } from '@/components/ui/MultiImageUpload';
 import {
   Dialog,
   DialogContent,
@@ -479,6 +480,7 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
     location: event?.location || '',
     event_type: event?.event_type || '',
     image_url: event?.image_url || '',
+    gallery_images: event?.gallery_images || [],
     registration_link: event?.registration_link || '',
   });
 
@@ -569,6 +571,15 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
             value={formData.image_url}
             onChange={(url) => setFormData({ ...formData, image_url: url })}
             bucket="event-images"
+          />
+        </div>
+        <div>
+          <Label htmlFor="gallery_images">Event Gallery Images</Label>
+          <MultiImageUpload
+            value={formData.gallery_images}
+            onChange={(urls) => setFormData({ ...formData, gallery_images: urls })}
+            bucket="event-images"
+            maxImages={20}
           />
         </div>
         <div>
