@@ -9,10 +9,8 @@ import BlogsSection from "@/components/BlogsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-bca-dark">
+  return <div className="min-h-screen bg-bca-dark">
       <Navigation />
       <main>
         <HeroSection />
@@ -20,14 +18,12 @@ const Index = () => {
         <WhatWeDoSection />
         <StatsSection />
         <PartnersSection />
-        <StandoutSection />
+        
         <BlogsSection />
         <TestimonialsSection />
         <FAQSection />
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
