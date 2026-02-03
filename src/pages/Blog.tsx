@@ -89,8 +89,8 @@ const Blog = () => {
                   variant={selectedCategory === category ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category)}
                   className={`${selectedCategory === category
-                      ? "bg-bca-red text-white hover:bg-bca-red-hover"
-                      : "border-white/20 text-white hover:bg-bca-red/20 hover:border-bca-red"
+                    ? "bg-bca-red text-white hover:bg-bca-red-hover"
+                    : "border-white/20 text-white hover:bg-bca-red/20 hover:border-bca-red"
                     }`}
                 >
                   {category}
@@ -108,13 +108,13 @@ const Blog = () => {
               {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse"
+                  className="bg-card/50 rounded-xl border border-border overflow-hidden animate-pulse"
                 >
-                  <div className="aspect-video bg-bca-dark-lighter" />
+                  <div className="aspect-video bg-muted" />
                   <div className="p-6 space-y-3">
-                    <div className="h-4 bg-bca-dark-lighter rounded w-3/4" />
-                    <div className="h-6 bg-bca-dark-lighter rounded" />
-                    <div className="h-20 bg-bca-dark-lighter rounded" />
+                    <div className="h-4 bg-muted rounded w-3/4" />
+                    <div className="h-6 bg-muted rounded" />
+                    <div className="h-20 bg-muted rounded" />
                   </div>
                 </div>
               ))}
@@ -128,10 +128,11 @@ const Blog = () => {
               {filteredPosts.map((post) => (
                 <Link key={post.id} to={`/blog/${post.slug}`}>
                   <article className="bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden hover:border-bca-red/30 transition-all duration-300 group">
-                    <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-bca-dark-lighter relative overflow-hidden">
+                    <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-muted relative overflow-hidden">
                       <img
                         src={post.thumbnail_url}
                         alt={post.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute top-4 left-4">

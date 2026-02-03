@@ -24,7 +24,16 @@ const SubmitProject = lazy(() => import("./pages/SubmitProject"));
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const CreateBlog = lazy(() => import("./pages/CreateBlog"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes (previously cacheTime)
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const LoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-background text-foreground">

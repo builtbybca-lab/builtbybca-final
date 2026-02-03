@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon, LogIn, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, Sun, Moon, LogIn, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/components/theme-provider";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -25,27 +32,32 @@ const Navigation = () => {
         navigate("/");
     };
 
-    const navItems = [
+    // Main navigation items (always visible)
+    const mainNavItems = [
         { label: "About", href: "/about" },
         { label: "Projects", href: "/projects" },
         { label: "Events", href: "/events" },
         { label: "Team", href: "/team" },
         { label: "Blog", href: "/blog" },
-        { label: "Contact", href: "/contact" }
     ];
 
-    const authenticatedNavItems = user ? [
-        ...navItems,
+    // Mobile menu includes all items
+    const mobileNavItems = user ? [
+        ...mainNavItems,
+        { label: "Contact", href: "/contact" },
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Submit Project", href: "/submit-project" }
-    ] : navItems;
+        { label: "Submit Project", href: "/submit-project" },
+    ] : [
+        ...mainNavItems,
+        { label: "Contact", href: "/contact" },
+    ];
 
     return (
         <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
             <nav className={`pointer-events-auto transition-all duration-500 ${isScrolled || isMobileMenuOpen
                 ? 'bg-background/80 backdrop-blur-xl border border-border shadow-2xl shadow-bca-red/5'
                 : 'bg-background/60 backdrop-blur-md border border-border/50'
-                } rounded-full px-6 py-3 max-w-2xl w-full flex items-center justify-between shadow-lg`}>
+                } rounded-full px-6 py-3 max-w-4xl w-full flex items-center justify-between shadow-lg`}>
 
                 {/* Brand */}
                 <Link to="/" className="flex items-center group relative z-50">
@@ -58,11 +70,11 @@ const Navigation = () => {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center space-x-1 bg-white/5 rounded-full px-2 py-1 border border-white/5">
-                    {authenticatedNavItems.slice(0, 4).map(item => (
+                    {mainNavItems.map(item => (
                         <Link
                             key={item.label}
                             to={item.href}
-                            className="text-muted-foreground hover:text-foreground px-4 py-1.5 rounded-full text-sm font-medium transition-all hover:bg-accent/50"
+                            className="text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-full text-sm font-medium transition-all hover:bg-accent/50"
                         >
                             {item.label}
                         </Link>
@@ -70,7 +82,8 @@ const Navigation = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="hidden md:flex items-center space-x-4">
+                <div className="hidden md:flex items-center space-x-2">
+                    {/* Theme Toggle */}
                     <Button
                         variant="ghost"
                         size="icon"
@@ -82,17 +95,47 @@ const Navigation = () => {
                         <span className="sr-only">Toggle theme</span>
                     </Button>
 
-                    {/* Auth Button */}
+                    {/* Auth Section */}
                     {user ? (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={handleSignOut}
-                            className="text-muted-foreground hover:text-bca-red hover:bg-accent/50"
-                        >
-                            <LogOut className="h-4 w-4 mr-2" />
-                            Logout
-                        </Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-muted-foreground hover:text-bca-red hover:bg-accent/50"
+                                >
+                                    <User className="h-4 w-4 mr-2" />
+                                    Account
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuItem asChild>
+                                    <Link to="/dashboard" className="w-full cursor-pointer">
+                                        Dashboard
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link to="/submit-project" className="w-full cursor-pointer">
+                                        Submit Project
+                                    </Link>
+                                </DropdownMenuItem>
+                                {isAdmin && (
+                                    <>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem asChild>
+                                            <Link to="/admin" className="w-full cursor-pointer text-bca-red">
+                                                Admin Panel
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </>
+                                )}
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                                    <LogOut className="h-4 w-4 mr-2" />
+                                    Logout
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     ) : (
                         <Link to="/auth">
                             <Button
@@ -106,7 +149,7 @@ const Navigation = () => {
                         </Link>
                     )}
 
-                    {/* Contact / Right Action */}
+                    {/* Contact Button */}
                     <Link
                         to="/contact"
                         className="text-muted-foreground hover:text-bca-red flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-accent/50 transition-all text-sm font-medium"
@@ -143,7 +186,7 @@ const Navigation = () => {
             {isMobileMenuOpen && (
                 <div className="absolute top-full mt-2 left-4 right-4 bg-popover border border-border rounded-2xl p-4 md:hidden animate-fade-in shadow-2xl pointer-events-auto">
                     <div className="flex flex-col space-y-2">
-                        {authenticatedNavItems.map(item => (
+                        {mobileNavItems.map(item => (
                             <Link
                                 key={item.label}
                                 to={item.href}
@@ -153,6 +196,17 @@ const Navigation = () => {
                                 {item.label}
                             </Link>
                         ))}
+
+                        {/* Admin Link for Mobile */}
+                        {isAdmin && (
+                            <Link
+                                to="/admin"
+                                className="text-bca-red hover:text-bca-red-hover hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                Admin Panel
+                            </Link>
+                        )}
 
                         {/* Mobile Auth Button */}
                         <div className="border-t border-border pt-2 mt-2">
@@ -184,4 +238,5 @@ const Navigation = () => {
         </div>
     );
 };
+
 export default Navigation;
