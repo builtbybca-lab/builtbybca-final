@@ -8,100 +8,115 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark BCA Theme Colors */
-    --background: 220 13% 8%;
-    --foreground: 0 0% 95%;
+    /* Light Mode Defaults */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
 
-    --card: 220 13% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
 
-    --popover: 220 13% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
 
-    /* BCA Red Primary */
-    --primary: 0 100% 24%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 55%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 0 100% 24%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 0 100% 24%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
 
     --radius: 0.75rem;
 
     /* BCA Specific Colors */
-    --bca-red: 0 100% 24%;
-    --bca-red-hover: 0 100% 20%;
-    --bca-red-light: 0 100% 35%;
-    --bca-dark: 220 13% 8%;
-    --bca-dark-card: 220 13% 10%;
-    --bca-dark-lighter: 220 13% 15%;
-    --bca-gray: 220 9% 55%;
-    --bca-gray-light: 220 9% 70%;
+    --bca-red: 356 93% 47%;
+    --bca-red-hover: 357 92% 36%;
+    --bca-red-light: 356 100% 56%;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--bca-red)), hsl(var(--bca-red-light)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--bca-dark-card)), hsl(var(--bca-dark-lighter)));
-    --gradient-bg: radial-gradient(ellipse at top, hsl(var(--bca-dark-lighter) / 0.3), hsl(var(--bca-dark)));
+    --bca-dark: 0 0% 5%;
+    --bca-dark-card: 0 0% 8%;
+    --bca-dark-lighter: 0 0% 12%;
 
-    /* Shadows */
-    --shadow-card: 0 10px 30px -10px hsl(var(--bca-red) / 0.2);
-    --shadow-hero: 0 0 50px hsl(var(--bca-red) / 0.3);
-    --shadow-glow: 0 0 20px hsl(var(--bca-red) / 0.4);
+    --bca-gray: 0 0% 60%;
+    --bca-gray-light: 0 0% 40%;
+    /* Darker gray for light mode text visibility */
 
-    /* Animations */
+    /* Gradients (Light Mode) */
+    --gradient-hero: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    --gradient-card: linear-gradient(145deg, #ffffff, #f3f4f6);
+    --gradient-bg: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.05), transparent 70%);
+
+    /* Shadows (Light Mode) */
+    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+    --shadow-hero: 0 0 100px rgba(0, 0, 0, 0.05);
+    --shadow-glow: 0 0 20px rgba(229, 9, 20, 0.1);
+
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Keep same as root for consistent dark theme */
-    --background: 220 13% 8%;
-    --foreground: 0 0% 95%;
-    --card: 220 13% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 13% 10%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 0 100% 24%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 55%;
-    --accent: 0 100% 24%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 0 100% 24%;
+    /* Dark Mode Overrides (Original BCA Dark Theme) */
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 0% 20%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 80%;
+
+    --bca-gray-light: 0 0% 80%;
+
+    /* Gradients (Dark Mode) */
+    --gradient-hero: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--bca-dark-card)), hsl(var(--bca-dark-lighter)));
+    --gradient-bg: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%);
+
+    /* Shadows (Dark Mode) */
+    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --shadow-hero: 0 0 100px rgba(255, 255, 255, 0.05);
+    --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1);
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -120,13 +135,25 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    background: hsl(var(--bca-dark));
-    background-image: 
-      linear-gradient(to right, hsl(var(--bca-dark-lighter) / 0.3) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--bca-dark-lighter) / 0.3) 1px, transparent 1px),
+    background-image:
+      linear-gradient(to right, hsl(var(--muted-foreground) / 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--muted-foreground) / 0.1) 1px, transparent 1px),
       var(--gradient-bg);
     background-size: 40px 40px, 40px 40px, 100% 100%;
-    font-family: "Inter", sans-serif;
+    font-family: "SF Pro Display", "SF Pro Text", "-apple-system", "BlinkMacSystemFont", "Inter", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
+
+  .font-pixel {
+    font-family: "Pixelify Sans", sans-serif;
   }
 
   html {
@@ -135,6 +162,7 @@ All colors MUST be HSL.
 }
 
 @layer components {
+
   /* BCA Custom Button Variants */
   .btn-hero {
     @apply bg-gradient-to-r from-bca-red to-bca-red-light text-white px-8 py-4 rounded-xl font-semibold;
@@ -143,22 +171,22 @@ All colors MUST be HSL.
   }
 
   .btn-secondary {
-    @apply bg-bca-dark-card border border-bca-red text-bca-red px-6 py-3 rounded-lg;
+    @apply bg-card border border-bca-red text-bca-red px-6 py-3 rounded-lg;
     @apply hover:bg-bca-red hover:text-white transition-all duration-300;
   }
 
   .btn-ghost {
-    @apply text-white hover:text-bca-red transition-colors duration-300;
+    @apply text-foreground hover:text-bca-red transition-colors duration-300;
   }
 
   /* Card Styles */
   .card-glass {
-    @apply bg-bca-dark-card/80 backdrop-blur-sm border border-white/10 rounded-xl;
+    @apply bg-card/80 backdrop-blur-sm border border-border rounded-xl;
     @apply shadow-[0_8px_32px_hsl(var(--bca-red)/0.1)];
     position: relative;
     transition: var(--transition-smooth);
   }
-  
+
   .card-glass::before {
     content: '';
     position: absolute;
@@ -169,23 +197,23 @@ All colors MUST be HSL.
     transition: var(--transition-smooth);
     filter: blur(25px);
   }
-  
+
   .card-glass:hover {
     @apply shadow-[0_12px_48px_hsl(var(--bca-red)/0.3)];
     transform: translateY(-4px);
   }
-  
+
   .card-glass:hover::before {
     opacity: 1;
   }
 
   .card-stat {
-    @apply bg-gradient-to-br from-bca-dark-card to-bca-dark-lighter p-6 rounded-xl;
-    @apply border border-white/10 shadow-[0_8px_32px_hsl(var(--bca-red)/0.15)];
+    @apply bg-gradient-to-br from-card to-secondary p-6 rounded-xl;
+    @apply border border-border shadow-[0_8px_32px_hsl(var(--bca-red)/0.15)];
     position: relative;
     transition: var(--transition-smooth);
   }
-  
+
   .card-stat::before {
     content: '';
     position: absolute;
@@ -196,12 +224,12 @@ All colors MUST be HSL.
     transition: var(--transition-smooth);
     filter: blur(30px);
   }
-  
+
   .card-stat:hover {
     @apply shadow-[0_16px_64px_hsl(var(--bca-red)/0.4)];
     transform: translateY(-2px) scale(1.02);
   }
-  
+
   .card-stat:hover::before {
     opacity: 1;
   }
@@ -231,38 +259,102 @@ All colors MUST be HSL.
   .animate-slide-up {
     animation: slideUp 0.8s ease-out forwards;
   }
-  
+
   .animate-fade-in-up {
     animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  
+
   .animate-scale-in {
     animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Dotted Tech Background */
+  .bg-grid-dotted {
+    background-size: 40px 40px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  .bg-grid {
+    background-size: 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
 
 @layer utilities {
-  .bg-bca-red { background-color: hsl(var(--bca-red)); }
-  .bg-bca-red-hover { background-color: hsl(var(--bca-red-hover)); }
-  .bg-bca-dark { background-color: hsl(var(--bca-dark)); }
-  .bg-bca-dark-card { background-color: hsl(var(--bca-dark-card)); }
-  .bg-bca-dark-lighter { background-color: hsl(var(--bca-dark-lighter)); }
-  
-  .text-bca-red { color: hsl(var(--bca-red)); }
-  .text-bca-gray { color: hsl(var(--bca-gray)); }
-  .text-bca-gray-light { color: hsl(var(--bca-gray-light)); }
-  
-  .border-bca-red { border-color: hsl(var(--bca-red)); }
+  .bg-bca-red {
+    background-color: hsl(var(--bca-red));
+  }
+
+  .bg-bca-red-hover {
+    background-color: hsl(var(--bca-red-hover));
+  }
+
+  .bg-bca-dark {
+    background-color: hsl(var(--bca-dark));
+  }
+
+  .bg-bca-dark-card {
+    background-color: hsl(var(--bca-dark-card));
+  }
+
+  .bg-bca-dark-lighter {
+    background-color: hsl(var(--bca-dark-lighter));
+  }
+
+  .text-bca-red {
+    color: hsl(var(--bca-red));
+  }
+
+  .text-bca-gray {
+    color: hsl(var(--bca-gray));
+  }
+
+  .text-bca-gray-light {
+    color: hsl(var(--bca-gray-light));
+  }
+
+  .border-bca-red {
+    border-color: hsl(var(--bca-red));
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @keyframes glow {
-  from { box-shadow: 0 0 20px hsl(var(--bca-red) / 0.3); }
-  to { box-shadow: 0 0 30px hsl(var(--bca-red) / 0.6); }
+  from {
+    box-shadow: 0 0 20px hsl(var(--bca-red) / 0.3);
+  }
+
+  to {
+    box-shadow: 0 0 30px hsl(var(--bca-red) / 0.6);
+  }
 }
 
 @keyframes fadeUp {
@@ -270,6 +362,7 @@ All colors MUST be HSL.
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -281,6 +374,7 @@ All colors MUST be HSL.
     opacity: 0;
     transform: translateY(50px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -292,6 +386,7 @@ All colors MUST be HSL.
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -299,13 +394,23 @@ All colors MUST be HSL.
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-slow {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-33.333%);
+  }
 }
 
 /* Marquee animations */

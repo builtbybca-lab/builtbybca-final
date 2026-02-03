@@ -1,150 +1,187 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { Menu, X, Sun, Moon, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/components/theme-provider";
+
 const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, isAdmin, signOut } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { user, isAdmin, signOut } = useAuth();
+    const { theme, setTheme } = useTheme();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    const handleSignOut = async () => {
+        await signOut();
+        navigate("/");
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-  const navItems = [{
-    label: "About",
-    href: "/about"
-  }, {
-    label: "Projects",
-    href: "/projects"
-  }, {
-    label: "Events",
-    href: "/events"
-  }, {
-    label: "Team",
-    href: "/team"
-  }, {
-    label: "Blog",
-    href: "/blog"
-  }, {
-    label: "Contact",
-    href: "/contact"
-  }];
 
-  const authenticatedNavItems = user ? [...navItems, {
-    label: "Submit Project",
-    href: "/submit-project"
-  }] : navItems;
-  return <nav className="sticky top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Rounded Container with Enhanced Blur */}
-        <div className={`bg-[#0a0a0f]/30 backdrop-blur-xl rounded-[32px] border-2 border-white/20 shadow-2xl transition-all duration-300 ${isScrolled ? 'shadow-xl bg-[#0a0a0f]/40' : ''}`}>
-          <div className="px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[72px]">
-              {/* Left: Logo and Brand */}
-              <div className="flex items-center space-x-3 flex-shrink-0">
-                <Link to="/" className="flex items-center space-x-3 group">
-                  <img src="/logo.png" alt="BCA Logo" className="h-20 w-auto transition-transform group-hover:scale-105" />
-                  
+    const navItems = [
+        { label: "About", href: "/about" },
+        { label: "Projects", href: "/projects" },
+        { label: "Events", href: "/events" },
+        { label: "Team", href: "/team" },
+        { label: "Blog", href: "/blog" },
+        { label: "Contact", href: "/contact" }
+    ];
+
+    const authenticatedNavItems = user ? [
+        ...navItems,
+        { label: "Dashboard", href: "/dashboard" },
+        { label: "Submit Project", href: "/submit-project" }
+    ] : navItems;
+
+    return (
+        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <nav className={`pointer-events-auto transition-all duration-500 ${isScrolled || isMobileMenuOpen
+                ? 'bg-background/80 backdrop-blur-xl border border-border shadow-2xl shadow-bca-red/5'
+                : 'bg-background/60 backdrop-blur-md border border-border/50'
+                } rounded-full px-6 py-3 max-w-2xl w-full flex items-center justify-between shadow-lg`}>
+
+                {/* Brand */}
+                <Link to="/" className="flex items-center group relative z-50">
+                    <img
+                        src="/logo.png"
+                        alt="Logo"
+                        className="h-8 w-auto object-contain transition-transform group-hover:scale-110"
+                    />
                 </Link>
-              </div>
 
-              {/* Center: Desktop Navigation Links */}
-              <div className="hidden lg:flex items-center justify-center flex-1 space-x-8 px-8">
-                {authenticatedNavItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white text-[15px] font-medium transition-colors whitespace-nowrap">
-                    {item.label}
-                  </Link>)}
-              </div>
-
-              {/* Right: Auth Buttons */}
-              <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
-                {user ? (
-                  <>
-                    <span className="text-white/70 text-sm">
-                      {user.email}
-                    </span>
-                    {isAdmin && (
-                      <Link to="/admin">
-                        <Button variant="ghost" className="text-white hover:text-white/80">
-                          Admin Panel
-                        </Button>
-                      </Link>
-                    )}
-                    <Button 
-                      variant="ghost" 
-                      onClick={() => signOut()}
-                      className="text-white hover:text-white/80"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </Button>
-                  </>
-                ) : (
-                  <Link to="/auth">
-                    <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium px-7 h-11 rounded-full transition-all hover:scale-[1.02] shadow-md">
-                      Join Us
-                    </Button>
-                  </Link>
-                )}
-              </div>
-
-              {/* Mobile menu button */}
-              <div className="lg:hidden">
-                <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white hover:text-white/80 hover:bg-white/5 rounded-full">
-                  {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                </Button>
-              </div>
-            </div>
-
-            {/* Mobile Navigation */}
-            {isMobileMenuOpen && <div className="lg:hidden pb-4">
-                <div className="pt-2 pb-3 space-y-1">
-                  {authenticatedNavItems.map(item => <Link key={item.label} to={item.href} className="text-white/90 hover:text-white hover:bg-white/5 flex items-center px-4 py-3 rounded-lg text-base font-medium block transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                      {item.label}
-                    </Link>)}
-
-                  {/* Mobile Auth Buttons */}
-                  <div className="pt-4 px-2 border-t border-white/10 mt-3">
-                    {user ? (
-                      <>
-                        <div className="text-white/70 text-sm mb-3 px-2">
-                          {user.email}
-                        </div>
-                        {isAdmin && (
-                          <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
-                            <Button className="w-full mb-2 bg-bca-red hover:bg-bca-red-hover text-white">
-                              Admin Panel
-                            </Button>
-                          </Link>
-                        )}
-                        <Button 
-                          className="w-full bg-bca-dark-card text-white hover:bg-bca-dark-lighter"
-                          onClick={() => {
-                            signOut();
-                            setIsMobileMenuOpen(false);
-                          }}
+                {/* Desktop Nav */}
+                <div className="hidden md:flex items-center space-x-1 bg-white/5 rounded-full px-2 py-1 border border-white/5">
+                    {authenticatedNavItems.slice(0, 4).map(item => (
+                        <Link
+                            key={item.label}
+                            to={item.href}
+                            className="text-muted-foreground hover:text-foreground px-4 py-1.5 rounded-full text-sm font-medium transition-all hover:bg-accent/50"
                         >
-                          <LogOut className="w-4 h-4 mr-2" />
-                          Logout
-                        </Button>
-                      </>
-                    ) : (
-                      <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                        <Button className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-white font-medium h-11 rounded-full">
-                          Join Us
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
+                            {item.label}
+                        </Link>
+                    ))}
                 </div>
-              </div>}
-          </div>
+
+                {/* Actions */}
+                <div className="hidden md:flex items-center space-x-4">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="text-foreground hover:text-bca-red hover:bg-accent/50"
+                    >
+                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <span className="sr-only">Toggle theme</span>
+                    </Button>
+
+                    {/* Auth Button */}
+                    {user ? (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={handleSignOut}
+                            className="text-muted-foreground hover:text-bca-red hover:bg-accent/50"
+                        >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Logout
+                        </Button>
+                    ) : (
+                        <Link to="/auth">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-muted-foreground hover:text-bca-red hover:bg-accent/50"
+                            >
+                                <LogIn className="h-4 w-4 mr-2" />
+                                Login
+                            </Button>
+                        </Link>
+                    )}
+
+                    {/* Contact / Right Action */}
+                    <Link
+                        to="/contact"
+                        className="text-muted-foreground hover:text-bca-red flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-accent/50 transition-all text-sm font-medium"
+                    >
+                        <div className="w-2 h-2 rounded-full bg-bca-red animate-pulse"></div>
+                        <span>Contact</span>
+                    </Link>
+                </div>
+
+                {/* Mobile Menu Button */}
+                <div className="md:hidden flex items-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="text-foreground hover:text-bca-red h-8 w-8"
+                    >
+                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <span className="sr-only">Toggle theme</span>
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="text-foreground hover:text-bca-red h-8 w-8"
+                    >
+                        {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+                    </Button>
+                </div>
+            </nav>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+                <div className="absolute top-full mt-2 left-4 right-4 bg-popover border border-border rounded-2xl p-4 md:hidden animate-fade-in shadow-2xl pointer-events-auto">
+                    <div className="flex flex-col space-y-2">
+                        {authenticatedNavItems.map(item => (
+                            <Link
+                                key={item.label}
+                                to={item.href}
+                                className="text-muted-foreground hover:text-foreground hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+
+                        {/* Mobile Auth Button */}
+                        <div className="border-t border-border pt-2 mt-2">
+                            {user ? (
+                                <button
+                                    onClick={() => {
+                                        handleSignOut();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    className="w-full flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                >
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    Logout
+                                </button>
+                            ) : (
+                                <Link
+                                    to="/auth"
+                                    className="flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <LogIn className="w-4 h-4 mr-2" />
+                                    Login
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
-      </div>
-    </nav>;
+    );
 };
 export default Navigation;

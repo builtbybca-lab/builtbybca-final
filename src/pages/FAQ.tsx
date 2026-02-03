@@ -109,16 +109,16 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-bca-dark">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Frequently Asked <span className="text-bca-red">Questions</span>
           </h1>
-          <p className="text-xl text-bca-gray-light max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Find answers to common questions about BCA programs, admissions, student life, and more.
           </p>
         </div>
@@ -129,21 +129,21 @@ const FAQ = () => {
         <div className="max-w-4xl mx-auto">
           {faqs.map((category, categoryIndex) => (
             <div key={categoryIndex} className="mb-12">
-              <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-bca-red/30">
+              <h2 className="text-2xl font-bold text-foreground mb-6 pb-2 border-b border-bca-red/30">
                 {category.category}
               </h2>
-              
+
               <Accordion type="single" collapsible className="space-y-4">
                 {category.questions.map((faq, index) => (
                   <AccordionItem
                     key={index}
                     value={`${categoryIndex}-${index}`}
-                    className="bg-bca-dark-card/50 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden"
+                    className="bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden"
                   >
-                    <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-bca-red transition-colors">
+                    <AccordionTrigger className="px-6 py-4 text-left text-foreground hover:text-bca-red transition-colors">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-6 text-bca-gray-light">
+                    <AccordionContent className="px-6 pb-6 text-muted-foreground">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
@@ -151,11 +151,11 @@ const FAQ = () => {
               </Accordion>
             </div>
           ))}
-          
+
           {/* Contact Section */}
           <div className="mt-16 bg-gradient-to-r from-bca-red/10 to-bca-red/5 rounded-xl border border-bca-red/20 p-8 text-center">
-            <h3 className="text-2xl font-bold text-white mb-4">Still Have Questions?</h3>
-            <p className="text-bca-gray-light mb-6">
+            <h3 className="text-2xl font-bold text-foreground mb-4">Still Have Questions?</h3>
+            <p className="text-muted-foreground mb-6">
               Can't find what you're looking for? Our admissions team is here to help with any additional questions you may have.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -48,15 +48,16 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         // BCA Theme Colors
+        // BCA Theme Colors - Red & Dark Redesign
         "bca-red": {
-          DEFAULT: "hsl(var(--bca-red))",
-          hover: "hsl(var(--bca-red-hover))",
-          light: "hsl(var(--bca-red-light))",
+          DEFAULT: "#E50914", // Vibrant Netflix/Fire Red
+          hover: "#B20710",
+          light: "#FF1F2C",
         },
         "bca-dark": {
-          DEFAULT: "hsl(var(--bca-dark))",
-          card: "hsl(var(--bca-dark-card))",
-          lighter: "hsl(var(--bca-dark-lighter))",
+          DEFAULT: "#000000",
+          card: "#0A0A0A",
+          lighter: "#1A1A1A",
         },
         "bca-gray": {
           DEFAULT: "hsl(var(--bca-gray))",
@@ -111,6 +112,16 @@ export default {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
+        spotlight: {
+          "0%": {
+            opacity: "0",
+            transform: "translate(-50%, -150%) scale(0.5)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translate(-50%, 0) scale(1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -121,9 +132,12 @@ export default {
         "slide-up": "slide-up 0.8s ease-out forwards",
         "fade-in": "fade-in 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        spotlight: "spotlight 2s ease .75s 1 forwards",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["SF Pro Display", "SF Pro Text", "-apple-system", "BlinkMacSystemFont", "Inter", "sans-serif"],
+        serif: ["Poppins", "sans-serif"],
+        pixel: ["Pixelify Sans", "sans-serif"],
       },
     },
   },

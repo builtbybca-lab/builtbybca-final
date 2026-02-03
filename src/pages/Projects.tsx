@@ -56,27 +56,27 @@ const Projects = () => {
   });
 
   return (
-    <div className="min-h-screen bg-bca-dark">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Our <span className="text-bca-red">Projects</span>
           </h1>
-          <p className="text-xl text-bca-gray-light max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Explore innovative projects built by our talented members showcasing creativity and technical excellence.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
             <div className="relative mb-8">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-bca-gray-light w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
                 type="text"
                 placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 bg-bca-dark-card border-white/20 text-white placeholder:text-bca-gray-light"
+                className="pl-12 bg-card border-border text-foreground placeholder:text-muted-foreground"
               />
             </div>
 
@@ -86,11 +86,10 @@ const Projects = () => {
                   key={tag}
                   variant={selectedTag === tag ? "default" : "outline"}
                   onClick={() => setSelectedTag(tag)}
-                  className={`${
-                    selectedTag === tag
+                  className={`${selectedTag === tag
                       ? "bg-bca-red text-white hover:bg-bca-red-hover"
-                      : "border-white/20 text-white hover:bg-bca-red/20 hover:border-bca-red"
-                  }`}
+                      : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
+                    }`}
                 >
                   {tag}
                 </Button>
@@ -107,30 +106,30 @@ const Projects = () => {
               {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-bca-dark-card/50 rounded-xl border border-white/10 overflow-hidden animate-pulse"
+                  className="bg-card/50 rounded-xl border border-border overflow-hidden animate-pulse"
                 >
-                  <div className="aspect-video bg-bca-dark-lighter" />
+                  <div className="aspect-video bg-muted" />
                   <div className="p-6 space-y-3">
-                    <div className="h-6 bg-bca-dark-lighter rounded" />
-                    <div className="h-4 bg-bca-dark-lighter rounded w-3/4" />
-                    <div className="h-16 bg-bca-dark-lighter rounded" />
+                    <div className="h-6 bg-muted rounded" />
+                    <div className="h-4 bg-muted rounded w-3/4" />
+                    <div className="h-16 bg-muted rounded" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-bca-gray-light text-lg">No projects found matching your criteria.</p>
+              <p className="text-muted-foreground text-lg">No projects found matching your criteria.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project) => (
                 <article
                   key={project.id}
-                  className="bg-bca-dark-card/50 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-bca-red/30 transition-all duration-300 group cursor-pointer"
+                  className="bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden hover:border-bca-red/30 transition-all duration-300 group cursor-pointer"
                   onClick={() => setSelectedProject(project)}
                 >
-                  <div className="aspect-video relative overflow-hidden bg-gradient-to-br from-bca-red/20 to-bca-dark-lighter">
+                  <div className="aspect-video relative overflow-hidden bg-gradient-to-br from-bca-red/20 to-muted">
                     <img
                       src={project.thumbnail_url}
                       alt={project.name}
@@ -146,15 +145,15 @@ const Projects = () => {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-bca-red transition-colors">
+                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-bca-red transition-colors">
                       {project.name}
                     </h3>
 
-                    <p className="text-sm text-bca-gray-light mb-3">
+                    <p className="text-sm text-muted-foreground mb-3">
                       Built by: <span className="text-bca-red font-medium">{project.built_by}</span>
                     </p>
 
-                    <p className="text-bca-gray-light mb-4 line-clamp-2">{project.description}</p>
+                    <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.slice(0, 3).map((tag, index) => (
@@ -163,7 +162,7 @@ const Projects = () => {
                         </Badge>
                       ))}
                       {project.tags.length > 3 && (
-                        <Badge variant="outline" className="border-white/20 text-bca-gray-light">
+                        <Badge variant="outline" className="border-border text-muted-foreground">
                           +{project.tags.length - 3}
                         </Badge>
                       )}
@@ -173,7 +172,7 @@ const Projects = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full border-white/20 text-white hover:bg-bca-red/20 hover:border-bca-red"
+                        className="w-full border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(project.github_url, "_blank");
@@ -192,7 +191,7 @@ const Projects = () => {
       </section>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-bca-dark-card border-white/20">
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-card border-border">
           {selectedProject && (
             <div className="space-y-6">
               <div className="relative">
@@ -219,14 +218,14 @@ const Projects = () => {
               </div>
 
               <div>
-                <h2 className="text-3xl font-bold text-white mb-3">{selectedProject.name}</h2>
+                <h2 className="text-3xl font-bold text-foreground mb-3">{selectedProject.name}</h2>
                 <p className="text-bca-red text-lg mb-4">Built by {selectedProject.built_by}</p>
-                <p className="text-bca-gray-light leading-relaxed">{selectedProject.full_description}</p>
+                <p className="text-muted-foreground leading-relaxed">{selectedProject.full_description}</p>
               </div>
 
               {selectedProject.tech_stack && selectedProject.tech_stack.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Tech Stack</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Tech Stack</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.tech_stack.map((tech, index) => (
                       <Badge key={index} className="bg-bca-red/20 text-bca-red border-bca-red/30">
@@ -239,10 +238,10 @@ const Projects = () => {
 
               {selectedProject.tags && selectedProject.tags.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Tags</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline" className="border-white/20 text-bca-gray-light">
+                      <Badge key={index} variant="outline" className="border-border text-muted-foreground">
                         #{tag}
                       </Badge>
                     ))}
@@ -252,14 +251,14 @@ const Projects = () => {
 
               {selectedProject.screenshots && selectedProject.screenshots.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-3">Screenshots</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-3">Screenshots</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {selectedProject.screenshots.map((screenshot, index) => (
                       <img
                         key={index}
                         src={screenshot}
                         alt={`Screenshot ${index + 1}`}
-                        className="w-full h-40 object-cover rounded-lg border border-white/10"
+                        className="w-full h-40 object-cover rounded-lg border border-border"
                       />
                     ))}
                   </div>
@@ -279,7 +278,7 @@ const Projects = () => {
                 {selectedProject.live_demo_url && (
                   <Button
                     variant="outline"
-                    className="flex-1 border-white/20 text-white hover:bg-bca-red/20"
+                    className="flex-1 border-border text-foreground hover:bg-bca-red/20"
                     onClick={() => window.open(selectedProject.live_demo_url, "_blank")}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />

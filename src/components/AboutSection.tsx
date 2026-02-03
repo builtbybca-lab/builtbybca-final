@@ -1,47 +1,48 @@
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+
 const AboutSection = () => {
-  return (
-    <section id="about" className="py-20 relative overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-bca-dark via-bca-dark-card to-bca-dark opacity-90"></div>
-        <img 
-          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=800&fit=crop" 
-          alt="Coding background" 
-          className="w-full h-full object-cover opacity-20"
-        />
-      </div>
+    return (
+        <section className="py-20 bg-background relative overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div className="space-y-8 animate-fade-up">
+                        <div className="inline-flex items-center space-x-2 bg-card/60 border border-bca-red/30 rounded-full px-4 py-2">
+                            <span className="text-bca-red font-pixel tracking-widest text-sm">WHO WE ARE</span>
+                        </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 animate-fade-up">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            About <span className="text-bca-red">BuiltByBCA</span>
-          </h2>
-          <div className="w-24 h-1 bg-bca-red mx-auto mb-8"></div>
-        </div>
+                        <h2 className="text-4xl md:text-5xl font-bold text-foreground font-serif">
+                            Empowering the Next Generation of Tech Leaders
+                        </h2>
 
-        <div className="card-glass p-8 md:p-12 animate-fade-up" style={{ animationDelay: "0.2s" }}>
-          <p className="text-bca-gray-light text-lg leading-relaxed mb-6">
-            <span className="text-white font-semibold">BuiltByBCA</span> is a vibrant student-led tech community at Adichunchanagiri Institute Of Business Management, 
-            dedicated to fostering innovation, collaboration, and technical excellence among aspiring developers and tech enthusiasts.
-          </p>
-          
-          <p className="text-bca-gray-light text-lg leading-relaxed mb-6">
-            Our mission is to bridge the gap between academic learning and real-world application by providing a platform where students can 
-            explore cutting-edge technologies, work on meaningful projects, and develop both technical and soft skills that prepare them for 
-            successful careers in the tech industry.
-          </p>
+                        <p className="text-lg text-muted-foreground leading-relaxed">
+                            BuiltBy.BCA is more than just a club; it's a movement. We are a community of passionate developers, designers, and innovators coming together to learn, build, and grow.
+                        </p>
 
-          <p className="text-bca-gray-light text-lg leading-relaxed">
-            We focus on diverse areas including <span className="text-white font-medium">coding and software development</span>, 
-            <span className="text-white font-medium"> artificial intelligence and machine learning</span>, 
-            <span className="text-white font-medium"> UI/UX design</span>, and 
-            <span className="text-white font-medium"> innovative problem-solving</span>. Through hackathons, workshops, tech talks, 
-            and collaborative projects, we empower students to learn by doing, share knowledge, and build a strong foundation for their future in technology.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
+                        <div className="pt-4">
+                            <Button className="font-pixel bg-transparent border-2 border-bca-red text-foreground hover:bg-bca-red hover:text-white px-8 py-6 text-lg tracking-wider group transition-all">
+                                Learn More
+                                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className="relative animate-fade-up" style={{ animationDelay: "0.2s" }}>
+                        <div className="aspect-video rounded-2xl bg-card border border-border overflow-hidden shadow-2xl relative group">
+                            <div className="absolute inset-0 bg-gradient-to-tr from-bca-red/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-foreground/20 font-pixel text-6xl">BCA</span>
+                            </div>
+                        </div>
+
+                        {/* Decorative elements */}
+                        <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-bca-red/20 rounded-full blur-xl animate-float"></div>
+                        <div className="absolute -top-6 -left-6 w-32 h-32 bg-bca-red/10 rounded-full blur-xl animate-float" style={{ animationDelay: "2s" }}></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 };
 
 export default AboutSection;

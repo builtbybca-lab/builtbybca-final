@@ -102,17 +102,17 @@ const BlogPost = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-bca-dark">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
           <div className="animate-pulse space-y-6">
-            <div className="h-96 bg-bca-dark-card rounded-xl" />
-            <div className="h-12 bg-bca-dark-card rounded w-3/4" />
-            <div className="h-6 bg-bca-dark-card rounded w-1/2" />
+            <div className="h-96 bg-card rounded-xl" />
+            <div className="h-12 bg-card rounded w-3/4" />
+            <div className="h-6 bg-card rounded w-1/2" />
             <div className="space-y-3">
-              <div className="h-4 bg-bca-dark-card rounded" />
-              <div className="h-4 bg-bca-dark-card rounded" />
-              <div className="h-4 bg-bca-dark-card rounded w-5/6" />
+              <div className="h-4 bg-card rounded" />
+              <div className="h-4 bg-card rounded" />
+              <div className="h-4 bg-card rounded w-5/6" />
             </div>
           </div>
         </div>
@@ -123,11 +123,11 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-bca-dark">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <div className="max-w-4xl mx-auto px-4 pt-24 pb-16 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Post Not Found</h1>
-          <p className="text-bca-gray-light mb-8">The blog post you're looking for doesn't exist.</p>
+          <h1 className="text-4xl font-bold text-foreground mb-4">Post Not Found</h1>
+          <p className="text-muted-foreground mb-8">The blog post you're looking for doesn't exist.</p>
           <Link to="/blog">
             <Button className="bg-bca-red hover:bg-bca-red-hover">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -141,13 +141,13 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bca-dark">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <article className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
           <Link to="/blog">
-            <Button variant="ghost" className="text-bca-gray-light hover:text-white mb-6">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground mb-6">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Blog
             </Button>
@@ -159,17 +159,17 @@ const BlogPost = () => {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{post.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">{post.title}</h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-bca-gray-light mb-8">
+          <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-8">
             <div className="flex items-center">
               <img
                 src={post.author_avatar}
                 alt={post.author}
-                className="w-10 h-10 rounded-full mr-3 border-2 border-white/20"
+                className="w-10 h-10 rounded-full mr-3 border-2 border-border"
               />
               <div>
-                <p className="text-white font-medium">{post.author}</p>
+                <p className="text-foreground font-medium">{post.author}</p>
               </div>
             </div>
             <span>•</span>
@@ -186,7 +186,7 @@ const BlogPost = () => {
               variant="ghost"
               size="sm"
               onClick={handleShare}
-              className="ml-auto text-bca-gray-light hover:text-white"
+              className="ml-auto text-muted-foreground hover:text-foreground"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Share
@@ -211,7 +211,7 @@ const BlogPost = () => {
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="bg-bca-dark-card border border-white/10 text-bca-gray-light px-4 py-2 rounded-full text-sm"
+                  className="bg-card border border-border text-muted-foreground px-4 py-2 rounded-full text-sm"
                 >
                   #{tag}
                 </span>
@@ -220,7 +220,7 @@ const BlogPost = () => {
           )}
 
           {post.author_bio && (
-            <div className="bg-bca-dark-card/50 backdrop-blur-sm border border-white/10 rounded-xl p-6 mb-12">
+            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-12">
               <div className="flex items-start gap-4">
                 <img
                   src={post.author_avatar}
@@ -228,8 +228,8 @@ const BlogPost = () => {
                   className="w-16 h-16 rounded-full border-2 border-bca-red/50"
                 />
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-2">About {post.author}</h3>
-                  <p className="text-bca-gray-light">{post.author_bio}</p>
+                  <h3 className="text-xl font-bold text-foreground mb-2">About {post.author}</h3>
+                  <p className="text-muted-foreground">{post.author_bio}</p>
                 </div>
               </div>
             </div>
@@ -240,14 +240,14 @@ const BlogPost = () => {
       {relatedPosts.length > 0 && (
         <section className="pb-24 px-4">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
               Related <span className="text-bca-red">Articles</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedPosts.map((relatedPost) => (
                 <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`}>
-                  <article className="bg-bca-dark-card/50 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden hover:border-bca-red/30 transition-all duration-300 group">
-                    <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-bca-dark-lighter relative overflow-hidden">
+                  <article className="bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden hover:border-bca-red/30 transition-all duration-300 group">
+                    <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-muted relative overflow-hidden">
                       <img
                         src={relatedPost.thumbnail_url}
                         alt={relatedPost.title}
@@ -260,13 +260,13 @@ const BlogPost = () => {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-bca-red transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-bca-red transition-colors line-clamp-2">
                         {relatedPost.title}
                       </h3>
-                      <p className="text-bca-gray-light text-sm line-clamp-2 mb-3">
+                      <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
                         {relatedPost.excerpt}
                       </p>
-                      <span className="text-xs text-bca-gray-light">{relatedPost.read_time}</span>
+                      <span className="text-xs text-muted-foreground">{relatedPost.read_time}</span>
                     </div>
                   </article>
                 </Link>

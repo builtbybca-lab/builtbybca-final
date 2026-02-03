@@ -81,16 +81,16 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bca-dark">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-md mx-auto">
-          <div className="bg-bca-dark-card/50 backdrop-blur-sm rounded-xl border border-white/10 p-8">
-            <h1 className="text-3xl font-bold text-white mb-2 text-center">
+          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
+            <h1 className="text-3xl font-bold text-foreground mb-2 text-center">
               {isLogin ? "Welcome Back" : "Join BuiltByBCA"}
             </h1>
-            <p className="text-bca-gray-light text-center mb-8">
+            <p className="text-muted-foreground text-center mb-8">
               {isLogin
                 ? "Sign in to access your account"
                 : "Create an account to showcase your projects"}
@@ -99,7 +99,7 @@ const Auth = () => {
             <form onSubmit={handleAuth} className="space-y-6">
               {!isLogin && (
                 <div>
-                  <Label htmlFor="fullName" className="text-white">
+                  <Label htmlFor="fullName" className="text-foreground">
                     Full Name
                   </Label>
                   <Input
@@ -107,14 +107,14 @@ const Auth = () => {
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 bg-bca-dark border-white/20 text-white"
+                    className="mt-1 bg-background border-border text-foreground"
                     required
                   />
                 </div>
               )}
 
               <div>
-                <Label htmlFor="email" className="text-white">
+                <Label htmlFor="email" className="text-foreground">
                   Email
                 </Label>
                 <Input
@@ -122,13 +122,13 @@ const Auth = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 bg-bca-dark border-white/20 text-white"
+                  className="mt-1 bg-background border-border text-foreground"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="password" className="text-white">
+                <Label htmlFor="password" className="text-foreground">
                   Password
                 </Label>
                 <Input
@@ -136,7 +136,7 @@ const Auth = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 bg-bca-dark border-white/20 text-white"
+                  className="mt-1 bg-background border-border text-foreground"
                   required
                   minLength={6}
                 />
@@ -144,7 +144,7 @@ const Auth = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-white"
+                className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground"
                 disabled={loading}
               >
                 {loading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
@@ -154,7 +154,7 @@ const Auth = () => {
             <div className="mt-6 text-center">
               <button
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-bca-red hover:text-white transition-colors text-sm"
+                className="text-bca-red hover:text-foreground transition-colors text-sm"
               >
                 {isLogin
                   ? "Don't have an account? Sign up"

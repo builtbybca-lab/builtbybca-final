@@ -1,87 +1,63 @@
-import { Code, Palette, Brain, Users, FileText, Mic } from "lucide-react";
+import { Code, Terminal, Users, Zap } from "lucide-react";
 
 const WhatWeDoSection = () => {
-  const activities = [
-    {
-      icon: Code,
-      title: "Coding & Development",
-      description: "Master programming languages and build real-world applications",
-      gradient: "from-blue-500/20 to-cyan-500/20",
-    },
-    {
-      icon: Palette,
-      title: "Design",
-      description: "Learn UI/UX design principles and create stunning user experiences",
-      gradient: "from-purple-500/20 to-pink-500/20",
-    },
-    {
-      icon: Brain,
-      title: "AI Projects",
-      description: "Explore machine learning and artificial intelligence innovations",
-      gradient: "from-green-500/20 to-emerald-500/20",
-    },
-    {
-      icon: Users,
-      title: "Workshops",
-      description: "Hands-on learning sessions with industry experts and mentors",
-      gradient: "from-orange-500/20 to-red-500/20",
-    },
-    {
-      icon: FileText,
-      title: "Blogging",
-      description: "Share knowledge through tech writing and documentation",
-      gradient: "from-indigo-500/20 to-blue-500/20",
-    },
-    {
-      icon: Mic,
-      title: "Tech Talks",
-      description: "Engage with industry leaders and stay updated on latest trends",
-      gradient: "from-yellow-500/20 to-amber-500/20",
-    },
-  ];
+    const features = [
+        {
+            icon: <Terminal className="w-8 h-8 text-bca-red" />,
+            title: "Workshops",
+            description: "Hands-on sessions on the latest tech stacks and tools."
+        },
+        {
+            icon: <Code className="w-8 h-8 text-bca-red" />,
+            title: "Hackathons",
+            description: "Intense coding competitions to solve real-world problems."
+        },
+        {
+            icon: <Users className="w-8 h-8 text-bca-red" />,
+            title: "Mentorship",
+            description: "Guidance from seniors and industry experts."
+        },
+        {
+            icon: <Zap className="w-8 h-8 text-bca-red" />,
+            title: "Projects",
+            description: "Collaborative building of open-source software."
+        }
+    ];
 
-  return (
-    <section className="py-20 relative" id="what-we-do">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            What We <span className="text-bca-red">Do</span>
-          </h2>
-          <div className="w-24 h-1 bg-bca-red mx-auto mb-6"></div>
-          <p className="text-bca-gray-light text-lg max-w-2xl mx-auto">
-            Empowering students through diverse learning opportunities and collaborative initiatives
-          </p>
-        </div>
+    return (
+        <section className="py-24 bg-secondary/30 relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 animate-fade-up">
+                    <span className="text-bca-red font-pixel tracking-widest text-sm uppercase">Our Activities</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-foreground font-serif">What We Do</h2>
+                    <p className="text-muted-foreground text-lg">
+                        We provide a platform for students to explore, experiment, and excel in the world of technology.
+                    </p>
+                </div>
 
-        {/* Activities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {activities.map((activity, index) => (
-            <div
-              key={index}
-              className="card-glass p-8 group hover:scale-105 transition-all duration-300 animate-fade-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Icon Container */}
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${activity.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <activity.icon className="w-8 h-8 text-white" />
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-bca-red transition-colors">
-                {activity.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-bca-gray-light leading-relaxed">
-                {activity.description}
-              </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {features.map((feature, index) => (
+                        <div
+                            key={index}
+                            className="bg-card border border-border hover:border-bca-red/50 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(229,9,20,0.3)] animate-fade-up group relative overflow-hidden"
+                            style={{ animationDelay: `${0.1 * (index + 1)}s` }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-b from-bca-red/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="mb-4 bg-secondary w-14 h-14 rounded-lg flex items-center justify-center group-hover:bg-bca-red group-hover:text-white transition-all duration-300 relative z-10">
+                                <div className="text-bca-red group-hover:text-white transition-colors">
+                                    {feature.icon}
+                                </div>
+                            </div>
+                            <h3 className="text-xl font-bold text-foreground mb-2 font-pixel tracking-wide relative z-10 group-hover:text-bca-red transition-colors">{feature.title}</h3>
+                            <p className="text-muted-foreground text-sm leading-relaxed relative z-10 group-hover:text-foreground/80 transition-colors">
+                                {feature.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 };
 
 export default WhatWeDoSection;

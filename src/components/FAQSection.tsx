@@ -15,7 +15,7 @@ const FAQSection = () => {
       answer: "We provide comprehensive support for students including mentorship programs, technical workshops, career guidance, and networking opportunities with industry professionals."
     },
     {
-      question: "What's the membership fee?", 
+      question: "What's the membership fee?",
       answer: "Membership is completely free for all BCA students. We believe in making quality education and opportunities accessible to everyone."
     },
     {
@@ -37,17 +37,17 @@ const FAQSection = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-8">
+          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-8">
             Stay Updated with Us
           </h2>
-          
+
           {/* Newsletter Signup */}
           <div className="max-w-md mx-auto">
             <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="Your email address"
-                className="flex-1 px-4 py-3 bg-bca-dark-card border border-white/20 rounded-lg text-white placeholder-bca-gray focus:outline-none focus:border-bca-red transition-colors"
+                className="flex-1 px-4 py-3 bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-bca-red transition-colors"
               />
               <Button className="btn-hero px-6">
                 Subscribe
@@ -68,7 +68,7 @@ const FAQSection = () => {
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
               >
-                <span className="text-white font-semibold text-lg">
+                <span className="text-foreground font-semibold text-lg">
                   {faq.question}
                 </span>
                 <div className="flex-shrink-0 ml-4">
@@ -79,10 +79,10 @@ const FAQSection = () => {
                   )}
                 </div>
               </button>
-              
+
               {openFAQ === index && (
                 <div className="px-6 pb-4">
-                  <p className="text-bca-gray-light leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

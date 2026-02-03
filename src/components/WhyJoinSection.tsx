@@ -32,38 +32,38 @@ const WhyJoinSection = () => {
     gradient: "from-bca-red/20 to-cyan-500/20"
   }];
   return <section className="py-20 relative" id="about">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Why Join <span className="text-bca-red">Builtby.BCA?</span>
-          </h2>
-          <div className="flex items-center justify-center">
-            <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
-          </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Section Header */}
+      <div className="text-center mb-16">
+        <div className="flex items-center justify-center mb-6">
+          <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
         </div>
-
-        {/* Reasons Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reasons.map((reason, index) => <div key={index} className="p-6 bg-bca-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-bca-red/30 transition-all duration-300 group">
-              {/* Icon with gradient background */}
-              <div className={`inline-flex p-3 rounded-xl mb-4 bg-gradient-to-br ${reason.gradient}`}>
-                <reason.icon className="w-6 h-6 text-bca-red" />
-              </div>
-              
-              {/* Content */}
-              <h3 className="text-lg font-bold text-white mb-3 group-hover:text-bca-red transition-colors">
-                {reason.title}
-              </h3>
-              <p className="text-bca-gray-light text-sm leading-relaxed">
-                {reason.description}
-              </p>
-            </div>)}
+        <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+          Why Join <span className="text-bca-red">Builtby.BCA?</span>
+        </h2>
+        <div className="flex items-center justify-center">
+          <div className="h-px bg-gradient-to-r from-transparent via-bca-red to-transparent w-96"></div>
         </div>
       </div>
-    </section>;
+
+      {/* Reasons Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {reasons.map((reason, index) => <div key={index} className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-bca-red/30 transition-all duration-300 group">
+          {/* Icon with gradient background */}
+          <div className={`inline-flex p-3 rounded-xl mb-4 bg-gradient-to-br ${reason.gradient}`}>
+            <reason.icon className="w-6 h-6 text-bca-red" />
+          </div>
+
+          {/* Content */}
+          <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-bca-red transition-colors">
+            {reason.title}
+          </h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {reason.description}
+          </p>
+        </div>)}
+      </div>
+    </div>
+  </section>;
 };
 export default WhyJoinSection;
