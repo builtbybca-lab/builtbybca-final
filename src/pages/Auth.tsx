@@ -84,7 +84,7 @@ const Auth = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="pt-24 pb-16 px-4">
+      <section className="pt-32 pb-16 px-4">
         <div className="max-w-md mx-auto">
           <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
             <h1 className="text-3xl font-bold text-foreground mb-2 text-center">

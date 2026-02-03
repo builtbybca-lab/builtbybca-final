@@ -104,7 +104,7 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+        <div className="max-w-4xl mx-auto px-4 pt-32 pb-16">
           <div className="animate-pulse space-y-6">
             <div className="h-96 bg-card rounded-xl" />
             <div className="h-12 bg-card rounded w-3/4" />
@@ -125,7 +125,7 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
-        <div className="max-w-4xl mx-auto px-4 pt-24 pb-16 text-center">
+        <div className="max-w-4xl mx-auto px-4 pt-32 pb-16 text-center">
           <h1 className="text-4xl font-bold text-foreground mb-4">Post Not Found</h1>
           <p className="text-muted-foreground mb-8">The blog post you're looking for doesn't exist.</p>
           <Link to="/blog">
@@ -144,7 +144,7 @@ const BlogPost = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <article className="pt-24 pb-16 px-4">
+      <article className="pt-32 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
           <Link to="/blog">
             <Button variant="ghost" className="text-muted-foreground hover:text-foreground mb-6">

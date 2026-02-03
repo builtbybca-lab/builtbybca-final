@@ -130,7 +130,7 @@ const CreateBlog = () => {
         <div className="min-h-screen bg-background">
             <Navigation />
 
-            <section className="pt-24 pb-16 px-4">
+            <section className="pt-32 pb-16 px-4">
                 <div className="max-w-3xl mx-auto">
                     <Link to="/dashboard">
                         <Button variant="ghost" className="text-muted-foreground hover:text-foreground mb-6">

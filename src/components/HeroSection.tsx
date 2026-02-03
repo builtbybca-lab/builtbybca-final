@@ -3,7 +3,7 @@ import { ArrowRight, Calendar } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background selection:bg-bca-red selection:text-white pt-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background selection:bg-bca-red selection:text-white pt-32">
       {/* Grid Background - Enhanced Visibility & Animation */}
       <div className="absolute inset-0 z-0 bg-grid opacity-50 animate-pulse pointer-events-none" style={{ animationDuration: '4s' }}></div>
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-background/80 via-transparent to-background pointer-events-none"></div>

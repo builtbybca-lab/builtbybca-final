@@ -59,7 +59,7 @@ const Projects = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="pt-24 pb-16 px-4">
+      <section className="pt-32 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Our <span className="text-bca-red">Projects</span>
@@ -87,8 +87,8 @@ const Projects = () => {
                   variant={selectedTag === tag ? "default" : "outline"}
                   onClick={() => setSelectedTag(tag)}
                   className={`${selectedTag === tag
-                      ? "bg-bca-red text-white hover:bg-bca-red-hover"
-                      : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
+                    ? "bg-bca-red text-white hover:bg-bca-red-hover"
+                    : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
                     }`}
                 >
                   {tag}
