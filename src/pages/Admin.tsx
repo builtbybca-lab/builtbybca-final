@@ -250,14 +250,14 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
       if (!data.content?.trim()) throw new Error('Content is required');
       if (!data.author_name?.trim()) throw new Error('Author name is required');
       if (!data.category?.trim()) throw new Error('Category is required');
-      
+
       // Auto-generate slug from title if empty
       const slug = data.slug?.trim() || data.title.toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
-      
+
       const postData = { ...data, slug };
-      
+
       if (post) {
         const { error } = await supabase
           .from('blog_posts')
@@ -277,75 +277,81 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
     },
     onError: (error: any) => {
       console.error('Save error:', error);
-      toast({ 
-        title: 'Error', 
-        description: error.message || 'Failed to save blog post', 
-        variant: 'destructive' 
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to save blog post',
+        variant: 'destructive'
       });
     },
   });
 
   return (
-    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
       <DialogHeader>
-        <DialogTitle>{post ? 'Edit' : 'Create'} Blog Post</DialogTitle>
+        <DialogTitle className="text-foreground">{post ? 'Edit' : 'Create'} Blog Post</DialogTitle>
         <DialogDescription>
           {post ? 'Update' : 'Add'} blog post details below
         </DialogDescription>
       </DialogHeader>
-      <div className="space-y-4">
+      <div className="space-y-4 overflow-y-auto flex-1 pr-2">
         <div>
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title" className="text-foreground">Title</Label>
           <Input
             id="title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="slug">Slug</Label>
+          <Label htmlFor="slug" className="text-foreground">Slug</Label>
           <Input
             id="slug"
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="excerpt">Excerpt</Label>
+          <Label htmlFor="excerpt" className="text-foreground">Excerpt</Label>
           <Textarea
             id="excerpt"
             value={formData.excerpt}
             onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
             rows={3}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="content">Content</Label>
+          <Label htmlFor="content" className="text-foreground">Content</Label>
           <Textarea
             id="content"
             value={formData.content}
             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
             rows={10}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="author_name">Author Name</Label>
+          <Label htmlFor="author_name" className="text-foreground">Author Name</Label>
           <Input
             id="author_name"
             value={formData.author_name}
             onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category" className="text-foreground">Category</Label>
           <Input
             id="category"
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Blog Image</Label>
+          <Label htmlFor="image_url" className="text-foreground">Blog Image</Label>
           <ImageUpload
             value={formData.image_url}
             onChange={(url) => setFormData({ ...formData, image_url: url })}
@@ -358,10 +364,10 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
             checked={formData.published}
             onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
           />
-          <Label htmlFor="published">Published</Label>
+          <Label htmlFor="published" className="text-foreground">Published</Label>
         </div>
       </div>
-      <DialogFooter>
+      <DialogFooter className="mt-4">
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
@@ -496,7 +502,7 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
       if (!data.description?.trim()) throw new Error('Description is required');
       if (!data.date) throw new Error('Date is required');
       if (!data.event_type?.trim()) throw new Error('Event type is required');
-      
+
       const eventData = { ...data, date: new Date(data.date).toISOString() };
       if (event) {
         const { error } = await supabase.from('events').update(eventData).eq('id', event.id);
@@ -514,64 +520,69 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
     },
     onError: (error: any) => {
       console.error('Save error:', error);
-      toast({ 
-        title: 'Error', 
-        description: error.message || 'Failed to save event', 
-        variant: 'destructive' 
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to save event',
+        variant: 'destructive'
       });
     },
   });
 
   return (
-    <DialogContent className="max-w-2xl">
+    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
       <DialogHeader>
-        <DialogTitle>{event ? 'Edit' : 'Create'} Event</DialogTitle>
+        <DialogTitle className="text-foreground">{event ? 'Edit' : 'Create'} Event</DialogTitle>
       </DialogHeader>
-      <div className="space-y-4">
+      <div className="space-y-4 overflow-y-auto flex-1 pr-2">
         <div>
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title" className="text-foreground">Title</Label>
           <Input
             id="title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="description" className="text-foreground">Description</Label>
           <Textarea
             id="description"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={3}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="date">Date & Time</Label>
+          <Label htmlFor="date" className="text-foreground">Date & Time</Label>
           <Input
             id="date"
             type="datetime-local"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            className="bg-background border-border text-foreground [color-scheme:dark]"
           />
         </div>
         <div>
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location" className="text-foreground">Location</Label>
           <Input
             id="location"
             value={formData.location}
             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="event_type">Event Type</Label>
+          <Label htmlFor="event_type" className="text-foreground">Event Type</Label>
           <Input
             id="event_type"
             value={formData.event_type}
             onChange={(e) => setFormData({ ...formData, event_type: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Event Image</Label>
+          <Label htmlFor="image_url" className="text-foreground">Event Image</Label>
           <ImageUpload
             value={formData.image_url}
             onChange={(url) => setFormData({ ...formData, image_url: url })}
@@ -579,7 +590,7 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
           />
         </div>
         <div>
-          <Label htmlFor="gallery_images">Event Gallery Images</Label>
+          <Label htmlFor="gallery_images" className="text-foreground">Event Gallery Images</Label>
           <MultiImageUpload
             value={formData.gallery_images}
             onChange={(urls) => setFormData({ ...formData, gallery_images: urls })}
@@ -588,15 +599,16 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
           />
         </div>
         <div>
-          <Label htmlFor="registration_link">Registration Link</Label>
+          <Label htmlFor="registration_link" className="text-foreground">Registration Link</Label>
           <Input
             id="registration_link"
             value={formData.registration_link}
             onChange={(e) => setFormData({ ...formData, registration_link: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
       </div>
-      <DialogFooter>
+      <DialogFooter className="mt-4">
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
@@ -731,7 +743,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       // Validation
       if (!data.name?.trim()) throw new Error('Name is required');
       if (!data.role?.trim()) throw new Error('Role is required');
-      
+
       if (member) {
         const { error } = await supabase.from('team_members').update(data).eq('id', member.id);
         if (error) throw error;
@@ -748,10 +760,10 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     },
     onError: (error: any) => {
       console.error('Save error:', error);
-      toast({ 
-        title: 'Error', 
-        description: error.message || 'Failed to save team member', 
-        variant: 'destructive' 
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to save team member',
+        variant: 'destructive'
       });
     },
   });
@@ -993,8 +1005,8 @@ const TestimonialsManager = () => {
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-4">
                     {testimonial.avatar_url && (
-                      <img 
-                        src={testimonial.avatar_url} 
+                      <img
+                        src={testimonial.avatar_url}
                         alt={testimonial.name}
                         className="w-12 h-12 rounded-full object-cover"
                       />
