@@ -769,38 +769,41 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
   });
 
   return (
-    <DialogContent className="max-w-2xl">
+    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
       <DialogHeader>
-        <DialogTitle>{member ? 'Edit' : 'Add'} Team Member</DialogTitle>
+        <DialogTitle className="text-foreground">{member ? 'Edit' : 'Add'} Team Member</DialogTitle>
       </DialogHeader>
-      <div className="space-y-4">
+      <div className="space-y-4 overflow-y-auto flex-1 pr-2">
         <div>
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name" className="text-foreground">Name</Label>
           <Input
             id="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="role">Role</Label>
+          <Label htmlFor="role" className="text-foreground">Role</Label>
           <Input
             id="role"
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio" className="text-foreground">Bio</Label>
           <Textarea
             id="bio"
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
             rows={3}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="image_url">Profile Picture</Label>
+          <Label htmlFor="image_url" className="text-foreground">Profile Picture</Label>
           <ImageUpload
             value={formData.image_url}
             onChange={(url) => setFormData({ ...formData, image_url: url })}
@@ -808,32 +811,35 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
           />
         </div>
         <div>
-          <Label htmlFor="linkedin_url">LinkedIn URL</Label>
+          <Label htmlFor="linkedin_url" className="text-foreground">LinkedIn URL</Label>
           <Input
             id="linkedin_url"
             value={formData.linkedin_url}
             onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="github_url">GitHub URL</Label>
+          <Label htmlFor="github_url" className="text-foreground">GitHub URL</Label>
           <Input
             id="github_url"
             value={formData.github_url}
             onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="display_order">Display Order</Label>
+          <Label htmlFor="display_order" className="text-foreground">Display Order</Label>
           <Input
             id="display_order"
             type="number"
             value={formData.display_order}
             onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            className="bg-background border-border text-foreground"
           />
         </div>
       </div>
-      <DialogFooter>
+      <DialogFooter className="mt-4">
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
@@ -1092,41 +1098,44 @@ const TestimonialDialog = ({ testimonial, onClose }: { testimonial: any; onClose
   };
 
   return (
-    <DialogContent className="max-w-2xl">
+    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
       <DialogHeader>
-        <DialogTitle>{testimonial ? 'Edit Testimonial' : 'Add Testimonial'}</DialogTitle>
+        <DialogTitle className="text-foreground">{testimonial ? 'Edit Testimonial' : 'Add Testimonial'}</DialogTitle>
       </DialogHeader>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 overflow-y-auto flex-1 pr-2">
         <div>
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name" className="text-foreground">Name</Label>
           <Input
             id="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="role">Role</Label>
+          <Label htmlFor="role" className="text-foreground">Role</Label>
           <Input
             id="role"
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             required
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="content">Content</Label>
+          <Label htmlFor="content" className="text-foreground">Content</Label>
           <Textarea
             id="content"
             value={formData.content}
             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
             rows={4}
             required
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label htmlFor="rating">Rating (1-5)</Label>
+          <Label htmlFor="rating" className="text-foreground">Rating (1-5)</Label>
           <Input
             id="rating"
             type="number"
@@ -1135,10 +1144,11 @@ const TestimonialDialog = ({ testimonial, onClose }: { testimonial: any; onClose
             value={formData.rating}
             onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
             required
+            className="bg-background border-border text-foreground"
           />
         </div>
         <div>
-          <Label>Avatar Image (Optional)</Label>
+          <Label className="text-foreground">Avatar Image (Optional)</Label>
           <ImageUpload
             value={formData.avatar_url}
             onChange={(url) => setFormData({ ...formData, avatar_url: url })}
@@ -1146,18 +1156,21 @@ const TestimonialDialog = ({ testimonial, onClose }: { testimonial: any; onClose
           />
         </div>
         <div>
-          <Label htmlFor="display_order">Display Order</Label>
+          <Label htmlFor="display_order" className="text-foreground">Display Order</Label>
           <Input
             id="display_order"
             type="number"
             value={formData.display_order}
             onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            className="bg-background border-border text-foreground"
           />
         </div>
-        <DialogFooter>
-          <Button type="submit" disabled={saveMutation.isPending}>
-            {saveMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Save Testimonial
+        <DialogFooter className="mt-4">
+          <Button variant="outline" type="button" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit">
+            {saveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
           </Button>
         </DialogFooter>
       </form>

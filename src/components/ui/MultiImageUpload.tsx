@@ -7,15 +7,15 @@ import { useToast } from "@/hooks/use-toast";
 interface MultiImageUploadProps {
   value?: string[];
   onChange: (urls: string[]) => void;
-  bucket: "blog-images" | "event-images" | "team-images";
+  bucket: "blog-images" | "event-images" | "team-images" | "project-images";
   className?: string;
   maxImages?: number;
 }
 
-export const MultiImageUpload = ({ 
-  value = [], 
-  onChange, 
-  bucket, 
+export const MultiImageUpload = ({
+  value = [],
+  onChange,
+  bucket,
   className = "",
   maxImages = 20
 }: MultiImageUploadProps) => {

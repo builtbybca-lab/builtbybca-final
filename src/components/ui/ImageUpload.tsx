@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 interface ImageUploadProps {
   value?: string;
   onChange: (url: string) => void;
-  bucket: "blog-images" | "event-images" | "team-images";
+  bucket: "blog-images" | "event-images" | "team-images" | "project-images";
   className?: string;
 }
 

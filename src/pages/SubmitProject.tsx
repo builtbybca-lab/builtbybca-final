@@ -176,7 +176,7 @@ const SubmitProject = () => {
                 <ImageUpload
                   value={formData.thumbnail_url}
                   onChange={(url) => setFormData({ ...formData, thumbnail_url: url })}
-                  bucket="event-images"
+                  bucket="project-images"
                 />
               </div>
 
@@ -187,7 +187,7 @@ const SubmitProject = () => {
                 <MultiImageUpload
                   value={formData.screenshots}
                   onChange={(urls) => setFormData({ ...formData, screenshots: urls })}
-                  bucket="event-images"
+                  bucket="project-images"
                 />
               </div>
 
