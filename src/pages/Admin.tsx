@@ -243,6 +243,20 @@ const BlogPostDialog = ({ post, onClose }: { post: any; onClose: () => void }) =
     published: post?.published || false,
   });
 
+  // Sync formData when post prop changes (for edit mode)
+  useEffect(() => {
+    setFormData({
+      title: post?.title || '',
+      slug: post?.slug || '',
+      excerpt: post?.excerpt || '',
+      content: post?.content || '',
+      author_name: post?.author_name || '',
+      category: post?.category || '',
+      image_url: post?.image_url || '',
+      published: post?.published || false,
+    });
+  }, [post]);
+
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
       // Validation
@@ -494,6 +508,20 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
     gallery_images: event?.gallery_images || [],
     registration_link: event?.registration_link || '',
   });
+
+  // Sync formData when event prop changes (for edit mode)
+  useEffect(() => {
+    setFormData({
+      title: event?.title || '',
+      description: event?.description || '',
+      date: event?.date ? new Date(event.date).toISOString().slice(0, 16) : '',
+      location: event?.location || '',
+      event_type: event?.event_type || '',
+      image_url: event?.image_url || '',
+      gallery_images: event?.gallery_images || [],
+      registration_link: event?.registration_link || '',
+    });
+  }, [event]);
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -1101,6 +1129,18 @@ const TestimonialDialog = ({ testimonial, onClose }: { testimonial: any; onClose
     avatar_url: testimonial?.avatar_url || '',
     display_order: testimonial?.display_order || 0,
   });
+
+  // Sync formData when testimonial prop changes (for edit mode)
+  useEffect(() => {
+    setFormData({
+      name: testimonial?.name || '',
+      role: testimonial?.role || '',
+      content: testimonial?.content || '',
+      rating: testimonial?.rating || 5,
+      avatar_url: testimonial?.avatar_url || '',
+      display_order: testimonial?.display_order || 0,
+    });
+  }, [testimonial]);
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
