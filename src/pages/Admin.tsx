@@ -739,6 +739,20 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     year: member?.year || '',
   });
 
+  // Sync formData when member prop changes (for edit mode)
+  useEffect(() => {
+    setFormData({
+      name: member?.name || '',
+      role: member?.role || '',
+      bio: member?.bio || '',
+      image_url: member?.image_url || '',
+      linkedin_url: member?.linkedin_url || '',
+      github_url: member?.github_url || '',
+      display_order: member?.display_order || 0,
+      year: member?.year || '',
+    });
+  }, [member]);
+
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
       // Validation
