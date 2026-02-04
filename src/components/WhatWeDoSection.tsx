@@ -29,7 +29,7 @@ const WhatWeDoSection = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 animate-fade-up">
                     <span className="text-bca-red font-pixel tracking-widest text-sm uppercase">Our Activities</span>
-                    <h2 className="text-3xl md:text-5xl font-bold text-foreground font-serif">What We Do</h2>
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground font-serif">What We Do</h2>
                     <p className="text-muted-foreground text-lg">
                         We provide a platform for students to explore, experiment, and excel in the world of technology.
                     </p>

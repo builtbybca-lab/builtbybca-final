@@ -193,22 +193,22 @@ const Team = () => {
       </section>
 
       <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
-        <DialogContent className="max-w-2xl bg-card border-border">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
           {selectedMember && (
             <div className="space-y-6">
-              <div className="flex items-start gap-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 <img
                   src={selectedMember.image_url}
                   alt={selectedMember.name}
                   className="w-32 h-32 rounded-full object-cover border-4 border-bca-red/50"
                 />
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-foreground mb-2">{selectedMember.name}</h2>
+                <div className="flex-1 text-center sm:text-left">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{selectedMember.name}</h2>
                   <p className="text-bca-red text-lg font-medium mb-1">{selectedMember.role}</p>
                   {selectedMember.year && (
                     <p className="text-muted-foreground text-sm mb-4">{selectedMember.year}</p>
                   )}
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 justify-center sm:justify-start">
                     {selectedMember.linkedin_url && (
                       <a
                         href={selectedMember.linkedin_url}

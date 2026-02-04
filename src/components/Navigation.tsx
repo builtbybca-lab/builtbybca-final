@@ -53,7 +53,7 @@ const Navigation = () => {
     ];
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <div className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex justify-center px-2 sm:px-4 pointer-events-none">
             <nav className={`pointer-events-auto transition-all duration-500 ${isScrolled || isMobileMenuOpen
                 ? 'bg-background/80 backdrop-blur-xl border border-border shadow-2xl shadow-bca-red/5'
                 : 'bg-background/60 backdrop-blur-md border border-border/50'
@@ -184,13 +184,13 @@ const Navigation = () => {
 
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-                <div className="absolute top-full mt-2 left-4 right-4 bg-popover border border-border rounded-2xl p-4 md:hidden animate-fade-in shadow-2xl pointer-events-auto">
+                <div className="absolute top-full mt-2 left-2 right-2 sm:left-4 sm:right-4 bg-popover border border-border rounded-2xl p-3 sm:p-4 md:hidden animate-fade-in shadow-2xl pointer-events-auto max-h-[calc(100vh-120px)] overflow-y-auto">
                     <div className="flex flex-col space-y-2">
                         {mobileNavItems.map(item => (
                             <Link
                                 key={item.label}
                                 to={item.href}
-                                className="text-muted-foreground hover:text-foreground hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                className="text-muted-foreground hover:text-foreground hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {item.label}
@@ -201,7 +201,7 @@ const Navigation = () => {
                         {isAdmin && (
                             <Link
                                 to="/admin"
-                                className="text-bca-red hover:text-bca-red-hover hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                className="text-bca-red hover:text-bca-red-hover hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Admin Panel
@@ -216,7 +216,7 @@ const Navigation = () => {
                                         handleSignOut();
                                         setIsMobileMenuOpen(false);
                                     }}
-                                    className="w-full flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                    className="w-full flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px]"
                                 >
                                     <LogOut className="w-4 h-4 mr-2" />
                                     Logout
@@ -224,7 +224,7 @@ const Navigation = () => {
                             ) : (
                                 <Link
                                     to="/auth"
-                                    className="flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                                    className="flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px]"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     <LogIn className="w-4 h-4 mr-2" />

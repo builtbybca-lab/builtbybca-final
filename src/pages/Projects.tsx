@@ -191,14 +191,14 @@ const Projects = () => {
       </section>
 
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-card border-border">
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
           {selectedProject && (
             <div className="space-y-6">
               <div className="relative">
                 <img
                   src={selectedProject.thumbnail_url}
                   alt={selectedProject.name}
-                  className="w-full h-72 object-cover rounded-lg"
+                  className="w-full h-48 sm:h-72 object-cover rounded-lg"
                 />
                 <Button
                   variant="ghost"
@@ -252,7 +252,7 @@ const Projects = () => {
               {selectedProject.screenshots && selectedProject.screenshots.length > 0 && (
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Screenshots</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     {selectedProject.screenshots.map((screenshot, index) => (
                       <img
                         key={index}
@@ -265,10 +265,10 @@ const Projects = () => {
                 </div>
               )}
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
                 {selectedProject.github_url && (
                   <Button
-                    className="flex-1 bg-bca-red hover:bg-bca-red-hover"
+                    className="w-full sm:flex-1 bg-bca-red hover:bg-bca-red-hover"
                     onClick={() => window.open(selectedProject.github_url, "_blank")}
                   >
                     <Github className="w-4 h-4 mr-2" />
@@ -278,7 +278,7 @@ const Projects = () => {
                 {selectedProject.live_demo_url && (
                   <Button
                     variant="outline"
-                    className="flex-1 border-border text-foreground hover:bg-bca-red/20"
+                    className="w-full sm:flex-1 border-border text-foreground hover:bg-bca-red/20"
                     onClick={() => window.open(selectedProject.live_demo_url, "_blank")}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />

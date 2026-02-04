@@ -63,10 +63,10 @@ const Blog = () => {
 
       <section className="pt-32 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground mb-6">
             Our <span className="text-bca-red">Blog</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 px-2">
             Stay updated with the latest insights, stories, and innovations from the BCA community.
           </p>
 
@@ -143,15 +143,15 @@ const Blog = () => {
                     </div>
 
                     <div className="p-6">
-                      <div className="flex items-center text-sm text-muted-foreground mb-3">
+                      <div className="flex flex-wrap items-center text-xs sm:text-sm text-muted-foreground mb-3 gap-1">
                         <User className="w-4 h-4 mr-2" />
-                        <span>{post.author}</span>
-                        <span className="mx-2">•</span>
+                        <span className="truncate max-w-[100px] sm:max-w-none">{post.author}</span>
+                        <span className="mx-1 sm:mx-2">•</span>
                         <Calendar className="w-4 h-4 mr-2" />
                         <span>{new Date(post.date).toLocaleDateString()}</span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-bca-red transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 group-hover:text-bca-red transition-colors line-clamp-2">
                         {post.title}
                       </h3>
 

@@ -127,10 +127,10 @@ const Events = () => {
     </section>
 
     <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card border-border">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
         {selectedEvent && <div className="space-y-6">
           <div className="relative">
-            <img src={selectedEvent.image_url} alt={selectedEvent.title} loading="lazy" className="w-full h-64 object-cover rounded-lg" />
+            <img src={selectedEvent.image_url} alt={selectedEvent.title} loading="lazy" className="w-full h-48 sm:h-64 object-cover rounded-lg" />
             <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white" onClick={() => setSelectedEvent(null)}>
               <X className="w-5 h-5" />
             </Button>
@@ -146,7 +146,7 @@ const Events = () => {
               </span>}
             </div>
 
-            <h2 className="text-3xl font-bold text-foreground mb-4">{selectedEvent.title}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{selectedEvent.title}</h2>
 
             <div className="flex flex-wrap gap-4 text-muted-foreground mb-6">
               <div className="flex items-center">

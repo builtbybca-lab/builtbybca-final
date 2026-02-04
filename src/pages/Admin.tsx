@@ -58,20 +58,22 @@ const Admin = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      <main className="flex-1 container mx-auto px-4 pt-32 pb-12">
+      <main className="flex-1 container mx-auto px-3 sm:px-4 pt-28 sm:pt-32 pb-8 sm:pb-12">
         <div className="mb-8 animate-fade-up">
-          <h1 className="text-4xl font-bold text-gradient mb-2">Admin Dashboard</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold text-gradient mb-2">Admin Dashboard</h1>
           <p className="text-muted-foreground">Manage your website content</p>
         </div>
 
         <Tabs defaultValue="blog" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="blog">Blog Posts</TabsTrigger>
-            <TabsTrigger value="events">Events</TabsTrigger>
-            <TabsTrigger value="team">Team Members</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0">
+            <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-5 mb-6 sm:mb-8">
+              <TabsTrigger value="blog" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Blog Posts</TabsTrigger>
+              <TabsTrigger value="events" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Events</TabsTrigger>
+              <TabsTrigger value="team" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Team</TabsTrigger>
+              <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Projects</TabsTrigger>
+              <TabsTrigger value="testimonials" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Testimonials</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="blog">
             <BlogPostsManager />
@@ -148,8 +150,8 @@ const BlogPostsManager = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Blog Posts</h2>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+        <h2 className="text-xl sm:text-2xl font-bold">Blog Posts</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => setEditingPost(null)}>
@@ -176,7 +178,7 @@ const BlogPostsManager = () => {
           {posts?.map((post) => (
             <Card key={post.id} className="card-glass">
               <CardHeader>
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start flex-col sm:flex-row gap-3 sm:gap-0">
                   <div className="flex-1">
                     <CardTitle>{post.title}</CardTitle>
                     <CardDescription>{post.excerpt}</CardDescription>
@@ -192,7 +194,7 @@ const BlogPostsManager = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap sm:flex-nowrap mt-2 sm:mt-0">
                     <Button
                       variant="outline"
                       size="sm"

@@ -27,17 +27,17 @@ const HeroSection = () => {
           <img
             src="/logo.png"
             alt="BuiltBy.BCA Logo"
-            className="h-32 md:h-48 w-auto object-contain hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_25px_rgba(229,9,20,0.5)]"
+            className="h-24 sm:h-32 md:h-48 w-auto object-contain hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_25px_rgba(229,9,20,0.5)]"
           />
         </div>
 
         {/* Headline */}
-        <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-8 animate-fade-up tracking-tight" style={{ animationDelay: "0.2s" }}>
+        <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-foreground mb-6 sm:mb-8 animate-fade-up tracking-tight" style={{ animationDelay: "0.2s" }}>
           Learn.Grow.Lead
         </h2>
 
         {/* Description */}
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-16 animate-fade-up font-light leading-relaxed flex flex-col items-center gap-4" style={{ animationDelay: "0.3s" }}>
+        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 sm:mb-16 animate-fade-up font-light leading-relaxed flex flex-col items-center gap-3 sm:gap-4 px-2" style={{ animationDelay: "0.3s" }}>
           <span>The official BCA Student Club Of</span>
           <a
             href="https://aibmckm.in/"

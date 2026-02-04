@@ -54,10 +54,10 @@ const Contact = () => {
     {/* Contact Section */}
     <section className="pb-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
           {/* Contact Form */}
-          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
+          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-5 sm:p-8">
             <h2 className="text-2xl font-bold text-foreground mb-6">Send us a Message</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
