@@ -36,24 +36,11 @@ const FAQSection = () => {
     <section className="py-20 relative" id="contact">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-8">
-            Stay Updated with Us
+        <div className="text-center mb-12">
+          <span className="text-bca-red font-pixel tracking-widest text-sm uppercase">Have Questions?</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mt-2">
+            Frequently Asked Questions
           </h2>
-
-          {/* Newsletter Signup */}
-          <div className="max-w-md mx-auto">
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 px-4 py-3 bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-bca-red transition-colors"
-              />
-              <Button className="btn-hero px-6">
-                Subscribe
-              </Button>
-            </div>
-          </div>
         </div>
 
         {/* FAQ Section */}

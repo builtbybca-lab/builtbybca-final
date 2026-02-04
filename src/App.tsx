@@ -23,6 +23,7 @@ const Admin = lazy(() => import("./pages/Admin"));
 const SubmitProject = lazy(() => import("./pages/SubmitProject"));
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const CreateBlog = lazy(() => import("./pages/CreateBlog"));
+const Resources = lazy(() => import("./pages/Resources"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,7 +44,7 @@ const LoadingFallback = () => (
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/resources" element={<Resources />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

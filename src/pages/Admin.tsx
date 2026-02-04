@@ -13,7 +13,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { ImageUpload } from '@/components/ui/ImageUpload';
+import { ImageUpload } from '@/components/ui/ImageUpload';
 import { MultiImageUpload } from '@/components/ui/MultiImageUpload';
+import { ResourcesManager } from '@/components/ResourcesManager';
 import {
   Dialog,
   DialogContent,
@@ -71,6 +73,8 @@ const Admin = () => {
               <TabsTrigger value="events" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Events</TabsTrigger>
               <TabsTrigger value="team" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Team</TabsTrigger>
               <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Projects</TabsTrigger>
+              <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Projects</TabsTrigger>
+              <TabsTrigger value="resources" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Resources</TabsTrigger>
               <TabsTrigger value="testimonials" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Testimonials</TabsTrigger>
             </TabsList>
           </div>
@@ -89,6 +93,14 @@ const Admin = () => {
 
           <TabsContent value="projects">
             <ProjectsManager />
+          </TabsContent>
+
+          <TabsContent value="projects">
+            <ProjectsManager />
+          </TabsContent>
+
+          <TabsContent value="resources">
+            <ResourcesManager />
           </TabsContent>
 
           <TabsContent value="testimonials">

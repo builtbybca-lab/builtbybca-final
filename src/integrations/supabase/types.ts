@@ -278,6 +278,45 @@ export type Database = {
         }
         Relationships: []
       }
+      resources: {
+        Row: {
+          category: string
+          image_url: string | null
+          created_at: string
+          description: string
+          id: string
+          tags: string[] | null
+          title: string
+          type: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category: string
+          image_url?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          tags?: string[] | null
+          title: string
+          type: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          image_url?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          tags?: string[] | null
+          title?: string
+          type?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

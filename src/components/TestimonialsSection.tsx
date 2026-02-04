@@ -21,7 +21,7 @@ const TestimonialsSection = () => {
   return <section className="py-20 px-4 bg-background">
     <div className="max-w-7xl mx-auto">
       <ScrollAnimate animation="fade" className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground"><span className="text-gradient">Testimonials</span>
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Testimonials
         </h2>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           Hear from our community members about their experiences

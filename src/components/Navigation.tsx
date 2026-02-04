@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon, LogIn, LogOut, User, LayoutDashboard, FolderPlus, Info, FolderKanban, Calendar, Users, BookOpen, Mail } from "lucide-react";
+import { Menu, X, Sun, Moon, LogIn, LogOut, User, LayoutDashboard, FolderPlus, Info, FolderKanban, Calendar, Users, BookOpen, Mail, Library } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/components/theme-provider";
@@ -32,22 +32,22 @@ const Navigation = () => {
         navigate("/");
     };
 
-    // Main navigation items (always visible)
     const mainNavItems = [
         { label: "About", href: "/about" },
         { label: "Projects", href: "/projects" },
         { label: "Events", href: "/events" },
         { label: "Team", href: "/team" },
         { label: "Blog", href: "/blog" },
+        { label: "Resources", href: "/resources" },
     ];
 
-    // Mobile menu includes all items with icons
     const mobileNavItems = [
         { label: "About", href: "/about", icon: Info },
         { label: "Projects", href: "/projects", icon: FolderKanban },
         { label: "Events", href: "/events", icon: Calendar },
         { label: "Team", href: "/team", icon: Users },
         { label: "Blog", href: "/blog", icon: BookOpen },
+        { label: "Resources", href: "/resources", icon: Library },
         { label: "Contact", href: "/contact", icon: Mail },
     ];
 

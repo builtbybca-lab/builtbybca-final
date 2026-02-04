@@ -468,7 +468,7 @@ All colors MUST be HSL.
 }
 
 .animate-marquee-slow {
-  animation: marquee-slow 25s linear infinite;
+  animation: marquee-slow 15s linear infinite;
 }
 
 @keyframes circuit-draw {
