@@ -32,7 +32,7 @@ const HeroSection = () => {
         </div>
 
         {/* Headline */}
-        <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 animate-fade-up tracking-tight" style={{ animationDelay: "0.2s" }}>
+        <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 animate-fade-up tracking-tight" style={{ animationDelay: "0.2s" }}>
           Learn.Grow.Lead
         </h2>
 
