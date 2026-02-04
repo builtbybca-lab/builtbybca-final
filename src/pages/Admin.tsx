@@ -68,7 +68,7 @@ const Admin = () => {
 
         <Tabs defaultValue="blog" className="w-full">
           <div className="overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0">
-            <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-6 mb-6 sm:mb-8">
+            <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-7 mb-6 sm:mb-8 h-auto">
               <TabsTrigger value="blog" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Blog Posts</TabsTrigger>
               <TabsTrigger value="events" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Events</TabsTrigger>
               <TabsTrigger value="team" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Team</TabsTrigger>
