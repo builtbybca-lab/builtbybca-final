@@ -122,7 +122,8 @@ export const ResourcesManager = () => {
                     category: "learning",
                     type: "course",
                     url: "https://www.freecodecamp.org",
-                    tags: ["Free", "Web Dev", "Certification"]
+                    tags: ["Free", "Web Dev", "Certification"],
+                    image_url: "https://design-style-guide.freecodecamp.org/downloads/fcc_primary_large.jpg"
                 },
                 {
                     title: "CS50 by Harvard",
@@ -130,7 +131,8 @@ export const ResourcesManager = () => {
                     category: "learning",
                     type: "course",
                     url: "https://cs50.harvard.edu",
-                    tags: ["Free", "Computer Science", "Harvard"]
+                    tags: ["Free", "Computer Science", "Harvard"],
+                    image_url: "https://cs50.harvard.edu/x/2023/assets/graph.png"
                 },
                 {
                     title: "The Odin Project",
@@ -138,7 +140,8 @@ export const ResourcesManager = () => {
                     category: "learning",
                     type: "course",
                     url: "https://www.theodinproject.com",
-                    tags: ["Free", "Full Stack", "Projects"]
+                    tags: ["Free", "Full Stack", "Projects"],
+                    image_url: "https://www.theodinproject.com/assets/og-logo-022830d8.png"
                 },
                 {
                     title: "GeeksforGeeks",
@@ -146,7 +149,8 @@ export const ResourcesManager = () => {
                     category: "learning",
                     type: "link",
                     url: "https://www.geeksforgeeks.org",
-                    tags: ["DSA", "Interview Prep", "Tutorials"]
+                    tags: ["DSA", "Interview Prep", "Tutorials"],
+                    image_url: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_200X200.png"
                 },
                 {
                     title: "GitHub Student Pack",
@@ -154,7 +158,8 @@ export const ResourcesManager = () => {
                     category: "tools",
                     type: "link",
                     url: "https://education.github.com/pack",
-                    tags: ["Free", "Student", "Tools"]
+                    tags: ["Free", "Student", "Tools"],
+                    image_url: "https://github.githubassets.com/images/modules/site/social-cards/education-pack.png"
                 },
                 {
                     title: "Visual Studio Code",
@@ -162,7 +167,8 @@ export const ResourcesManager = () => {
                     category: "tools",
                     type: "download",
                     url: "https://code.visualstudio.com",
-                    tags: ["Editor", "Free", "Cross-platform"]
+                    tags: ["Editor", "Free", "Cross-platform"],
+                    image_url: "https://code.visualstudio.com/assets/images/code-stable.png"
                 },
                 {
                     title: "Figma",
@@ -170,7 +176,8 @@ export const ResourcesManager = () => {
                     category: "tools",
                     type: "link",
                     url: "https://www.figma.com",
-                    tags: ["Design", "UI/UX", "Collaboration"]
+                    tags: ["Design", "UI/UX", "Collaboration"],
+                    image_url: "https://cdn.sanity.io/images/599r6htc/localized/46a76c802176eb17b94e1cc16b080b08092a4338-1600x840.png"
                 },
                 {
                     title: "MongoDB Atlas",
@@ -178,7 +185,8 @@ export const ResourcesManager = () => {
                     category: "tools",
                     type: "link",
                     url: "https://www.mongodb.com/atlas",
-                    tags: ["Database", "Cloud", "Free Tier"]
+                    tags: ["Database", "Cloud", "Free Tier"],
+                    image_url: "https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg"
                 },
                 {
                     title: "LinkedIn Learning",
@@ -186,7 +194,8 @@ export const ResourcesManager = () => {
                     category: "career",
                     type: "link",
                     url: "https://www.linkedin.com/learning",
-                    tags: ["Professional", "Skills", "Certifications"]
+                    tags: ["Professional", "Skills", "Certifications"],
+                    image_url: "https://static-exp1.licdn.com/sc/h/6v6206d9l70m30902c6107x57"
                 },
                 {
                     title: "LeetCode",
@@ -194,7 +203,8 @@ export const ResourcesManager = () => {
                     category: "career",
                     type: "link",
                     url: "https://leetcode.com",
-                    tags: ["Interview Prep", "DSA", "Practice"]
+                    tags: ["Interview Prep", "DSA", "Practice"],
+                    image_url: "https://leetcode.com/static/images/LeetCode_Sharing.png"
                 },
                 {
                     title: "Internshala",
@@ -202,7 +212,8 @@ export const ResourcesManager = () => {
                     category: "career",
                     type: "link",
                     url: "https://internshala.com",
-                    tags: ["Internships", "Jobs", "India"]
+                    tags: ["Internships", "Jobs", "India"],
+                    image_url: "https://internshala.com/static/images/internshala_og_image.jpg"
                 },
                 {
                     title: "BCA Syllabus PDF",
@@ -210,7 +221,8 @@ export const ResourcesManager = () => {
                     category: "downloads",
                     type: "download",
                     url: "#",
-                    tags: ["PDF", "Syllabus", "Reference"]
+                    tags: ["PDF", "Syllabus", "Reference"],
+                    image_url: "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
                 },
                 {
                     title: "Programming Cheat Sheets",
@@ -218,7 +230,8 @@ export const ResourcesManager = () => {
                     category: "downloads",
                     type: "download",
                     url: "#",
-                    tags: ["PDF", "Quick Reference", "Multiple Languages"]
+                    tags: ["PDF", "Quick Reference", "Multiple Languages"],
+                    image_url: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800&q=80"
                 },
                 {
                     title: "Resume Templates",
@@ -226,7 +239,8 @@ export const ResourcesManager = () => {
                     category: "downloads",
                     type: "download",
                     url: "#",
-                    tags: ["Template", "Resume", "Career"]
+                    tags: ["Template", "Resume", "Career"],
+                    image_url: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80"
                 }
             ];
 
