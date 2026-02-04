@@ -116,9 +116,10 @@ const Resources = () => {
             </section>
 
             {/* Sticky Navigation/Filters */}
-            <section className="sticky top-16 z-30 bg-background/95 backdrop-blur-xl border-b border-border/40 py-3 px-4 mb-8">
-                <div className="max-w-7xl mx-auto overflow-x-auto no-scrollbar">
-                    <div className="flex sm:justify-center min-w-max gap-1 p-1">
+            <section className="sticky top-32 z-30 pointer-events-none mb-8">
+                <div className="absolute inset-0 bg-background/0" /> {/* Spacer/Ghost container */}
+                <div className="max-w-7xl mx-auto overflow-x-auto no-scrollbar pointer-events-auto pb-4 px-4">
+                    <div className="inline-flex sm:justify-center min-w-max gap-1 p-1 bg-background/80 backdrop-blur-xl rounded-full border border-border/40 shadow-sm mx-auto">
                         {categories.map(category => (
                             <button
                                 key={category.id}
@@ -126,7 +127,7 @@ const Resources = () => {
                                 className={`
                                     flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                                     ${activeCategory === category.id
-                                        ? "bg-primary text-primary-foreground shadow-sm scale-105 ring-2 ring-primary/20"
+                                        ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20"
                                         : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                                     }
                                 `}
