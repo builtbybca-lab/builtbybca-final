@@ -6,6 +6,13 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
     BookOpen,
     Download,
     ExternalLink,
@@ -14,13 +21,9 @@ import {
     Globe,
     Briefcase,
     Video,
-    FileText,
     Link2,
     GraduationCap,
-    Lightbulb,
-    Loader2,
-    Search,
-    ArrowRight
+    Search
 } from "lucide-react";
 
 type ResourceCategory = "all" | "learning" | "tools" | "career" | "downloads";
@@ -82,7 +85,7 @@ const Resources = () => {
             <Navigation />
 
             {/* Hero Section */}
-            <section className="pt-32 pb-12 px-4 relative overflow-hidden">
+            <section className="pt-32 pb-8 px-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-900/[0.04] -z-10" />
                 <div className="max-w-7xl mx-auto text-center space-y-8">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 text-secondary-foreground text-sm font-medium animate-fade-in">
@@ -102,46 +105,50 @@ const Resources = () => {
                         Hand-picked tools, courses, and materials to help you build better software and accelerate your career.
                     </p>
 
-                    {/* Search Bar */}
-                    <div className="max-w-md mx-auto relative animate-fade-up" style={{ animationDelay: "0.2s" }}>
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                        <Input
-                            placeholder="Search for tools, courses, tags..."
-                            className="h-12 pl-12 rounded-full border-muted-foreground/20 bg-background/50 backdrop-blur focus:ring-2 focus:ring-primary/20 transition-all text-base"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                </div>
-            </section>
+                    {/* Integrated Search & Filter Bar */}
+                    <div className="max-w-2xl mx-auto relative animate-fade-up" style={{ animationDelay: "0.2s" }}>
+                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 p-1 bg-background/50 backdrop-blur border border-border/50 rounded-2xl shadow-lg shadow-primary/5">
+                            <div className="relative z-20 w-full sm:w-[200px]">
+                                <Select value={activeCategory} onValueChange={(v: ResourceCategory) => setActiveCategory(v)}>
+                                    <SelectTrigger className="w-full h-12 rounded-xl sm:rounded-r-none border-0 bg-transparent focus:ring-0 hover:bg-secondary/50 transition-colors">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-muted-foreground">
+                                                {categories.find(c => c.id === activeCategory)?.icon || <Globe className="w-4 h-4" />}
+                                            </span>
+                                            <SelectValue placeholder="Category" />
+                                        </div>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {categories.map(category => (
+                                            <SelectItem key={category.id} value={category.id}>
+                                                <div className="flex items-center gap-2">
+                                                    {category.icon}
+                                                    <span>{category.label}</span>
+                                                </div>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-            {/* Sticky Navigation/Filters */}
-            <section className="sticky top-32 z-30 pointer-events-none mb-8">
-                <div className="absolute inset-0 bg-background/0" /> {/* Spacer/Ghost container */}
-                <div className="max-w-7xl mx-auto overflow-x-auto no-scrollbar pointer-events-auto pb-4 px-4">
-                    <div className="inline-flex sm:justify-center min-w-max gap-1 p-1 bg-background/80 backdrop-blur-xl rounded-full border border-border/40 shadow-sm mx-auto">
-                        {categories.map(category => (
-                            <button
-                                key={category.id}
-                                onClick={() => setActiveCategory(category.id)}
-                                className={`
-                                    flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
-                                    ${activeCategory === category.id
-                                        ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/20"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                                    }
-                                `}
-                            >
-                                {category.icon}
-                                {category.label}
-                            </button>
-                        ))}
+                            <div className="hidden sm:block w-px my-2 bg-border"></div>
+
+                            <div className="relative flex-1">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                                <Input
+                                    placeholder="Search resources..."
+                                    className="h-12 pl-10 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl sm:rounded-l-none text-base"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Resources Grid */}
-            <section className="flex-1 px-4 pb-24">
+            <section className="flex-1 px-4 pb-24 pt-8">
                 <div className="max-w-7xl mx-auto">
                     {isLoading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
