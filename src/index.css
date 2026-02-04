@@ -526,3 +526,118 @@ All colors MUST be HSL.
 .animate-pulse-node {
   animation: pulse-node 3s ease-in-out infinite;
 }
+
+/* Scroll-triggered animations */
+@keyframes scroll-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scroll-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scroll-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scroll animation classes - triggered on view */
+.scroll-animate {
+  opacity: 0;
+  animation: scroll-fade-in 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+
+.scroll-animate.in-view {
+  animation-play-state: running;
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  animation: scroll-slide-left 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+
+.scroll-slide-left.in-view {
+  animation-play-state: running;
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  animation: scroll-slide-right 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+
+.scroll-slide-right.in-view {
+  animation-play-state: running;
+}
+
+.scroll-scale {
+  opacity: 0;
+  animation: scroll-scale-in 0.5s ease-out forwards;
+  animation-play-state: paused;
+}
+
+.scroll-scale.in-view {
+  animation-play-state: running;
+}
+
+/* Stagger delays for lists */
+.scroll-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.scroll-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.scroll-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.scroll-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.scroll-delay-5 {
+  animation-delay: 0.5s;
+}
+
+.scroll-delay-6 {
+  animation-delay: 0.6s;
+}

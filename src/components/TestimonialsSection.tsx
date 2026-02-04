@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { ScrollAnimate } from "@/hooks/useScrollAnimation";
 const TestimonialsSection = () => {
   const {
     data: testimonials = []
@@ -19,20 +20,18 @@ const TestimonialsSection = () => {
   });
   return <section className="py-20 px-4 bg-background">
     <div className="max-w-7xl mx-auto">
-      <div className="text-center mb-12 animate-fade-up">
+      <ScrollAnimate animation="fade" className="text-center mb-12">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground"><span className="text-gradient">Testimonials</span>
         </h2>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
           Hear from our community members about their experiences
         </p>
-      </div>
+      </ScrollAnimate>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {testimonials.length === 0 ? <div className="col-span-full text-center py-12">
           <p className="text-muted-foreground">No testimonials available yet.</p>
-        </div> : testimonials.map((testimonial, index) => <div key={index} className="card-glass p-6 animate-fade-up" style={{
-          animationDelay: `${index * 0.1}s`
-        }}>
+        </div> : testimonials.map((testimonial, index) => <ScrollAnimate key={index} animation="scale" delay={index * 0.1} className="card-glass p-6">
           <div className="flex items-center mb-4">
             {testimonial.avatar_url && <img src={testimonial.avatar_url} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4 object-cover" />}
             <div>
@@ -46,7 +45,7 @@ const TestimonialsSection = () => {
           </div>
 
           <p className="text-muted-foreground">{testimonial.content}</p>
-        </div>)}
+        </ScrollAnimate>)}
       </div>
     </div>
   </section>;

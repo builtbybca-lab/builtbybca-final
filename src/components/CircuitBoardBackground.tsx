@@ -52,7 +52,7 @@ const CircuitBoardBackground = () => {
     );
 
     return (
-        <div className="absolute inset-0 z-0 opacity-50 pointer-events-none select-none overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-20 sm:opacity-50 pointer-events-none select-none overflow-hidden">
             {/* Top Left */}
             <svg className="absolute left-0 top-0 w-[50vw] h-[50vh] overflow-visible">
                 <CircuitCorner />

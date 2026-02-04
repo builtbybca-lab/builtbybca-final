@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon, LogIn, LogOut, User } from "lucide-react";
+import { Menu, X, Sun, Moon, LogIn, LogOut, User, LayoutDashboard, FolderPlus, Info, FolderKanban, Calendar, Users, BookOpen, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/components/theme-provider";
@@ -41,15 +41,14 @@ const Navigation = () => {
         { label: "Blog", href: "/blog" },
     ];
 
-    // Mobile menu includes all items
-    const mobileNavItems = user ? [
-        ...mainNavItems,
-        { label: "Contact", href: "/contact" },
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Submit Project", href: "/submit-project" },
-    ] : [
-        ...mainNavItems,
-        { label: "Contact", href: "/contact" },
+    // Mobile menu includes all items with icons
+    const mobileNavItems = [
+        { label: "About", href: "/about", icon: Info },
+        { label: "Projects", href: "/projects", icon: FolderKanban },
+        { label: "Events", href: "/events", icon: Calendar },
+        { label: "Team", href: "/team", icon: Users },
+        { label: "Blog", href: "/blog", icon: BookOpen },
+        { label: "Contact", href: "/contact", icon: Mail },
     ];
 
     return (
@@ -193,6 +192,7 @@ const Navigation = () => {
                                 className="text-muted-foreground hover:text-foreground hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
+                                <item.icon className="w-5 h-5 mr-3" />
                                 {item.label}
                             </Link>
                         ))}
@@ -206,6 +206,29 @@ const Navigation = () => {
                             >
                                 Admin Panel
                             </Link>
+                        )}
+
+                        {/* User Account Links for Mobile */}
+                        {user && (
+                            <div className="border-t border-border pt-2 mt-2">
+                                <p className="text-xs text-muted-foreground px-4 py-2 uppercase tracking-wider">Account</p>
+                                <Link
+                                    to="/dashboard"
+                                    className="text-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <LayoutDashboard className="w-5 h-5 mr-3" />
+                                    Dashboard
+                                </Link>
+                                <Link
+                                    to="/submit-project"
+                                    className="text-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <FolderPlus className="w-5 h-5 mr-3" />
+                                    Submit Project
+                                </Link>
+                            </div>
                         )}
 
                         {/* Mobile Auth Button */}
