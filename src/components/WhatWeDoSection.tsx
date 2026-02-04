@@ -39,16 +39,16 @@ const WhatWeDoSection = () => {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="bg-card border border-border hover:border-bca-red/50 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(229,9,20,0.3)] animate-fade-up group relative overflow-hidden"
+                            className="bg-card border border-border hover:border-border/80 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg animate-fade-up group relative overflow-hidden"
                             style={{ animationDelay: `${0.1 * (index + 1)}s` }}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-b from-bca-red/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="mb-4 bg-secondary w-14 h-14 rounded-lg flex items-center justify-center group-hover:bg-bca-red group-hover:text-white transition-all duration-300 relative z-10">
-                                <div className="text-bca-red group-hover:text-white transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="mb-4 bg-secondary w-14 h-14 rounded-lg flex items-center justify-center transition-all duration-300 relative z-10">
+                                <div className="text-bca-red transition-colors">
                                     {feature.icon}
                                 </div>
                             </div>
-                            <h3 className="text-xl font-bold text-foreground mb-2 font-pixel tracking-wide relative z-10 group-hover:text-bca-red transition-colors">{feature.title}</h3>
+                            <h3 className="text-xl font-bold text-foreground mb-2 font-pixel tracking-wide relative z-10 transition-colors">{feature.title}</h3>
                             <p className="text-muted-foreground text-sm leading-relaxed relative z-10 group-hover:text-foreground/80 transition-colors">
                                 {feature.description}
                             </p>

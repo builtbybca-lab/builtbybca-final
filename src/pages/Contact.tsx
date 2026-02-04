@@ -114,9 +114,8 @@ const Contact = () => {
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">Address</h4>
                     <p className="text-muted-foreground">
-                      Bergen County Academies<br />
-                      200 Hackensack Ave<br />
-                      Hackensack, NJ 07601
+                      Adichunchanagiri Institute of Business Management<br />
+                      Jyothinagara, Chikkamagaluru-577102
                     </p>
                   </div>
                 </div>

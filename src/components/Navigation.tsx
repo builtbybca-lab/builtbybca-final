@@ -152,9 +152,9 @@ const Navigation = () => {
                     {/* Contact Button */}
                     <Link
                         to="/contact"
-                        className="text-muted-foreground hover:text-bca-red flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-accent/50 transition-all text-sm font-medium"
+                        className="text-muted-foreground hover:text-emerald-500 flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-accent/50 transition-all text-sm font-medium"
                     >
-                        <div className="w-2 h-2 rounded-full bg-bca-red animate-pulse"></div>
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                         <span>Contact</span>
                     </Link>
                 </div>
