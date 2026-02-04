@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowLeft, Save } from "lucide-react";
+import { Loader2, ArrowLeft, Save, Eye, EyeOff } from "lucide-react";
 
 const CreateBlog = () => {
     const { user, loading } = useAuth();
@@ -28,6 +28,8 @@ const CreateBlog = () => {
         category: "",
         image_url: "",
     });
+
+    const [showPreview, setShowPreview] = useState(false);
 
     // Redirect effect for unauthenticated users
     useEffect(() => {
@@ -148,126 +150,183 @@ const CreateBlog = () => {
                         </p>
                     </div>
 
-                    <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <Label htmlFor="title" className="text-foreground">
-                                    Title <span className="text-bca-red">*</span>
-                                </Label>
-                                <Input
-                                    id="title"
-                                    value={formData.title}
-                                    onChange={handleTitleChange}
-                                    className="mt-1 bg-secondary border-border text-foreground"
-                                    placeholder="Enter your blog title"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <Label htmlFor="slug" className="text-foreground">
-                                    Slug
-                                </Label>
-                                <Input
-                                    id="slug"
-                                    value={formData.slug}
-                                    onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                                    className="mt-1 bg-secondary border-border text-foreground"
-                                    placeholder="auto-generated-from-title"
-                                />
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    URL-friendly version of the title (auto-generated)
-                                </p>
-                            </div>
-
-                            <div>
-                                <Label htmlFor="category" className="text-foreground">
-                                    Category <span className="text-bca-red">*</span>
-                                </Label>
-                                <Select
-                                    value={formData.category}
-                                    onValueChange={(value) => setFormData({ ...formData, category: value })}
-                                >
-                                    <SelectTrigger className="mt-1 bg-secondary border-border">
-                                        <SelectValue placeholder="Select a category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((category) => (
-                                            <SelectItem key={category} value={category}>
-                                                {category}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div>
-                                <Label htmlFor="excerpt" className="text-foreground">
-                                    Excerpt <span className="text-bca-red">*</span>
-                                </Label>
-                                <Textarea
-                                    id="excerpt"
-                                    value={formData.excerpt}
-                                    onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                                    className="mt-1 bg-secondary border-border text-foreground"
-                                    placeholder="A brief summary of your blog post (shown in previews)"
-                                    rows={2}
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <Label htmlFor="content" className="text-foreground">
-                                    Content <span className="text-bca-red">*</span>
-                                </Label>
-                                <Textarea
-                                    id="content"
-                                    value={formData.content}
-                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                    className="mt-1 bg-secondary border-border text-foreground"
-                                    placeholder="Write your blog content here... (HTML supported)"
-                                    rows={12}
-                                    required
-                                />
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    You can use HTML tags for formatting (e.g., &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;)
-                                </p>
-                            </div>
-
-                            <div>
-                                <Label className="text-foreground">Cover Image</Label>
-                                <ImageUpload
-                                    value={formData.image_url}
-                                    onChange={(url) => setFormData({ ...formData, image_url: url })}
-                                    bucket="blog-images"
-                                />
-                            </div>
-
-                            <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
-                                <p className="text-amber-200 text-sm">
-                                    <strong>Note:</strong> Your blog post will be submitted for review. An admin will review and approve it before it appears publicly on the blog page.
-                                </p>
-                            </div>
-
-                            <Button
-                                type="submit"
-                                className="w-full bg-bca-red hover:bg-bca-red-hover text-white"
-                                disabled={createBlogMutation.isPending}
-                            >
-                                {createBlogMutation.isPending ? (
-                                    <>
-                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                        Submitting...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Save className="w-4 h-4 mr-2" />
-                                        Submit for Review
-                                    </>
-                                )}
-                            </Button>
-                        </form>
+                    {/* Preview Toggle Button */}
+                    <div className="flex justify-end mb-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setShowPreview(!showPreview)}
+                            className="border-bca-red/50 hover:bg-bca-red/10"
+                        >
+                            {showPreview ? (
+                                <>
+                                    <EyeOff className="w-4 h-4 mr-2" />
+                                    Edit Mode
+                                </>
+                            ) : (
+                                <>
+                                    <Eye className="w-4 h-4 mr-2" />
+                                    Preview
+                                </>
+                            )}
+                        </Button>
                     </div>
+
+                    {showPreview ? (
+                        /* Preview Section */
+                        <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
+                            <div className="prose prose-invert max-w-none">
+                                {formData.image_url && (
+                                    <img
+                                        src={formData.image_url}
+                                        alt={formData.title}
+                                        className="w-full h-64 object-cover rounded-lg mb-6"
+                                    />
+                                )}
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="bg-bca-red/20 text-bca-red px-3 py-1 rounded-full text-sm">
+                                        {formData.category || "Category"}
+                                    </span>
+                                </div>
+                                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                                    {formData.title || "Your Blog Title"}
+                                </h1>
+                                <p className="text-muted-foreground text-lg italic mb-6 border-l-4 border-bca-red pl-4">
+                                    {formData.excerpt || "Your excerpt will appear here..."}
+                                </p>
+                                <div
+                                    className="text-foreground leading-relaxed"
+                                    dangerouslySetInnerHTML={{
+                                        __html: formData.content || "<p class='text-muted-foreground'>Your content will appear here...</p>"
+                                    }}
+                                />
+                            </div>
+                            <div className="mt-8 pt-6 border-t border-border text-center text-muted-foreground text-sm">
+                                Preview Mode - Click "Edit Mode" to continue editing
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-8">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <Label htmlFor="title" className="text-foreground">
+                                        Title <span className="text-bca-red">*</span>
+                                    </Label>
+                                    <Input
+                                        id="title"
+                                        value={formData.title}
+                                        onChange={handleTitleChange}
+                                        className="mt-1 bg-secondary border-border text-foreground"
+                                        placeholder="Enter your blog title"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="slug" className="text-foreground">
+                                        Slug
+                                    </Label>
+                                    <Input
+                                        id="slug"
+                                        value={formData.slug}
+                                        onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                        className="mt-1 bg-secondary border-border text-foreground"
+                                        placeholder="auto-generated-from-title"
+                                    />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        URL-friendly version of the title (auto-generated)
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="category" className="text-foreground">
+                                        Category <span className="text-bca-red">*</span>
+                                    </Label>
+                                    <Select
+                                        value={formData.category}
+                                        onValueChange={(value) => setFormData({ ...formData, category: value })}
+                                    >
+                                        <SelectTrigger className="mt-1 bg-secondary border-border">
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category} value={category}>
+                                                    {category}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="excerpt" className="text-foreground">
+                                        Excerpt <span className="text-bca-red">*</span>
+                                    </Label>
+                                    <Textarea
+                                        id="excerpt"
+                                        value={formData.excerpt}
+                                        onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                                        className="mt-1 bg-secondary border-border text-foreground"
+                                        placeholder="A brief summary of your blog post (shown in previews)"
+                                        rows={2}
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <Label htmlFor="content" className="text-foreground">
+                                        Content <span className="text-bca-red">*</span>
+                                    </Label>
+                                    <Textarea
+                                        id="content"
+                                        value={formData.content}
+                                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                        className="mt-1 bg-secondary border-border text-foreground"
+                                        placeholder="Write your blog content here... (HTML supported)"
+                                        rows={12}
+                                        required
+                                    />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        You can use HTML tags for formatting (e.g., &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;)
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <Label className="text-foreground">Cover Image</Label>
+                                    <ImageUpload
+                                        value={formData.image_url}
+                                        onChange={(url) => setFormData({ ...formData, image_url: url })}
+                                        bucket="blog-images"
+                                    />
+                                </div>
+
+                                <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
+                                    <p className="text-amber-200 text-sm">
+                                        <strong>Note:</strong> Your blog post will be submitted for review. An admin will review and approve it before it appears publicly on the blog page.
+                                    </p>
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="w-full bg-bca-red hover:bg-bca-red-hover text-white"
+                                    disabled={createBlogMutation.isPending}
+                                >
+                                    {createBlogMutation.isPending ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                            Submitting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save className="w-4 h-4 mr-2" />
+                                            Submit for Review
+                                        </>
+                                    )}
+                                </Button>
+                            </form>
+                        </div>
+                    )}
                 </div>
             </section>
 
