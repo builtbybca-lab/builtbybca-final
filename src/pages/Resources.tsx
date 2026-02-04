@@ -97,8 +97,7 @@ const Resources = () => {
                     </div>
 
                     <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-foreground animate-fade-up">
-                        Curated Resources <br className="hidden sm:block" />
-                        <span className="text-muted-foreground">for Developers.</span>
+                        Resources
                     </h1>
 
                     <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto animate-fade-up" style={{ animationDelay: "0.1s" }}>
