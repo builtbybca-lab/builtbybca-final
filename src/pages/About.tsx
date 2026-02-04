@@ -38,7 +38,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              About <span className="text-bca-red">BCA</span>
+              About <span className="text-bca-red">BCA@AIBM</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Empowering the next generation of innovators, creators, and leaders in technology and beyond.

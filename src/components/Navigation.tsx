@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NotificationBell } from "./NotificationBell";
 
 const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -82,6 +83,7 @@ const Navigation = () => {
 
                 {/* Actions */}
                 <div className="hidden md:flex items-center space-x-2">
+                    <NotificationBell />
                     {/* Theme Toggle */}
                     <Button
                         variant="ghost"

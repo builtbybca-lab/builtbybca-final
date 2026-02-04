@@ -143,7 +143,7 @@ const Terms = () => {
               If you have any questions about these Terms and Conditions, please contact us:
             </p>
             <div className="text-muted-foreground">
-              <p>Email: BUILTBY.BCA@GMAIL.COM</p>
+              <p>Email: builtby.bca@gmail.com</p>
               <p>Address: Bergen County Academies, 200 Hackensack Ave, Hackensack, NJ 07601</p>
             </div>
           </div>

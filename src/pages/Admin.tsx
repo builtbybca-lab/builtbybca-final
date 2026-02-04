@@ -15,6 +15,7 @@ import { Loader2, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { MultiImageUpload } from '@/components/ui/MultiImageUpload';
 import { ResourcesManager } from '@/components/ResourcesManager';
+import { NotificationsManager } from '@/components/NotificationsManager';
 import {
   Dialog,
   DialogContent,
@@ -73,6 +74,7 @@ const Admin = () => {
               <TabsTrigger value="team" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Team</TabsTrigger>
               <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Projects</TabsTrigger>
               <TabsTrigger value="resources" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Resources</TabsTrigger>
+              <TabsTrigger value="notifications" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Notifications</TabsTrigger>
               <TabsTrigger value="testimonials" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Testimonials</TabsTrigger>
             </TabsList>
           </div>
@@ -95,6 +97,10 @@ const Admin = () => {
 
           <TabsContent value="resources">
             <ResourcesManager />
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <NotificationsManager />
           </TabsContent>
 
           <TabsContent value="testimonials">

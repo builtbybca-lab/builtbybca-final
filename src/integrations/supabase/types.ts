@@ -317,6 +317,36 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          message: string
+          title: string
+          type: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          message: string
+          title: string
+          type: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          message?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

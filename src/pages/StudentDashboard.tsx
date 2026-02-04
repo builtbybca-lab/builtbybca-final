@@ -22,8 +22,50 @@ import {
     Eye,
     EyeOff,
     Calendar,
-    Upload
+    Upload,
+    Bell
 } from "lucide-react";
+
+const NotificationsList = () => {
+    const { data: notifications = [] } = useQuery({
+        queryKey: ["dashboard-notifications"],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from("notifications")
+                .select("*")
+                .eq("active", true)
+                .order("created_at", { ascending: false })
+                .limit(3);
+            if (error) throw error;
+            return data;
+        },
+    });
+
+    if (notifications.length === 0) {
+        return <div className="text-muted-foreground text-sm">No new announcements at this time.</div>;
+    }
+
+    return (
+        <div className="space-y-4">
+            {notifications.map((n: any) => (
+                <div key={n.id} className="flex gap-4 items-start p-3 rounded-lg bg-secondary/30">
+                    <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
+                        ${n.type === 'urgent' ? 'bg-red-500' :
+                            n.type === 'warning' ? 'bg-yellow-500' :
+                                n.type === 'event' ? 'bg-purple-500' : 'bg-blue-500'}`}
+                    />
+                    <div>
+                        <h4 className="font-semibold text-sm">{n.title}</h4>
+                        <p className="text-muted-foreground text-sm mt-0.5">{n.message}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1 opacity-70">
+                            {new Date(n.created_at).toLocaleDateString()}
+                        </p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 const StudentDashboard = () => {
     const { user, loading, isAdmin } = useAuth();
@@ -168,6 +210,20 @@ const StudentDashboard = () => {
                             Manage your blogs, projects, and contribute to event galleries
                         </p>
                     </div>
+
+
+                    {/* Announcements Card */}
+                    <Card className="mb-8 border-l-4 border-l-bca-red bg-card/50 backdrop-blur-sm">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-lg flex items-center gap-2">
+                                <Bell className="w-5 h-5 text-bca-red" />
+                                Latest Announcements
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <NotificationsList />
+                        </CardContent>
+                    </Card>
 
                     <Tabs defaultValue="blogs" className="w-full">
                         <TabsList className="grid w-full grid-cols-3 mb-8">

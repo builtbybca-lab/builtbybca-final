@@ -95,8 +95,8 @@ const Footer = () => {
             </div>
             <div className="flex items-center space-x-3 justify-center sm:justify-start">
               <Mail className="w-5 h-5 text-bca-red flex-shrink-0" />
-              <a href="mailto:BUILTBY.BCA@GMAIL.COM" className="text-muted-foreground hover:text-bca-red transition-colors">
-                BUILTBY.BCA@GMAIL.COM
+              <a href="mailto:builtby.bca@gmail.com" className="text-muted-foreground hover:text-bca-red transition-colors">
+                builtby.bca@gmail.com
               </a>
             </div>
           </div>
