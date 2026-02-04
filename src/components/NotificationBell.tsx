@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Bell } from "lucide-react";
+import { useState } from "react";
+import { Bell, X } from "lucide-react";
 import {
     Popover,
     PopoverContent,
@@ -9,34 +7,11 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { useNotifications } from "@/hooks/useNotifications";
 
 export const NotificationBell = () => {
-    const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-
-    // Fetch active notifications
-    const { data: notifications = [] } = useQuery({
-        queryKey: ["active-notifications"],
-        queryFn: async () => {
-            const { data, error } = await supabase
-                .from("notifications")
-                .select("*")
-                .eq("active", true)
-                .order("created_at", { ascending: false });
-
-            if (error) throw error;
-            return data;
-        },
-        // Refetch every minute to keep updated
-        refetchInterval: 60000
-    });
-
-    useEffect(() => {
-        // Simple unread logic: If notifications exist and differ from count, assume new? 
-        // Real implementation would track "read_notifications" in a separate table.
-        // For now, we'll just show the total count of active notifications as the badge.
-        setUnreadCount(notifications.length);
-    }, [notifications]);
+    const { notifications, dismiss } = useNotifications();
 
     const getTypeColor = (type: string) => {
         switch (type) {
@@ -52,7 +27,7 @@ export const NotificationBell = () => {
             <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative">
                     <Bell className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
-                    {unreadCount > 0 && (
+                    {notifications.length > 0 && (
                         <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
@@ -70,14 +45,24 @@ export const NotificationBell = () => {
                 <ScrollArea className="h-[300px]">
                     {notifications.length === 0 ? (
                         <div className="p-8 text-center text-sm text-muted-foreground">
-                            No notifications
+                            No new notifications
                         </div>
                     ) : (
                         <div className="divide-y">
                             {notifications.map((notification: any) => (
-                                <div key={notification.id} className="p-4 hover:bg-muted/50 transition-colors">
-                                    <div className="flex items-start gap-3">
-                                        <div className={`mt-1.5 h-2 w-2 rounded-full ${getTypeColor(notification.type)}`} />
+                                <div key={notification.id} className="p-4 hover:bg-muted/50 transition-colors group relative">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            dismiss(notification.id);
+                                        }}
+                                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
+                                        title="Dismiss"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                    <div className="flex items-start gap-3 pr-4">
+                                        <div className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${getTypeColor(notification.type)}`} />
                                         <div className="space-y-1">
                                             <p className="text-sm font-medium leading-none">
                                                 {notification.title}

@@ -23,23 +23,13 @@ import {
     EyeOff,
     Calendar,
     Upload,
-    Bell
+    Bell,
+    X
 } from "lucide-react";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const NotificationsList = () => {
-    const { data: notifications = [] } = useQuery({
-        queryKey: ["dashboard-notifications"],
-        queryFn: async () => {
-            const { data, error } = await supabase
-                .from("notifications")
-                .select("*")
-                .eq("active", true)
-                .order("created_at", { ascending: false })
-                .limit(3);
-            if (error) throw error;
-            return data;
-        },
-    });
+    const { notifications, dismiss } = useNotifications();
 
     if (notifications.length === 0) {
         return <div className="text-muted-foreground text-sm">No new announcements at this time.</div>;
@@ -48,7 +38,17 @@ const NotificationsList = () => {
     return (
         <div className="space-y-4">
             {notifications.map((n: any) => (
-                <div key={n.id} className="flex gap-4 items-start p-3 rounded-lg bg-secondary/30">
+                <div key={n.id} className="flex gap-4 items-start p-3 rounded-lg bg-secondary/30 relative group">
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            dismiss(n.id);
+                        }}
+                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
+                        title="Dismiss"
+                    >
+                        <X className="w-3 h-3" />
+                    </button>
                     <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
                         ${n.type === 'urgent' ? 'bg-red-500' :
                             n.type === 'warning' ? 'bg-yellow-500' :
