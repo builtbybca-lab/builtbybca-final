@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database } from "lucide-react";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 
 export const ResourcesManager = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -389,14 +390,12 @@ export const ResourcesManager = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Image/Logo URL (Optional)</Label>
+                                <Label>Image/Logo (Optional)</Label>
                                 <div className="relative">
-                                    <ImageIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        className="pl-9"
+                                    <ImageUpload
                                         value={formData.image_url}
-                                        onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                                        placeholder="https://.../logo.png"
+                                        onChange={(url) => setFormData({ ...formData, image_url: url })}
+                                        bucket="blog-images"
                                     />
                                 </div>
                             </div>
