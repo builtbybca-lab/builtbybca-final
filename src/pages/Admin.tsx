@@ -58,7 +58,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      <main className="flex-1 container mx-auto px-4 py-12">
+      <main className="flex-1 container mx-auto px-4 pt-32 pb-12">
         <div className="mb-8 animate-fade-up">
           <h1 className="text-4xl font-bold text-gradient mb-2">Admin Dashboard</h1>
           <p className="text-muted-foreground">Manage your website content</p>
