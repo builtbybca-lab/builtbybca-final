@@ -736,6 +736,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     linkedin_url: member?.linkedin_url || '',
     github_url: member?.github_url || '',
     display_order: member?.display_order || 0,
+    year: member?.year || '',
   });
 
   const saveMutation = useMutation({
@@ -791,6 +792,22 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             className="bg-background border-border text-foreground"
           />
+        </div>
+        <div>
+          <Label htmlFor="year" className="text-foreground">Year</Label>
+          <select
+            id="year"
+            value={formData.year}
+            onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+            className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground"
+          >
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="Alumni">Alumni</option>
+            <option value="Faculty">Faculty</option>
+          </select>
         </div>
         <div>
           <Label htmlFor="bio" className="text-foreground">Bio</Label>

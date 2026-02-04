@@ -20,6 +20,7 @@ interface TeamMember {
   instagram_url?: string;
   twitter_url?: string;
   display_order: number;
+  year?: string;
 }
 
 const Team = () => {
@@ -47,7 +48,8 @@ const Team = () => {
         github_url: m.github_url,
         instagram_url: undefined,
         twitter_url: undefined,
-        display_order: m.display_order
+        display_order: m.display_order,
+        year: m.year
       })) as TeamMember[];
     },
   });
@@ -128,13 +130,16 @@ const Team = () => {
                     {member.name}
                   </h3>
 
-                  <p className="text-bca-red text-center text-sm font-medium mb-3">{member.role}</p>
+                  <p className="text-bca-red text-center text-sm font-medium mb-1">{member.role}</p>
+                  {member.year && (
+                    <p className="text-muted-foreground text-center text-xs mb-3">{member.year}</p>
+                  )}
 
-                  <p className="text-muted-foreground text-center text-sm mb-4 line-clamp-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-muted-foreground text-center text-sm mb-4 line-clamp-2">
                     {member.bio}
                   </p>
 
-                  <div className="flex justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex justify-center gap-3">
                     {member.linkedin_url && (
                       <a
                         href={member.linkedin_url}
@@ -199,7 +204,10 @@ const Team = () => {
                 />
                 <div className="flex-1">
                   <h2 className="text-3xl font-bold text-foreground mb-2">{selectedMember.name}</h2>
-                  <p className="text-bca-red text-lg font-medium mb-4">{selectedMember.role}</p>
+                  <p className="text-bca-red text-lg font-medium mb-1">{selectedMember.role}</p>
+                  {selectedMember.year && (
+                    <p className="text-muted-foreground text-sm mb-4">{selectedMember.year}</p>
+                  )}
                   <div className="flex gap-3">
                     {selectedMember.linkedin_url && (
                       <a
@@ -243,14 +251,6 @@ const Team = () => {
                     )}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-foreground hover:text-bca-red"
-                  onClick={() => setSelectedMember(null)}
-                >
-                  <X className="w-5 h-5" />
-                </Button>
               </div>
 
               <div>
