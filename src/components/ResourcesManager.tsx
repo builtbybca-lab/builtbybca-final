@@ -123,7 +123,7 @@ export const ResourcesManager = () => {
                     type: "course",
                     url: "https://www.freecodecamp.org",
                     tags: ["Free", "Web Dev", "Certification"],
-                    image_url: "https://design-style-guide.freecodecamp.org/downloads/fcc_primary_large.jpg"
+                    image_url: "https://design-style-guide.freecodecamp.org/downloads/fcc_secondary_large.png"
                 },
                 {
                     title: "CS50 by Harvard",
@@ -132,7 +132,7 @@ export const ResourcesManager = () => {
                     type: "course",
                     url: "https://cs50.harvard.edu",
                     tags: ["Free", "Computer Science", "Harvard"],
-                    image_url: "https://cs50.harvard.edu/x/2023/assets/graph.png"
+                    image_url: "https://img.youtube.com/vi/8mAITcNt710/maxresdefault.jpg"
                 },
                 {
                     title: "The Odin Project",
@@ -168,7 +168,7 @@ export const ResourcesManager = () => {
                     type: "download",
                     url: "https://code.visualstudio.com",
                     tags: ["Editor", "Free", "Cross-platform"],
-                    image_url: "https://code.visualstudio.com/assets/images/code-stable.png"
+                    image_url: "https://code.visualstudio.com/assets/images/home-screenshot-mac.png"
                 },
                 {
                     title: "Figma",
