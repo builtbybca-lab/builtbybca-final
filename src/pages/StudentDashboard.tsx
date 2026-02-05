@@ -87,10 +87,11 @@ const StudentDashboard = () => {
     const { data: myBlogs = [], isLoading: blogsLoading } = useQuery({
         queryKey: ["my_blogs", user?.id],
         queryFn: async () => {
+            if (!user) return [];
             const { data, error } = await supabase
                 .from("blog_posts")
                 .select("*")
-                .eq("author_id", user?.id)
+                .eq("author_id", user.id!)
                 .order("created_at", { ascending: false });
             if (error) throw error;
             return data || [];
@@ -102,10 +103,11 @@ const StudentDashboard = () => {
     const { data: myProjects = [], isLoading: projectsLoading } = useQuery({
         queryKey: ["my_projects", user?.id],
         queryFn: async () => {
+            if (!user) return [];
             const { data, error } = await supabase
                 .from("projects")
                 .select("*")
-                .eq("user_id", user?.id)
+                .eq("user_id", user.id!)
                 .order("created_at", { ascending: false });
             if (error) throw error;
             return data || [];

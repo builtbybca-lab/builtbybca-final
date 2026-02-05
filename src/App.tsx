@@ -25,6 +25,8 @@ const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const CreateBlog = lazy(() => import("./pages/CreateBlog"));
 const Resources = lazy(() => import("./pages/Resources"));
 
+import LoadingFallback from "@/components/ui/LoadingFallback";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -36,11 +38,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-bca-red"></div>
-  </div>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

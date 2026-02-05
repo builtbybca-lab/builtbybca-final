@@ -37,6 +37,7 @@ const BlogPost = () => {
   const { data: post, isLoading } = useQuery({
     queryKey: ["blog_post", slug],
     queryFn: async () => {
+      if (!slug) throw new Error("No slug");
       const { data, error } = await supabase
         .from("blog_posts")
         .select("*")

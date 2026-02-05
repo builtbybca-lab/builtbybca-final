@@ -210,7 +210,7 @@ const BlogPostsManager = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => togglePublishMutation.mutate({ id: post.id, published: post.published })}
+                      onClick={() => togglePublishMutation.mutate({ id: post.id, published: !!post.published })}
                     >
                       {post.published ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
                     </Button>
@@ -999,7 +999,7 @@ const ProjectsManager = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => toggleApproveMutation.mutate({ id: project.id, approved: project.approved })}
+                      onClick={() => toggleApproveMutation.mutate({ id: project.id, approved: !!project.approved })}
                     >
                       {project.approved ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
                     </Button>

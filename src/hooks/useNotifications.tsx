@@ -30,7 +30,8 @@ export const useNotifications = () => {
             const { data, error } = await supabase
                 .from("notification_dismissals")
                 .select("notification_id")
-                .eq("user_id", user.id);
+                .eq("user_id", user.id!)
+                .throwOnError();
             if (error) throw error;
             return data.map(d => d.notification_id);
         },
@@ -44,7 +45,7 @@ export const useNotifications = () => {
             if (!user) throw new Error("Must be logged in");
             const { error } = await supabase
                 .from("notification_dismissals")
-                .insert([{ notification_id: notificationId, user_id: user.id }]);
+                .insert([{ notification_id: notificationId, user_id: user.id! }]);
             if (error) throw error;
         },
         onSuccess: () => {
