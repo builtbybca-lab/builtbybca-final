@@ -212,7 +212,7 @@ const BlogPost = () => {
           </div>
 
           <div
-            className="prose prose-invert prose-lg max-w-none mb-12"
+            className="prose prose-invert prose-lg max-w-none mb-12 whitespace-pre-wrap font-serif leading-relaxed"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -229,14 +229,7 @@ const BlogPost = () => {
             </div>
           )}
 
-          {post.author_bio && (
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-12">
-              <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">About {post.author}</h3>
-                <p className="text-muted-foreground">{post.author_bio}</p>
-              </div>
-            </div>
-          )}
+
         </div>
       </article>
 
