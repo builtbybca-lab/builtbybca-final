@@ -27,6 +27,8 @@ const Resources = lazy(() => import("./pages/Resources"));
 
 import LoadingFallback from "@/components/ui/LoadingFallback";
 
+import { GlobalRealtimeSubscription } from "./components/GlobalRealtimeSubscription";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -42,6 +44,7 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <GlobalRealtimeSubscription />
       <TooltipProvider>
         <Toaster />
         <Sonner />
