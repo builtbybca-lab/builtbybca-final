@@ -150,13 +150,13 @@ const Resources = () => {
             <section className="flex-1 px-4 pb-24 pt-8">
                 <div className="max-w-7xl mx-auto">
                     {isLoading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {[1, 2, 3, 4, 5, 6].map(i => (
-                                <div key={i} className="h-64 rounded-xl bg-secondary/30 animate-pulse" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+                                <div key={i} className="h-48 rounded-xl bg-secondary/30 animate-pulse" />
                             ))}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {filteredResources.map((resource: any, index: number) => (
                                 <a
                                     key={resource.id}
@@ -175,14 +175,14 @@ const Resources = () => {
                                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                             />
                                         ) : (
-                                            <div className="text-muted-foreground/30 transition-colors group-hover:text-primary/50">
+                                            <div className="text-muted-foreground/30 transition-colors group-hover:text-primary/50 scale-75">
                                                 {getCategoryIcon(resource.category)}
                                             </div>
                                         )}
 
                                         {/* Tag overlay */}
-                                        <div className="absolute top-3 left-3">
-                                            <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full bg-background/90 backdrop-blur text-foreground uppercase tracking-wider shadow-sm">
+                                        <div className="absolute top-2 left-2">
+                                            <span className="flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-background/90 backdrop-blur text-foreground uppercase tracking-wider shadow-sm">
                                                 {getTypeIcon(resource.type)}
                                                 {resource.type}
                                             </span>
@@ -190,24 +190,24 @@ const Resources = () => {
                                     </div>
 
                                     {/* Content Area */}
-                                    <div className="p-5 flex flex-col flex-1">
-                                        <div className="mb-3">
-                                            <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                                    <div className="p-4 flex flex-col flex-1">
+                                        <div className="mb-2">
+                                            <h3 className="text-base font-bold text-foreground mb-1 group-hover:text-primary transition-colors line-clamp-1">
                                                 {resource.title}
                                             </h3>
-                                            <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed h-10">
+                                            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed h-8">
                                                 {resource.description}
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center justify-between pt-4 border-t border-border/50 mt-auto">
-                                            <div className="flex gap-2 text-xs text-muted-foreground">
+                                        <div className="flex items-center justify-between pt-3 border-t border-border/50 mt-auto">
+                                            <div className="flex gap-1.5 text-[10px] text-muted-foreground">
                                                 {resource.tags?.slice(0, 2).map((tag: string) => (
                                                     <span key={tag}>#{tag}</span>
                                                 ))}
                                             </div>
-                                            <div className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 transition-transform">
-                                                Visit <ExternalLink className="w-3 h-3 ml-1" />
+                                            <div className="flex items-center gap-1 text-[10px] font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 transition-transform">
+                                                Visit <ExternalLink className="w-2.5 h-2.5 ml-1" />
                                             </div>
                                         </div>
                                     </div>

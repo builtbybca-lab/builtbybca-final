@@ -124,7 +124,7 @@ const Blog = () => {
               <p className="text-muted-foreground text-lg">No articles found matching your criteria.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredPosts.map((post) => (
                 <Link key={post.id} to={`/blog/${post.slug}`}>
                   <article className="bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden hover:border-bca-red/30 transition-all duration-300 group">
@@ -135,34 +135,34 @@ const Blog = () => {
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-bca-red text-white px-3 py-1 rounded-full text-sm font-medium">
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-bca-red text-white px-2 py-0.5 rounded-full text-xs font-medium">
                           {post.category}
                         </span>
                       </div>
                     </div>
 
-                    <div className="p-6">
-                      <div className="flex flex-wrap items-center text-xs sm:text-sm text-muted-foreground mb-3 gap-1">
-                        <User className="w-4 h-4 mr-2" />
-                        <span className="truncate max-w-[100px] sm:max-w-none">{post.author}</span>
-                        <span className="mx-1 sm:mx-2">•</span>
-                        <Calendar className="w-4 h-4 mr-2" />
+                    <div className="p-4">
+                      <div className="flex flex-wrap items-center text-xs text-muted-foreground mb-2 gap-1">
+                        <User className="w-3 h-3 mr-1" />
+                        <span className="truncate max-w-[80px]">{post.author}</span>
+                        <span className="mx-1">•</span>
+                        <Calendar className="w-3 h-3 mr-1" />
                         <span>{new Date(post.date).toLocaleDateString()}</span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 group-hover:text-bca-red transition-colors line-clamp-2">
+                      <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-bca-red transition-colors line-clamp-2">
                         {post.title}
                       </h3>
 
-                      <p className="text-muted-foreground mb-4 line-clamp-3">
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                         {post.excerpt}
                       </p>
 
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">{post.read_time}</span>
-                        <Button variant="ghost" className="text-bca-red hover:text-foreground group">
-                          Read More <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        <span className="text-xs text-muted-foreground">{post.read_time}</span>
+                        <Button variant="ghost" size="sm" className="h-8 text-xs text-bca-red hover:text-foreground group px-0">
+                          Read More <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </div>
                     </div>
