@@ -1,10 +1,11 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, User, ArrowLeft, Clock, Share2 } from "lucide-react";
+import { Calendar, ArrowLeft, Clock, Share2, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 interface BlogPostFull {
   id: string;
@@ -12,7 +13,7 @@ interface BlogPostFull {
   slug: string;
   content: string;
   author: string;
-  author_avatar: string;
+  author_id: string;
   author_bio: string;
   date: string;
   category: string;
@@ -33,6 +34,8 @@ interface RelatedPost {
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const { data: post, isLoading } = useQuery({
     queryKey: ["blog_post", slug],
@@ -53,7 +56,7 @@ const BlogPost = () => {
         slug: data.slug,
         content: data.content,
         author: data.author_name,
-        author_avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
+        author_id: data.author_id,
         author_bio: 'Tech enthusiast and writer',
         date: data.created_at,
         category: data.category,
@@ -146,13 +149,26 @@ const BlogPost = () => {
       <Navigation />
 
       <article className="pt-32 pb-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Link to="/blog">
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground mb-6">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Blog
-            </Button>
-          </Link>
+        <div className="max-w-3xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/blog">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Blog
+              </Button>
+            </Link>
+
+            {user?.id === post.author_id && (
+              <Button
+                variant="outline"
+                onClick={() => navigate(`/edit-blog/${post.slug}`)}
+                className="hover:bg-accent"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Post
+              </Button>
+            )}
+          </div>
 
           <div className="mb-8">
             <span className="bg-bca-red text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -163,15 +179,8 @@ const BlogPost = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">{post.title}</h1>
 
           <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-8">
-            <div className="flex items-center">
-              <img
-                src={post.author_avatar}
-                alt={post.author}
-                className="w-10 h-10 rounded-full mr-3 border-2 border-border"
-              />
-              <div>
-                <p className="text-foreground font-medium">{post.author}</p>
-              </div>
+            <div className="flex items-center font-medium text-foreground">
+              {post.author}
             </div>
             <span>•</span>
             <div className="flex items-center">
@@ -194,11 +203,11 @@ const BlogPost = () => {
             </Button>
           </div>
 
-          <div className="relative mb-12 rounded-xl overflow-hidden">
+          <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
             <img
               src={post.hero_image_url}
               alt={post.title}
-              className="w-full h-96 object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
 
@@ -222,16 +231,9 @@ const BlogPost = () => {
 
           {post.author_bio && (
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 mb-12">
-              <div className="flex items-start gap-4">
-                <img
-                  src={post.author_avatar}
-                  alt={post.author}
-                  className="w-16 h-16 rounded-full border-2 border-bca-red/50"
-                />
-                <div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">About {post.author}</h3>
-                  <p className="text-muted-foreground">{post.author_bio}</p>
-                </div>
+              <div>
+                <h3 className="text-xl font-bold text-foreground mb-2">About {post.author}</h3>
+                <p className="text-muted-foreground">{post.author_bio}</p>
               </div>
             </div>
           )}
@@ -239,9 +241,9 @@ const BlogPost = () => {
       </article>
 
       {relatedPosts.length > 0 && (
-        <section className="pb-24 px-4">
+        <section className="pb-24 px-4 bg-accent/20">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-8 text-center pt-12">
               Related <span className="text-bca-red">Articles</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

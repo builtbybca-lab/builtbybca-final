@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -17,8 +17,10 @@ import { Loader2, ArrowLeft, Save, Eye, EyeOff } from "lucide-react";
 const CreateBlog = () => {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
+    const { slug } = useParams<{ slug: string }>();
     const { toast } = useToast();
     const queryClient = useQueryClient();
+    const isEditing = !!slug;
 
     const [formData, setFormData] = useState({
         title: "",
@@ -38,34 +40,96 @@ const CreateBlog = () => {
         }
     }, [loading, user, navigate]);
 
-    // Create blog mutation
-    const createBlogMutation = useMutation({
-        mutationFn: async (data: typeof formData) => {
-            const { error } = await supabase.from("blog_posts").insert({
-                title: data.title,
-                slug: data.slug,
-                excerpt: data.excerpt,
-                content: data.content,
-                category: data.category,
-                image_url: data.image_url,
-                author_id: user!.id,
-                author_name: user!.user_metadata?.full_name || user!.email?.split("@")[0] || "Anonymous",
-                published: false, // Requires admin approval
-            });
+    // Fetch existing blog post if editing
+    const { data: existingPost, isLoading: isLoadingPost } = useQuery({
+        queryKey: ["blog_post_edit", slug],
+        queryFn: async () => {
+            if (!slug) return null;
+            const { data, error } = await supabase
+                .from("blog_posts")
+                .select("*")
+                .eq("slug", slug)
+                .single();
 
             if (error) throw error;
+            return data;
+        },
+        enabled: isEditing,
+    });
+
+    // Populate form with existing data
+    useEffect(() => {
+        if (existingPost) {
+            // check if user is author
+            if (user && existingPost.author_id !== user.id) {
+                toast({
+                    title: "Unauthorized",
+                    description: "You can only edit your own posts.",
+                    variant: "destructive",
+                });
+                navigate("/dashboard");
+                return;
+            }
+
+            setFormData({
+                title: existingPost.title,
+                slug: existingPost.slug,
+                excerpt: existingPost.excerpt,
+                content: existingPost.content,
+                category: existingPost.category,
+                image_url: existingPost.image_url || "",
+            });
+        }
+    }, [existingPost, user, navigate, toast]);
+
+    // Create/Update blog mutation
+    const blogMutation = useMutation({
+        mutationFn: async (data: typeof formData) => {
+            if (isEditing && existingPost) {
+                const { error } = await supabase
+                    .from("blog_posts")
+                    .update({
+                        title: data.title,
+                        slug: data.slug,
+                        excerpt: data.excerpt,
+                        content: data.content,
+                        category: data.category,
+                        image_url: data.image_url,
+                        // Don't update author or published status automatically
+                    })
+                    .eq("id", existingPost.id);
+
+                if (error) throw error;
+            } else {
+                const { error } = await supabase.from("blog_posts").insert({
+                    title: data.title,
+                    slug: data.slug,
+                    excerpt: data.excerpt,
+                    content: data.content,
+                    category: data.category,
+                    image_url: data.image_url,
+                    author_id: user!.id,
+                    author_name: user!.user_metadata?.full_name || user!.email?.split("@")[0] || "Anonymous",
+                    published: false, // Requires admin approval
+                });
+
+                if (error) throw error;
+            }
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["my_blogs"] });
+            queryClient.invalidateQueries({ queryKey: ["blog_post", slug] }); // invalidates specific post query
             toast({
-                title: "Blog post created!",
-                description: "Your post has been submitted for review. An admin will approve it shortly.",
+                title: isEditing ? "Blog post updated!" : "Blog post created!",
+                description: isEditing
+                    ? "Your changes have been saved."
+                    : "Your post has been submitted for review.",
             });
-            navigate("/dashboard");
+            navigate(isEditing ? `/blog/${formData.slug}` : "/dashboard");
         },
         onError: (error: any) => {
             toast({
-                title: "Error creating blog post",
+                title: `Error ${isEditing ? "updating" : "creating"} blog post`,
                 description: error.message || "Something went wrong",
                 variant: "destructive",
             });
@@ -82,11 +146,21 @@ const CreateBlog = () => {
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const title = e.target.value;
-        setFormData({
-            ...formData,
-            title,
-            slug: generateSlug(title),
-        });
+        // Only auto-generate slug if creating new post or if slug hasn't been manually edited (simple heuristic)
+        // or just let them edit it manually. For edit mode, we might want to be careful changing slugs as it breaks links.
+        // Let's only auto-update slug on creation.
+        if (!isEditing) {
+            setFormData({
+                ...formData,
+                title,
+                slug: generateSlug(title),
+            });
+        } else {
+            setFormData({
+                ...formData,
+                title,
+            });
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -101,7 +175,7 @@ const CreateBlog = () => {
             return;
         }
 
-        createBlogMutation.mutate(formData);
+        blogMutation.mutate(formData);
     };
 
     const categories = [
@@ -115,7 +189,7 @@ const CreateBlog = () => {
     ];
 
     // Show loading state
-    if (loading) {
+    if (loading || isLoadingPost) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <Loader2 className="h-8 w-8 animate-spin text-bca-red" />
@@ -143,10 +217,10 @@ const CreateBlog = () => {
 
                     <div className="text-center mb-8">
                         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                            Create <span className="text-bca-red">Blog Post</span>
+                            {isEditing ? "Edit" : "Create"} <span className="text-bca-red">Blog Post</span>
                         </h1>
                         <p className="text-muted-foreground text-lg">
-                            Share your knowledge and experiences with the BCA community
+                            {isEditing ? "Update your blog post content" : "Share your knowledge and experiences with the BCA community"}
                         </p>
                     </div>
 
@@ -234,7 +308,7 @@ const CreateBlog = () => {
                                         placeholder="auto-generated-from-title"
                                     />
                                     <p className="text-xs text-muted-foreground mt-1">
-                                        URL-friendly version of the title (auto-generated)
+                                        URL-friendly version of the title {isEditing ? "(Changing this breaks existing links!)" : "(auto-generated)"}
                                     </p>
                                 </div>
 
@@ -301,26 +375,28 @@ const CreateBlog = () => {
                                     />
                                 </div>
 
-                                <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
-                                    <p className="text-amber-200 text-sm">
-                                        <strong>Note:</strong> Your blog post will be submitted for review. An admin will review and approve it before it appears publicly on the blog page.
-                                    </p>
-                                </div>
+                                {!isEditing && (
+                                    <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
+                                        <p className="text-amber-200 text-sm">
+                                            <strong>Note:</strong> Your blog post will be submitted for review. An admin will review and approve it before it appears publicly on the blog page.
+                                        </p>
+                                    </div>
+                                )}
 
                                 <Button
                                     type="submit"
                                     className="w-full bg-bca-red hover:bg-bca-red-hover text-white"
-                                    disabled={createBlogMutation.isPending}
+                                    disabled={blogMutation.isPending}
                                 >
-                                    {createBlogMutation.isPending ? (
+                                    {blogMutation.isPending ? (
                                         <>
                                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                            Submitting...
+                                            {isEditing ? "Updating..." : "Submitting..."}
                                         </>
                                     ) : (
                                         <>
                                             <Save className="w-4 h-4 mr-2" />
-                                            Submit for Review
+                                            {isEditing ? "Update Post" : "Submit for Review"}
                                         </>
                                     )}
                                 </Button>
