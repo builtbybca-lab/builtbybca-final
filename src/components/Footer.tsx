@@ -30,9 +30,6 @@ const Footer = () => {
   }, {
     label: "Contact",
     href: "/contact"
-  }, {
-    label: "FAQ",
-    href: "/faq"
   }];
   const supportLinks = [{
     label: "Privacy Policy",
