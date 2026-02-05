@@ -13,7 +13,7 @@ const Privacy = () => {
             Privacy <span className="text-bca-red">Policy</span>
           </h1>
           <p className="text-xl text-muted-foreground">
-            Last updated: March 2024
+            Last updated: February 2026
           </p>
         </div>
       </section>
@@ -25,7 +25,7 @@ const Privacy = () => {
 
             <h2 className="text-2xl font-bold text-foreground mb-4">Introduction</h2>
             <p className="text-muted-foreground mb-6">
-              Bergen County Academies ("BCA," "we," "us," or "our") is committed to protecting your privacy.
+              Adichunchanagiri Institute of Business Management ("AIBM," "we," "us," or "our") is committed to protecting your privacy.
               This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
               you visit our website and use our services.
             </p>
@@ -82,9 +82,9 @@ const Privacy = () => {
 
             <h2 className="text-2xl font-bold text-foreground mb-4">Student Privacy</h2>
             <p className="text-muted-foreground mb-6">
-              BCA is committed to protecting student privacy in accordance with the Family Educational
-              Rights and Privacy Act (FERPA) and other applicable laws. Student educational records are
-              maintained confidentially and shared only as permitted by law.
+              AIBM is committed to protecting student privacy in accordance with applicable data protection laws.
+              Student educational records are maintained confidentially and shared only as permitted by law or
+              institutional policy.
             </p>
 
             <h2 className="text-2xl font-bold text-foreground mb-4">Cookies and Tracking Technologies</h2>
@@ -96,7 +96,7 @@ const Privacy = () => {
 
             <h2 className="text-2xl font-bold text-foreground mb-4">Your Rights</h2>
             <p className="text-muted-foreground mb-4">
-              Depending on your location, you may have certain rights regarding your personal information:
+              Depending on your location and applicable laws, you may have certain rights regarding your personal information:
             </p>
             <ul className="text-muted-foreground mb-6 space-y-2">
               <li>• Right to access your personal information</li>
@@ -113,13 +113,6 @@ const Privacy = () => {
               policies before providing any personal information.
             </p>
 
-            <h2 className="text-2xl font-bold text-foreground mb-4">Children's Privacy</h2>
-            <p className="text-muted-foreground mb-6">
-              As an educational institution serving minors, we take special care to protect the privacy
-              of students under 18. We collect and use student information only as necessary for
-              educational purposes and in compliance with applicable privacy laws.
-            </p>
-
             <h2 className="text-2xl font-bold text-foreground mb-4">Changes to This Privacy Policy</h2>
             <p className="text-muted-foreground mb-6">
               We may update this Privacy Policy from time to time. We will notify you of any changes
@@ -132,7 +125,7 @@ const Privacy = () => {
             </p>
             <div className="text-muted-foreground">
               <p>Email: builtby.bca@gmail.com</p>
-              <p>Address: Bergen County Academies, 200 Hackensack Ave, Hackensack, NJ 07601</p>
+              <p>Address: Adichunchanagiri Institute Of Business Management, Karnataka</p>
             </div>
           </div>
         </div>
