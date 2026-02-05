@@ -48,13 +48,34 @@ export const useNotifications = () => {
                 .insert([{ notification_id: notificationId, user_id: user.id! }]);
             if (error) throw error;
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["dismissed-notifications"] });
-            toast({ description: "Notification dismissed" });
+        onMutate: async (notificationId) => {
+            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries({ queryKey: ["dismissed-notifications", user?.id] });
+
+            // Snapshot the previous value
+            const previousDismissedIds = queryClient.getQueryData<string[]>(["dismissed-notifications", user?.id]);
+
+            // Optimistically update to the new value
+            queryClient.setQueryData<string[]>(["dismissed-notifications", user?.id], (old = []) => [
+                ...old,
+                notificationId,
+            ]);
+
+            // Return a context object with the snapshotted value
+            return { previousDismissedIds };
         },
-        onError: () => {
+        onError: (err, newTodo, context) => {
+            // If the mutation fails, use the context returned from onMutate to roll back
+            queryClient.setQueryData(
+                ["dismissed-notifications", user?.id],
+                context?.previousDismissedIds
+            );
             toast({ title: "Error", description: "Failed to dismiss notification", variant: "destructive" });
-        }
+        },
+        onSettled: () => {
+            // Always refetch after error or success:
+            queryClient.invalidateQueries({ queryKey: ["dismissed-notifications"] });
+        },
     });
 
     return {
