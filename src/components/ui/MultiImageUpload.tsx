@@ -106,6 +106,8 @@ export const MultiImageUpload = ({
     onChange(newUrls);
   };
 
+  const [uniqueId] = useState(`multi-image-upload-${bucket}-${Math.random().toString(36).substr(2, 9)}`);
+
   return (
     <div className={`space-y-4 ${className}`}>
       {value.length > 0 && (
@@ -140,10 +142,10 @@ export const MultiImageUpload = ({
             onChange={handleUpload}
             disabled={uploading}
             className="hidden"
-            id={`multi-image-upload-${bucket}`}
+            id={uniqueId}
           />
           <label
-            htmlFor={`multi-image-upload-${bucket}`}
+            htmlFor={uniqueId}
             className="cursor-pointer flex flex-col items-center space-y-2"
           >
             {uploading ? (
