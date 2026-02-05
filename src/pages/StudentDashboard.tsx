@@ -24,7 +24,9 @@ import {
     Calendar,
     Upload,
     Bell,
-    X
+    X,
+    Star,
+    Quote
 } from "lucide-react";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -75,6 +77,7 @@ const StudentDashboard = () => {
 
     const [selectedEventId, setSelectedEventId] = useState<string>("");
     const [uploadImages, setUploadImages] = useState<string[]>([]);
+    const [testimonialForm, setTestimonialForm] = useState({ rating: 5, role: "", content: "" });
 
     // Redirect effect for unauthenticated users
     useEffect(() => {
@@ -184,6 +187,36 @@ const StudentDashboard = () => {
         uploadEventImagesMutation.mutate({ eventId: selectedEventId, images: uploadImages });
     };
 
+    const submitTestimonialMutation = useMutation({
+        mutationFn: async (data: typeof testimonialForm) => {
+            if (!user) throw new Error("User not authenticated");
+
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('avatar_url, full_name')
+                .eq('id', user.id)
+                .single();
+
+            const { error } = await supabase.from("testimonials").insert({
+                name: profile?.full_name || user.user_metadata.full_name || "Anonymous",
+                role: data.role,
+                content: data.content,
+                rating: data.rating,
+                avatar_url: profile?.avatar_url || user.user_metadata.avatar_url
+            });
+
+            if (error) throw error;
+        },
+        onSuccess: () => {
+            toast({ title: "Testimonial submitted successfully!" });
+            setTestimonialForm({ rating: 5, role: "", content: "" });
+        },
+        onError: (error) => {
+            console.error(error);
+            toast({ title: "Failed to submit testimonial", variant: "destructive" });
+        }
+    });
+
     // Show loading state
     if (loading) {
         return (
@@ -228,7 +261,7 @@ const StudentDashboard = () => {
                     </Card>
 
                     <Tabs defaultValue="blogs" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 mb-8">
+                        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
                             <TabsTrigger value="blogs" className="flex items-center gap-2">
                                 <PenSquare className="w-4 h-4" />
                                 My Blogs
@@ -240,6 +273,10 @@ const StudentDashboard = () => {
                             <TabsTrigger value="projects" className="flex items-center gap-2">
                                 <FolderOpen className="w-4 h-4" />
                                 My Projects
+                            </TabsTrigger>
+                            <TabsTrigger value="testimonial" className="flex items-center gap-2">
+                                <Quote className="w-4 h-4" />
+                                Testimonial
                             </TabsTrigger>
                         </TabsList>
 
@@ -443,6 +480,72 @@ const StudentDashboard = () => {
                                             ))}
                                         </div>
                                     )}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        {/* Testimonial Tab */}
+                        <TabsContent value="testimonial">
+                            <Card className="bg-card/50 backdrop-blur-sm border-border">
+                                <CardHeader>
+                                    <CardTitle className="text-foreground">Share Your Experience</CardTitle>
+                                    <CardDescription>
+                                        Let others know what you think about the community.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-6">
+                                    <div>
+                                        <label className="text-sm font-medium text-foreground mb-2 block">Rating</label>
+                                        <div className="flex gap-2">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <button
+                                                    key={star}
+                                                    type="button"
+                                                    onClick={() => setTestimonialForm(prev => ({ ...prev, rating: star }))}
+                                                    className="focus:outline-none transition-transform hover:scale-110"
+                                                >
+                                                    <Star
+                                                        className={`w-8 h-8 ${star <= testimonialForm.rating ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground"}`}
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm font-medium text-foreground mb-2 block">Role / Title</label>
+                                        <input
+                                            type="text"
+                                            value={testimonialForm.role}
+                                            onChange={(e) => setTestimonialForm(prev => ({ ...prev, role: e.target.value }))}
+                                            placeholder="e.g. 2nd Year Student, Alumni, Developer"
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm font-medium text-foreground mb-2 block">Your Message</label>
+                                        <textarea
+                                            value={testimonialForm.content}
+                                            onChange={(e) => setTestimonialForm(prev => ({ ...prev, content: e.target.value }))}
+                                            placeholder="Share your thoughts..."
+                                            rows={4}
+                                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        />
+                                    </div>
+
+                                    <Button
+                                        className="w-full bg-bca-red hover:bg-bca-red-hover"
+                                        onClick={() => submitTestimonialMutation.mutate(testimonialForm)}
+                                        disabled={!testimonialForm.content || !testimonialForm.role || submitTestimonialMutation.isPending}
+                                    >
+                                        {submitTestimonialMutation.isPending ? (
+                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        ) : (
+                                            <Quote className="w-4 h-4 mr-2" />
+                                        )}
+                                        Submit Testimonial
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </TabsContent>
