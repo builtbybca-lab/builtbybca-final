@@ -27,7 +27,6 @@ interface Event {
 }
 const Events = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [sortBy, setSortBy] = useState<"date" | "popularity">("date");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const {
     data: events = [],
@@ -60,12 +59,10 @@ const Events = () => {
     }
   });
   const categories = ["All", "Hackathon", "Workshop", "Meetup", "Seminar"];
-  const filteredEvents = events.filter(event => selectedCategory === "All" || event.category === selectedCategory).sort((a, b) => {
-    if (sortBy === "date") {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    }
-    return b.popularity_score - a.popularity_score;
-  });
+  const filteredEvents = events
+    .filter(event => selectedCategory === "All" || event.category === selectedCategory)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return <div className="min-h-screen bg-background">
     <Navigation />
 
@@ -83,11 +80,6 @@ const Events = () => {
             {categories.map(category => <Button key={category} variant={selectedCategory === category ? "default" : "outline"} onClick={() => setSelectedCategory(category)} className={`${selectedCategory === category ? "bg-bca-red text-white hover:bg-bca-red-hover" : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"}`}>
               {category}
             </Button>)}
-          </div>
-
-          <div className="flex gap-2">
-            <Button variant={sortBy === "date" ? "default" : "outline"} onClick={() => setSortBy("date")} size="sm" className={`${sortBy === "date" ? "bg-bca-red text-white" : "border-border text-foreground hover:bg-bca-red/20"}`}>Date</Button>
-            <Button variant={sortBy === "popularity" ? "default" : "outline"} onClick={() => setSortBy("popularity")} size="sm" className={`${sortBy === "popularity" ? "bg-bca-red text-white" : "border-border text-foreground hover:bg-bca-red/20"}`}>Popular</Button>
           </div>
         </div>
       </div>
@@ -121,67 +113,72 @@ const Events = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredEvents.map((event) => (
-              <div
-                key={event.id}
-                className="group bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col"
-                onClick={() => setSelectedEvent(event)}
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={event.image_url}
-                    alt={event.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-bca-red text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
-                      {event.category}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-5 flex flex-col flex-grow">
-                  <div className="flex items-center text-muted-foreground text-xs mb-3 space-x-3">
-                    <div className="flex items-center">
-                      <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                      <span>{new Date(event.date).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="w-3.5 h-3.5 mr-1.5" />
-                      <span className="truncate max-w-[120px]">{event.location}</span>
+          <div className="space-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="group bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col"
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={event.image_url}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-bca-red text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
+                        {event.category}
+                      </span>
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-1 group-hover:text-bca-red transition-colors">
-                    {event.title}
-                  </h3>
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="flex items-center text-muted-foreground text-xs mb-3 space-x-3">
+                      <div className="flex items-center">
+                        <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                        <span>{new Date(event.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <MapPin className="w-3.5 h-3.5 mr-1.5" />
+                        <span className="truncate max-w-[120px]">{event.location}</span>
+                      </div>
+                    </div>
 
-                  <p className="text-muted-foreground text-sm mb-6 line-clamp-3 flex-grow">
-                    {event.short_description}
-                  </p>
+                    <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-1 group-hover:text-bca-red transition-colors">
+                      {event.title}
+                    </h3>
 
-                  <div className="flex items-center text-bca-red font-medium text-sm mt-auto group/btn">
-                    View Details
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                    <p className="text-muted-foreground text-sm mb-6 line-clamp-3 flex-grow">
+                      {event.short_description}
+                    </p>
+
+                    <div className="flex items-center text-bca-red font-medium text-sm mt-auto group/btn">
+                      View Details
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-bold text-foreground mb-8 text-center">All Event Photos</h2>
+              <PinterestGallery images={filteredEvents.flatMap(event => event.gallery_images || [])} />
+            </div>
           </div>
         )}
-      </div>
-    </section>
+      </div >
+    </section >
 
     <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
         {selectedEvent && <div className="space-y-6">
           <div className="relative">
             <img src={selectedEvent.image_url} alt={selectedEvent.title} loading="lazy" className="w-full h-48 sm:h-64 object-cover rounded-lg" />
-            <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white" onClick={() => setSelectedEvent(null)}>
-              <X className="w-5 h-5" />
-            </Button>
+
           </div>
 
           <div>
@@ -242,6 +239,6 @@ const Events = () => {
     </Dialog>
 
     <Footer />
-  </div>;
+  </div >;
 };
 export default Events;

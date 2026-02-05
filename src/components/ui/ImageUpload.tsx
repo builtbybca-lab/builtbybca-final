@@ -83,8 +83,6 @@ export const ImageUpload = ({ value, onChange, bucket, className = "" }: ImageUp
     onChange("");
   };
 
-  const [uniqueId] = useState(`image-upload-${bucket}-${Math.random().toString(36).substr(2, 9)}`);
-
   return (
     <div className={`space-y-4 ${className}`}>
       {value ? (
@@ -112,10 +110,10 @@ export const ImageUpload = ({ value, onChange, bucket, className = "" }: ImageUp
             onChange={handleUpload}
             disabled={uploading}
             className="hidden"
-            id={uniqueId}
+            id={`image-upload-${bucket}`}
           />
           <label
-            htmlFor={uniqueId}
+            htmlFor={`image-upload-${bucket}`}
             className="cursor-pointer flex flex-col items-center space-y-2"
           >
             {uploading ? (

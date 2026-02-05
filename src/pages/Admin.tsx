@@ -25,6 +25,13 @@ import {
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 
@@ -616,12 +623,20 @@ const EventDialog = ({ event, onClose }: { event: any; onClose: () => void }) =>
         </div>
         <div>
           <Label htmlFor="event_type" className="text-foreground">Event Type</Label>
-          <Input
-            id="event_type"
+          <Select
             value={formData.event_type}
-            onChange={(e) => setFormData({ ...formData, event_type: e.target.value })}
-            className="bg-background border-border text-foreground"
-          />
+            onValueChange={(value) => setFormData({ ...formData, event_type: value })}
+          >
+            <SelectTrigger className="bg-background border-border text-foreground">
+              <SelectValue placeholder="Select event type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Hackathon">Hackathon</SelectItem>
+              <SelectItem value="Workshop">Workshop</SelectItem>
+              <SelectItem value="Meetup">Meetup</SelectItem>
+              <SelectItem value="Seminar">Seminar</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label htmlFor="image_url" className="text-foreground">Event Image</Label>
