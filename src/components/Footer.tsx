@@ -2,14 +2,6 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin } from "lucide-rea
 import { Link } from "react-router-dom";
 const Footer = () => {
   const socialLinks = [{
-    icon: Facebook,
-    href: "#",
-    label: "Facebook"
-  }, {
-    icon: Twitter,
-    href: "#",
-    label: "Twitter"
-  }, {
     icon: Instagram,
     href: "#",
     label: "Instagram"
