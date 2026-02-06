@@ -98,11 +98,29 @@ const Team = () => {
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-card/50 rounded-xl border border-border p-6 animate-pulse"
+                  className="bg-card/50 rounded-xl border border-border p-6 animate-pulse flex flex-col items-center"
                 >
-                  <div className="w-32 h-32 bg-muted rounded-full mx-auto mb-4" />
-                  <div className="h-6 bg-muted rounded mb-2" />
-                  <div className="h-4 bg-muted rounded" />
+                  {/* Avatar Placeholder */}
+                  <div className="w-32 h-32 bg-muted rounded-full mb-4" />
+
+                  {/* Name Placeholder */}
+                  <div className="h-6 w-3/4 bg-muted rounded mb-2" />
+
+                  {/* Role Placeholder */}
+                  <div className="h-4 w-1/2 bg-muted rounded mb-4" />
+
+                  {/* Bio Placeholder */}
+                  <div className="w-full space-y-2 mb-4">
+                    <div className="h-3 w-full bg-muted rounded" />
+                    <div className="h-3 w-5/6 bg-muted rounded mx-auto" />
+                  </div>
+
+                  {/* Social Icons Placeholder */}
+                  <div className="flex gap-3 justify-center mt-auto">
+                    {[1, 2, 3].map((j) => (
+                      <div key={j} className="w-5 h-5 bg-muted rounded-full" />
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

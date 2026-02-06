@@ -89,12 +89,34 @@ const Events = () => {
       <div className="max-w-7xl mx-auto">
         {isLoading ? (
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-            {[...Array(12)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div
                 key={i}
                 className="break-inside-avoid mb-4 bg-card/50 rounded-xl border border-border overflow-hidden animate-pulse"
-                style={{ height: `${200 + Math.random() * 300}px` }}
-              />
+              >
+                {/* Image Placeholder */}
+                <div className="aspect-[4/3] bg-muted w-full" />
+
+                <div className="p-4 space-y-3">
+                  {/* Category Tag */}
+                  <div className="h-5 w-20 bg-muted rounded-full" />
+
+                  {/* Title */}
+                  <div className="h-6 w-3/4 bg-muted rounded" />
+
+                  {/* Date & Location */}
+                  <div className="flex gap-2">
+                    <div className="h-4 w-1/3 bg-muted rounded" />
+                    <div className="h-4 w-1/3 bg-muted rounded" />
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-2 pt-2">
+                    <div className="h-3 w-full bg-muted rounded" />
+                    <div className="h-3 w-5/6 bg-muted rounded" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         ) : filteredEvents.length === 0 ? (
