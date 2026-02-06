@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Linkedin, Github, Instagram, Twitter, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Linkedin, Github, Instagram, Twitter } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -13,7 +12,6 @@ interface TeamMember {
   role: string;
   bio: string;
   full_bio: string;
-  category: string;
   image_url: string;
   linkedin_url?: string;
   github_url?: string;
@@ -21,10 +19,11 @@ interface TeamMember {
   twitter_url?: string;
   display_order: number;
   year?: string;
+  batch?: string;
+  division?: string;
 }
 
 const Team = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   const { data: members = [], isLoading } = useQuery({
@@ -36,29 +35,78 @@ const Team = () => {
         .order("display_order", { ascending: true });
 
       if (error) throw error;
-      return (data || []).map(m => ({
+      return (data || []).map((m) => ({
         id: m.id,
         name: m.name,
         role: m.role,
-        bio: m.bio || '',
-        full_bio: m.bio || '',
-        category: 'Core Team',
-        image_url: m.image_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
+        bio: m.bio || "",
+        full_bio: m.bio || "",
+        image_url: m.image_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
         linkedin_url: m.linkedin_url,
         github_url: m.github_url,
-        instagram_url: undefined,
-        twitter_url: undefined,
         display_order: m.display_order,
-        year: m.year
+        year: m.year,
+        batch: m.batch,
+        division: m.division,
       })) as TeamMember[];
     },
   });
 
-  const categories = ["All", "Core Team", "Developers", "Designers", "Volunteers"];
+  // Filter current members (not Alumni)
+  const currentMembers = members.filter((member) => member.year !== "Alumni");
 
-  const filteredMembers = members.filter(
-    (member) => selectedCategory === "All" || member.category === selectedCategory
-  );
+  // Group current members by Division priority
+  const divisionPriority = [
+    "Faculty",
+    "Core Team",
+    "Technical Team",
+    "Design Team",
+    "Media Team",
+    "Events Team",
+    "Other",
+  ];
+
+  const groupedCurrentMembers = divisionPriority.reduce((acc, division) => {
+    const membersInDivision = currentMembers.filter(
+      (m) => (m.division || "Other") === division
+    );
+    if (membersInDivision.length > 0) {
+      acc[division] = membersInDivision;
+    }
+    return acc;
+  }, {} as Record<string, TeamMember[]>);
+
+  // Handle members with defined divisions not in priority list
+  const otherDivisions = [
+    ...new Set(
+      currentMembers
+        .map((m) => m.division)
+        .filter((d) => d && !divisionPriority.includes(d))
+    ),
+  ];
+  otherDivisions.forEach((division) => {
+    if (division) {
+      groupedCurrentMembers[division] = currentMembers.filter(
+        (m) => m.division === division
+      );
+    }
+  });
+
+  // Filter Alumni
+  const alumniMembers = members.filter((member) => member.year === "Alumni");
+
+  // Group Alumni by Batch
+  const groupedAlumni = alumniMembers.reduce((acc, member) => {
+    const batch = member.batch || "Unknown Batch";
+    if (!acc[batch]) {
+      acc[batch] = [];
+    }
+    acc[batch].push(member);
+    return acc;
+  }, {} as Record<string, TeamMember[]>);
+
+  // Sort batches (assuming format YYYY-YYYY, sort descending)
+  const sortedBatches = Object.keys(groupedAlumni).sort().reverse();
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,22 +120,6 @@ const Team = () => {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Get to know the passionate individuals driving innovation and fostering a vibrant tech community.
           </p>
-
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
-                className={`${selectedCategory === category
-                  ? "bg-bca-red text-white hover:bg-bca-red-hover"
-                  : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
-                  }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -100,111 +132,115 @@ const Team = () => {
                   key={i}
                   className="bg-card/50 rounded-xl border border-border p-6 animate-pulse flex flex-col items-center"
                 >
-                  {/* Avatar Placeholder */}
                   <div className="w-32 h-32 bg-muted rounded-full mb-4" />
-
-                  {/* Name Placeholder */}
                   <div className="h-6 w-3/4 bg-muted rounded mb-2" />
-
-                  {/* Role Placeholder */}
                   <div className="h-4 w-1/2 bg-muted rounded mb-4" />
-
-                  {/* Bio Placeholder */}
                   <div className="w-full space-y-2 mb-4">
                     <div className="h-3 w-full bg-muted rounded" />
                     <div className="h-3 w-5/6 bg-muted rounded mx-auto" />
                   </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-20">
+              {/* Current Team Sections */}
+              {Object.entries(groupedCurrentMembers).map(([division, divisionMembers]) => (
+                <div key={division} className="animate-fade-up">
+                  <h2 className="text-3xl font-bold text-center mb-8 text-foreground relative inline-block left-1/2 transform -translate-x-1/2">
+                    <span className="border-b-4 border-bca-red pb-2">{division}</span>
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
+                    {divisionMembers.map((member) => (
+                      <div
+                        key={member.id}
+                        className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group"
+                        onClick={() => setSelectedMember(member)}
+                      >
+                        <div className="relative w-32 h-32 mx-auto mb-6">
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-bca-red to-purple-600 opacity-20 blur-lg group-hover:opacity-40 transition-opacity" />
+                          <img
+                            src={member.image_url || "/placeholder.svg"}
+                            alt={member.name}
+                            className="w-full h-full object-cover rounded-full border-2 border-border group-hover:border-bca-red transition-colors relative z-10"
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-bca-red transition-colors">
+                          {member.name}
+                        </h3>
+                        <p className="text-muted-foreground font-medium mb-2">{member.role}</p>
+                        {member.year && member.year !== "Alumni" && member.year !== "Faculty" && (
+                          <span className="inline-block px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full mb-3">
+                            {member.year}
+                          </span>
+                        )}
 
-                  {/* Social Icons Placeholder */}
-                  <div className="flex gap-3 justify-center mt-auto">
-                    {[1, 2, 3].map((j) => (
-                      <div key={j} className="w-5 h-5 bg-muted rounded-full" />
+                        <div className="flex gap-4 justify-center mt-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                          {member.linkedin_url && (
+                            <a
+                              href={member.linkedin_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-[#0077b5] transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Linkedin className="w-5 h-5" />
+                            </a>
+                          )}
+                          {member.github_url && (
+                            <a
+                              href={member.github_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Github className="w-5 h-5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
               ))}
-            </div>
-          ) : filteredMembers.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg">No team members found in this category.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredMembers.map((member) => (
-                <article
-                  key={member.id}
-                  className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-6 hover:border-bca-red/30 transition-all duration-300 group cursor-pointer hover:scale-105"
-                  onClick={() => setSelectedMember(member)}
-                >
-                  <div className="relative mb-4">
-                    <img
-                      src={member.image_url}
-                      alt={member.name}
-                      className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-border group-hover:border-bca-red/50 transition-all duration-300"
-                    />
+
+              {/* Alumni Section */}
+              {sortedBatches.length > 0 && (
+                <div className="pt-12 border-t border-border">
+                  <h2 className="text-4xl font-bold text-center mb-12 text-gradient font-display">
+                    Our Alumni
+                  </h2>
+                  <div className="space-y-16">
+                    {sortedBatches.map((batch) => (
+                      <div key={batch} className="animate-fade-up">
+                        <h3 className="text-2xl font-semibold text-center mb-8 text-muted-foreground">
+                          Batch of {batch}
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                          {groupedAlumni[batch].map((member) => (
+                            <div
+                              key={member.id}
+                              className="bg-card/30 rounded-xl border border-border p-6 text-center opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+                              onClick={() => setSelectedMember(member)}
+                            >
+                              <div className="w-24 h-24 mx-auto mb-4 grayscale hover:grayscale-0 transition-all duration-300">
+                                <img
+                                  src={member.image_url || "/placeholder.svg"}
+                                  alt={member.name}
+                                  className="w-full h-full object-cover rounded-full border border-border"
+                                />
+                              </div>
+                              <h3 className="text-lg font-bold text-foreground">{member.name}</h3>
+                              <p className="text-sm text-muted-foreground">{member.role}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-
-                  <h3 className="text-xl font-bold text-foreground text-center mb-2 group-hover:text-bca-red transition-colors">
-                    {member.name}
-                  </h3>
-
-                  <p className="text-bca-red text-center text-sm font-medium mb-1">{member.role}</p>
-                  {member.year && (
-                    <p className="text-muted-foreground text-center text-xs mb-3">{member.year}</p>
-                  )}
-
-                  <p className="text-muted-foreground text-center text-sm mb-4 line-clamp-2">
-                    {member.bio}
-                  </p>
-
-                  <div className="flex justify-center gap-3">
-                    {member.linkedin_url && (
-                      <a
-                        href={member.linkedin_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                    )}
-                    {member.github_url && (
-                      <a
-                        href={member.github_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Github className="w-5 h-5" />
-                      </a>
-                    )}
-                    {member.instagram_url && (
-                      <a
-                        href={member.instagram_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Instagram className="w-5 h-5" />
-                      </a>
-                    )}
-                    {member.twitter_url && (
-                      <a
-                        href={member.twitter_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Twitter className="w-5 h-5" />
-                      </a>
-                    )}
-                  </div>
-                </article>
-              ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -278,12 +314,20 @@ const Team = () => {
                 </p>
               </div>
 
-              <div className="bg-secondary/50 p-4 rounded-lg border border-border">
-                <p className="text-muted-foreground text-sm">
-                  <span className="text-foreground font-semibold">Category: </span>
-                  {selectedMember.category}
-                </p>
-              </div>
+              {(selectedMember.batch || selectedMember.division) && (
+                <div className="flex flex-wrap gap-2">
+                  {selectedMember.division && (
+                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                      {selectedMember.division}
+                    </span>
+                  )}
+                  {selectedMember.batch && (
+                    <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                      Batch of {selectedMember.batch}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </DialogContent>

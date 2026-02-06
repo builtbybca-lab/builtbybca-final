@@ -200,6 +200,8 @@ export type Database = {
           name: string
           role: string
           year: string | null
+          batch: string | null
+          division: string | null
         }
         Insert: {
           bio?: string | null
@@ -212,6 +214,8 @@ export type Database = {
           name: string
           role: string
           year?: string | null
+          batch?: string | null
+          division?: string | null
         }
         Update: {
           bio?: string | null
@@ -224,6 +228,8 @@ export type Database = {
           name?: string
           role?: string
           year?: string | null
+          batch?: string | null
+          division?: string | null
         }
         Relationships: []
       }

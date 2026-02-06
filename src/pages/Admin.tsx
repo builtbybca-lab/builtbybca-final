@@ -794,6 +794,8 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     github_url: member?.github_url || '',
     display_order: member?.display_order || 0,
     year: member?.year || '',
+    batch: member?.batch || '',
+    division: member?.division || '',
   });
 
   // Sync formData when member prop changes (for edit mode)
@@ -807,6 +809,8 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       github_url: member?.github_url || '',
       display_order: member?.display_order || 0,
       year: member?.year || '',
+      batch: member?.batch || '',
+      division: member?.division || '',
     });
   }, [member]);
 
@@ -879,6 +883,35 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
             <option value="Alumni">Alumni</option>
             <option value="Faculty">Faculty</option>
           </select>
+        </div>
+        <div>
+          <Label htmlFor="batch" className="text-foreground">Batch (e.g., 2023-2026)</Label>
+          <Input
+            id="batch"
+            value={formData.batch}
+            onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
+            className="bg-background border-border text-foreground"
+          />
+        </div>
+        <div>
+          <Label htmlFor="division" className="text-foreground">Division (e.g., Core Team)</Label>
+          <Select
+            value={formData.division}
+            onValueChange={(value) => setFormData({ ...formData, division: value })}
+          >
+            <SelectTrigger className="bg-background border-border text-foreground">
+              <SelectValue placeholder="Select Division" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Core Team">Core Team</SelectItem>
+              <SelectItem value="Technical Team">Technical Team</SelectItem>
+              <SelectItem value="Design Team">Design Team</SelectItem>
+              <SelectItem value="Media Team">Media Team</SelectItem>
+              <SelectItem value="Events Team">Events Team</SelectItem>
+              <SelectItem value="Faculty">Faculty</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label htmlFor="bio" className="text-foreground">Bio</Label>
