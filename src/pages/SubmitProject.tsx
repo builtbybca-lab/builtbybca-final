@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -28,6 +35,7 @@ const SubmitProject = () => {
     github_url: "",
     live_demo_url: "",
     tags: "",
+    category: "",
     tech_stack: "",
     screenshots: [] as string[],
   });
@@ -50,7 +58,7 @@ const SubmitProject = () => {
     setSubmitting(true);
 
     try {
-      if (!formData.name || !formData.description || !formData.full_description || !formData.built_by || !formData.thumbnail_url) {
+      if (!formData.name || !formData.description || !formData.full_description || !formData.built_by || !formData.thumbnail_url || !formData.category) {
         toast({
           title: "Missing Information",
           description: "Please fill in all required fields",
@@ -71,6 +79,7 @@ const SubmitProject = () => {
         tags: formData.tags.split(",").map(t => t.trim()).filter(Boolean),
         tech_stack: formData.tech_stack.split(",").map(t => t.trim()).filter(Boolean),
         screenshots: formData.screenshots,
+        category: formData.category,
         user_id: user!.id,
         approved: false,
       });
@@ -137,6 +146,29 @@ const SubmitProject = () => {
                   placeholder="Your Name or Team Name"
                   required
                 />
+              </div>
+
+              <div>
+                <Label htmlFor="category" className="text-foreground">
+                  Category <span className="text-bca-red">*</span>
+                </Label>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) => setFormData({ ...formData, category: value })}
+                >
+                  <SelectTrigger className="mt-1 bg-secondary border-border text-foreground">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Web App">Web App</SelectItem>
+                    <SelectItem value="Mobile App">Mobile App</SelectItem>
+                    <SelectItem value="Desktop App">Desktop App</SelectItem>
+                    <SelectItem value="Design / UI/UX">Design / UI/UX</SelectItem>
+                    <SelectItem value="AI / ML">AI / ML</SelectItem>
+                    <SelectItem value="Hardware / IoT">Hardware / IoT</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>

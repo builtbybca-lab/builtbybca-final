@@ -142,6 +142,7 @@ export type Database = {
           tags: string[] | null
           tech_stack: string[] | null
           thumbnail_url: string
+          category: string
           updated_at: string | null
           user_id: string | null
         }
@@ -161,6 +162,7 @@ export type Database = {
           tags?: string[] | null
           tech_stack?: string[] | null
           thumbnail_url: string
+          category?: string
           updated_at?: string | null
           user_id?: string | null
         }
@@ -180,6 +182,7 @@ export type Database = {
           tags?: string[] | null
           tech_stack?: string[] | null
           thumbnail_url?: string
+          category?: string
           updated_at?: string | null
           user_id?: string | null
         }

@@ -22,11 +22,11 @@ interface Project {
   tech_stack: string[];
   screenshots: string[];
   featured: boolean;
+  category: string;
 }
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const { data: projects = [], isLoading } = useQuery({
@@ -43,17 +43,15 @@ const Projects = () => {
     },
   });
 
-  const allTags = Array.from(
-    new Set(projects.flatMap((project) => project.tags))
-  );
-  const tags = ["All", ...allTags];
+  const categories = ["All", "Web App", "Mobile App", "Desktop App", "Design / UI/UX", "AI / ML", "Hardware / IoT", "Other"];
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch =
       project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTag = selectedTag === "All" || project.tags.includes(selectedTag);
-    return matchesSearch && matchesTag;
+    const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -82,17 +80,17 @@ const Projects = () => {
             </div>
 
             <div className="flex flex-wrap justify-center gap-3">
-              {tags.map((tag) => (
+              {categories.map((category) => (
                 <Button
-                  key={tag}
-                  variant={selectedTag === tag ? "default" : "outline"}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`${selectedTag === tag
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`${selectedCategory === category
                     ? "bg-bca-red text-white hover:bg-bca-red-hover"
                     : "border-border text-foreground hover:bg-bca-red/20 hover:border-bca-red"
                     }`}
                 >
-                  {tag}
+                  {category}
                 </Button>
               ))}
             </div>
@@ -150,9 +148,11 @@ const Projects = () => {
                       {project.name}
                     </h3>
 
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Built by: <span className="text-bca-red font-medium">{project.built_by}</span>
-                    </p>
+                    <div className="flex items-center gap-2 mb-3 text-sm">
+                      <span className="bg-secondary px-2 py-0.5 rounded text-muted-foreground text-xs">{project.category || 'Project'}</span>
+                      <span className="text-muted-foreground">•</span>
+                      <span className="text-muted-foreground">By <span className="text-bca-red font-medium">{project.built_by}</span></span>
+                    </div>
 
                     <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
 

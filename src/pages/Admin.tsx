@@ -943,6 +943,8 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
 const ProjectsManager = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<any>(null);
 
   const { data: projects, isLoading } = useQuery({
     queryKey: ['admin-projects'],
@@ -987,6 +989,21 @@ const ProjectsManager = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Projects</h2>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={() => setEditingProject(null)} className="hidden">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Project
+            </Button>
+          </DialogTrigger>
+          <ProjectDialog
+            project={editingProject}
+            onClose={() => {
+              setIsDialogOpen(false);
+              setEditingProject(null);
+            }}
+          />
+        </Dialog>
       </div>
 
       {isLoading ? (
@@ -1005,6 +1022,8 @@ const ProjectsManager = () => {
                     <div className="flex gap-2 mt-2 text-sm text-muted-foreground">
                       <span>By {project.built_by}</span>
                       <span>•</span>
+                      <span>{project.category || 'Uncategorized'}</span>
+                      <span>•</span>
                       <span className={project.approved ? 'text-green-500' : 'text-yellow-500'}>
                         {project.approved ? 'Approved' : 'Pending'}
                       </span>
@@ -1017,6 +1036,16 @@ const ProjectsManager = () => {
                       onClick={() => toggleApproveMutation.mutate({ id: project.id, approved: !!project.approved })}
                     >
                       {project.approved ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditingProject(project);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="destructive"
@@ -1033,6 +1062,134 @@ const ProjectsManager = () => {
         </div>
       )}
     </div>
+  );
+};
+
+// Project Dialog Component
+const ProjectDialog = ({ project, onClose }: { project: any; onClose: () => void }) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: project?.name || '',
+    description: project?.description || '',
+    full_description: project?.full_description || '',
+    category: project?.category || '',
+    built_by: project?.built_by || '',
+    thumbnail_url: project?.thumbnail_url || '',
+    github_url: project?.github_url || '',
+    live_demo_url: project?.live_demo_url || '',
+    tech_stack: project?.tech_stack ? project.tech_stack.join(', ') : '',
+  });
+
+  useEffect(() => {
+    setFormData({
+      name: project?.name || '',
+      description: project?.description || '',
+      full_description: project?.full_description || '',
+      category: project?.category || '',
+      built_by: project?.built_by || '',
+      thumbnail_url: project?.thumbnail_url || '',
+      github_url: project?.github_url || '',
+      live_demo_url: project?.live_demo_url || '',
+      tech_stack: project?.tech_stack ? project.tech_stack.join(', ') : '',
+    });
+  }, [project]);
+
+  const saveMutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const projectData = {
+        ...data,
+        tech_stack: data.tech_stack.split(',').map((t: string) => t.trim()).filter(Boolean),
+      };
+
+      if (project) {
+        const { error } = await supabase
+          .from('projects')
+          .update(projectData)
+          .eq('id', project.id);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      toast({ title: 'Success', description: 'Project updated successfully' });
+      onClose();
+    },
+    onError: (error: any) => {
+      console.error('Save error:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to save project',
+        variant: 'destructive'
+      });
+    },
+  });
+
+  return (
+    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
+      <DialogHeader>
+        <DialogTitle className="text-foreground">Edit Project</DialogTitle>
+      </DialogHeader>
+      <div className="space-y-4 overflow-y-auto flex-1 pr-2">
+        <div>
+          <Label htmlFor="name" className="text-foreground">Project Name</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="bg-background border-border text-foreground"
+          />
+        </div>
+        <div>
+          <Label htmlFor="category" className="text-foreground">Category</Label>
+          <Select
+            value={formData.category}
+            onValueChange={(value) => setFormData({ ...formData, category: value })}
+          >
+            <SelectTrigger className="bg-background border-border text-foreground">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Web App">Web App</SelectItem>
+              <SelectItem value="Mobile App">Mobile App</SelectItem>
+              <SelectItem value="Desktop App">Desktop App</SelectItem>
+              <SelectItem value="Design / UI/UX">Design / UI/UX</SelectItem>
+              <SelectItem value="AI / ML">AI / ML</SelectItem>
+              <SelectItem value="Hardware / IoT">Hardware / IoT</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="built_by" className="text-foreground">Built By</Label>
+          <Input
+            id="built_by"
+            value={formData.built_by}
+            onChange={(e) => setFormData({ ...formData, built_by: e.target.value })}
+            className="bg-background border-border text-foreground"
+          />
+        </div>
+        <div>
+          <Label htmlFor="description" className="text-foreground">Short Description</Label>
+          <Textarea
+            id="description"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            rows={2}
+            className="bg-background border-border text-foreground"
+          />
+        </div>
+      </div>
+      <DialogFooter className="mt-4">
+        <Button variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button onClick={() => saveMutation.mutate(formData)}>
+          {saveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+        </Button>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 
