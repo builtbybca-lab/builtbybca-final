@@ -145,10 +145,12 @@ const Blog = () => {
                     <div className="p-4">
                       <div className="flex flex-wrap items-center text-xs text-muted-foreground mb-2 gap-1">
                         <User className="w-3 h-3 mr-1" />
-                        <span className="truncate max-w-[80px]">{post.author}</span>
+                        <span className="truncate max-w-[80px]">{post.author || "Team BCA"}</span>
                         <span className="mx-1">•</span>
                         <Calendar className="w-3 h-3 mr-1" />
-                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                        <span>
+                          {post.date ? new Date(post.date).toLocaleDateString() : "Recently"}
+                        </span>
                       </div>
 
                       <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-bca-red transition-colors line-clamp-2">
