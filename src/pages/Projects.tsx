@@ -201,14 +201,6 @@ const Projects = () => {
                   alt={selectedProject.name}
                   className="w-full h-48 sm:h-72 object-cover rounded-lg"
                 />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white"
-                  onClick={() => setSelectedProject(null)}
-                >
-                  <X className="w-5 h-5" />
-                </Button>
                 {selectedProject.featured && (
                   <div className="absolute top-4 left-4">
                     <span className="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-bold">
