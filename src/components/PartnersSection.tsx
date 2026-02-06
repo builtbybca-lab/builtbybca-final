@@ -75,6 +75,8 @@ const PartnersSection = () => {
                 <img
                   src={company.logo}
                   alt={`${company.name} logo`}
+                  width={150}
+                  height={48}
                   className="h-10 md:h-12 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300 pointer-events-none"
                   loading="lazy"
                 />

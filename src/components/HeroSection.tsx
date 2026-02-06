@@ -27,6 +27,10 @@ const HeroSection = () => {
           <img
             src="/logo.png"
             alt="BuiltBy.BCA Logo"
+            width={208}
+            height={208}
+            // @ts-ignore - fetchPriority is standard but TS might complain
+            fetchPriority="high"
             className="h-36 sm:h-44 md:h-52 w-auto object-contain hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_25px_rgba(229,9,20,0.5)]"
           />
         </div>

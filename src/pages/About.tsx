@@ -58,7 +58,7 @@ const About = () => {
             </div>
             <div className="relative">
               <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-muted rounded-xl overflow-hidden">
-                <img src="/mission.jpg" alt="BCA Campus" className="w-full h-full object-cover" />
+                <img src="/mission.jpg" alt="BCA Campus" loading="lazy" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@ const About = () => {
             {team.map((member, index) => (
               <div key={index} className="w-full md:w-64 lg:w-72 bg-card/50 backdrop-blur-sm rounded-xl border border-border overflow-hidden hover:border-bca-red/30 transition-all duration-300">
                 <div className="aspect-square bg-gradient-to-br from-bca-red/20 to-muted">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover object-top" />
+                  <img src={member.image} alt={member.name} loading="lazy" className="w-full h-full object-cover object-top" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-bold text-foreground mb-1">{member.name}</h3>

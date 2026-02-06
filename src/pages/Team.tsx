@@ -162,6 +162,7 @@ const Team = () => {
                           <img
                             src={member.image_url || "/placeholder.svg"}
                             alt={member.name}
+                            loading="lazy"
                             className="w-full h-full object-cover rounded-full border-2 border-border group-hover:border-bca-red transition-colors relative z-10"
                           />
                         </div>
@@ -228,6 +229,7 @@ const Team = () => {
                                 <img
                                   src={member.image_url || "/placeholder.svg"}
                                   alt={member.name}
+                                  loading="lazy"
                                   className="w-full h-full object-cover rounded-full border border-border"
                                 />
                               </div>
