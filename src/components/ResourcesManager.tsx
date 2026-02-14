@@ -20,8 +20,9 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database, FileText } from "lucide-react";
 import { ImageUpload } from "@/components/ui/ImageUpload";
+import { FileUpload } from "@/components/ui/FileUpload";
 
 export const ResourcesManager = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -295,8 +296,11 @@ export const ResourcesManager = () => {
         setIsOpen(true);
     };
 
+    const [uploadMode, setUploadMode] = useState<"url" | "file">("url");
+
     const resetForm = () => {
         setEditingResource(null);
+        setUploadMode("url");
         setFormData({
             title: "",
             description: "",
@@ -389,18 +393,53 @@ export const ResourcesManager = () => {
                                 />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label>URL</Label>
-                                <div className="relative">
-                                    <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        className="pl-9"
-                                        required
-                                        value={formData.url}
-                                        onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                                        placeholder="https://..."
-                                    />
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <Label>Resource Content</Label>
+                                    <div className="flex bg-secondary/50 rounded-lg p-1">
+                                        <Button
+                                            type="button"
+                                            variant={uploadMode === "url" ? "secondary" : "ghost"}
+                                            size="sm"
+                                            className="h-7 text-xs"
+                                            onClick={() => setUploadMode("url")}
+                                        >
+                                            <ExternalLink className="w-3 h-3 mr-1" /> URL
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            variant={uploadMode === "file" ? "secondary" : "ghost"}
+                                            size="sm"
+                                            className="h-7 text-xs"
+                                            onClick={() => setUploadMode("file")}
+                                        >
+                                            <FileText className="w-3 h-3 mr-1" /> Upload
+                                        </Button>
+                                    </div>
                                 </div>
+
+                                {uploadMode === "url" ? (
+                                    <div className="space-y-2">
+                                        <div className="relative">
+                                            <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                            <Input
+                                                className="pl-9"
+                                                required
+                                                value={formData.url}
+                                                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                                                placeholder="https://..."
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <FileUpload
+                                        value={formData.url}
+                                        onChange={(url) => {
+                                            setFormData({ ...formData, url, type: "download" });
+                                        }}
+                                        bucket="resource-files"
+                                    />
+                                )}
                             </div>
 
                             <div className="space-y-2">
