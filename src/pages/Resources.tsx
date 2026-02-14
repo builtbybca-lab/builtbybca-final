@@ -23,7 +23,8 @@ import {
     Video,
     Link2,
     GraduationCap,
-    Search
+    Search,
+    Pin
 } from "lucide-react";
 
 type ResourceCategory = "all" | "learning" | "tools" | "career" | "downloads";
@@ -46,6 +47,7 @@ const Resources = () => {
             const { data, error } = await supabase
                 .from("resources")
                 .select("*")
+                .order("is_pinned", { ascending: false })
                 .order("created_at", { ascending: false });
 
             if (error) throw error;
@@ -187,6 +189,14 @@ const Resources = () => {
                                                 {resource.type}
                                             </span>
                                         </div>
+
+                                        {resource.is_pinned && (
+                                            <div className="absolute top-2 right-2">
+                                                <div className="p-1 rounded-full bg-primary text-primary-foreground shadow-sm">
+                                                    <Pin className="w-3 h-3 fill-current" />
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Content Area */}

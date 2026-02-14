@@ -20,7 +20,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database, FileText } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database, FileText, Pin } from "lucide-react";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { FileUpload } from "@/components/ui/FileUpload";
 
@@ -35,6 +35,7 @@ export const ResourcesManager = () => {
         url: "",
         image_url: "",
         tags: "",
+        is_pinned: false,
     });
 
     const { toast } = useToast();
@@ -273,6 +274,7 @@ export const ResourcesManager = () => {
             url: formData.url,
             image_url: formData.image_url || null,
             tags: tagsArray,
+            is_pinned: formData.is_pinned,
         };
 
         if (editingResource) {
@@ -292,6 +294,7 @@ export const ResourcesManager = () => {
             url: resource.url,
             image_url: resource.image_url || "",
             tags: resource.tags?.join(", ") || "",
+            is_pinned: resource.is_pinned || false,
         });
         setIsOpen(true);
     };
@@ -309,6 +312,7 @@ export const ResourcesManager = () => {
             url: "",
             image_url: "",
             tags: "",
+            is_pinned: false,
         });
     };
 
@@ -462,6 +466,19 @@ export const ResourcesManager = () => {
                                 />
                             </div>
 
+                            <div className="flex items-center space-x-2 py-2">
+                                <input
+                                    type="checkbox"
+                                    id="is_pinned"
+                                    checked={formData.is_pinned}
+                                    onChange={(e) => setFormData({ ...formData, is_pinned: e.target.checked })}
+                                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                />
+                                <Label htmlFor="is_pinned" className="flex items-center gap-2 cursor-pointer">
+                                    <Pin className="w-4 h-4 text-primary" /> Pin to top
+                                </Label>
+                            </div>
+
                             <Button type="submit" className="w-full" disabled={createMutation.isPending || updateMutation.isPending}>
                                 {createMutation.isPending || updateMutation.isPending ? (
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -497,7 +514,10 @@ export const ResourcesManager = () => {
                                     </div>
                                 )}
                                 <div>
-                                    <h3 className="font-semibold line-clamp-1">{resource.title}</h3>
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="font-semibold line-clamp-1">{resource.title}</h3>
+                                        {resource.is_pinned && <Pin className="w-3 h-3 text-primary fill-primary" />}
+                                    </div>
                                     <div className="flex gap-2 text-xs text-muted-foreground">
                                         <span className="capitalize">{resource.category}</span>
                                         <span>•</span>
