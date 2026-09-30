@@ -231,7 +231,7 @@ const Events = () => {
             </div>
           </div>
 
-          {selectedEvent.speakers && selectedEvent.speakers.length > 0 && <div>
+          {Array.isArray(selectedEvent.speakers) && selectedEvent.speakers.length > 0 && <div>
             <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
               <Users className="w-5 h-5 mr-2" />
               Speakers

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Upload, X, Loader2, FileText, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ export const FileUpload = ({
 }: FileUploadProps) => {
     const [uploading, setUploading] = useState(false);
     const { toast } = useToast();
+    const inputId = useId();
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -133,10 +134,10 @@ export const FileUpload = ({
                         onChange={handleUpload}
                         disabled={uploading}
                         className="hidden"
-                        id={`file-upload-${bucket}`}
+                        id={inputId}
                     />
                     <label
-                        htmlFor={`file-upload-${bucket}`}
+                        htmlFor={inputId}
                         className="cursor-pointer flex flex-col items-center space-y-2"
                     >
                         {uploading ? (

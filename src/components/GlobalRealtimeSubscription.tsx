@@ -2,12 +2,14 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 export const GlobalRealtimeSubscription = () => {
     const queryClient = useQueryClient();
+    const { user } = useAuth();
 
     useEffect(() => {
-        console.log("Setting up global realtime subscription...");
+        if (!user) return;
 
         const channel = supabase
             .channel("global-db-changes")
@@ -18,11 +20,7 @@ export const GlobalRealtimeSubscription = () => {
                     schema: "public",
                 },
                 (payload) => {
-                    console.log("Realtime change detected:", payload);
                     const { table } = payload;
-
-                    // Map table names to query keys
-                    // These keys must match what is used in useQuery across the app
                     switch (table) {
                         case "events":
                             queryClient.invalidateQueries({ queryKey: ["events"] });
@@ -47,19 +45,15 @@ export const GlobalRealtimeSubscription = () => {
                         case "notifications":
                             queryClient.invalidateQueries({ queryKey: ["notifications"] });
                             break;
-
-                        // Add other tables as needed
                     }
                 }
             )
-            .subscribe((status) => {
-                console.log("Global subscription status:", status);
-            });
+            .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [queryClient]);
+    }, [queryClient, user]);
 
-    return null; // This component doesn't render anything
+    return null;
 };

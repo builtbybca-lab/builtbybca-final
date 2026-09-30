@@ -30,10 +30,9 @@ export const useNotifications = () => {
             const { data, error } = await supabase
                 .from("notification_dismissals")
                 .select("notification_id")
-                .eq("user_id", user.id!)
-                .throwOnError();
+                .eq("user_id", user.id!);
             if (error) throw error;
-            return data.map(d => d.notification_id);
+            return (data || []).map(d => d.notification_id);
         },
         enabled: !!user,
     });

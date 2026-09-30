@@ -1,16 +1,30 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-interface AuthState {
+interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
+  signOut: () => Promise<void>;
 }
 
-export const useAuth = () => {
-  const [state, setState] = useState<AuthState>({
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  session: null,
+  loading: true,
+  isAdmin: false,
+  signOut: async () => {},
+});
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [state, setState] = useState<{
+    user: User | null;
+    session: Session | null;
+    loading: boolean;
+    isAdmin: boolean;
+  }>({
     user: null,
     session: null,
     loading: true,
@@ -81,19 +95,31 @@ export const useAuth = () => {
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
-    setState({
-      user: null,
-      session: null,
-      loading: false,
-      isAdmin: false,
-    });
+    if (mountedRef.current) {
+      setState({
+        user: null,
+        session: null,
+        loading: false,
+        isAdmin: false,
+      });
+    }
   }, []);
 
-  return {
-    user: state.user,
-    session: state.session,
-    loading: state.loading,
-    isAdmin: state.isAdmin,
-    signOut,
-  };
+  return (
+    <AuthContext.Provider
+      value={{
+        user: state.user,
+        session: state.session,
+        loading: state.loading,
+        isAdmin: state.isAdmin,
+        signOut,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };

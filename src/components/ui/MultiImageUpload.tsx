@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ export const MultiImageUpload = ({
 }: MultiImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+  const inputId = useId();
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -111,7 +112,7 @@ export const MultiImageUpload = ({
       {value.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {value.map((url, index) => (
-            <div key={index} className="relative group">
+            <div key={`${url}-${index}`} className="relative group">
               <img
                 src={url}
                 alt={`Upload ${index + 1}`}
@@ -140,10 +141,10 @@ export const MultiImageUpload = ({
             onChange={handleUpload}
             disabled={uploading}
             className="hidden"
-            id={`multi-image-upload-${bucket}`}
+            id={inputId}
           />
           <label
-            htmlFor={`multi-image-upload-${bucket}`}
+            htmlFor={inputId}
             className="cursor-pointer flex flex-col items-center space-y-2"
           >
             {uploading ? (

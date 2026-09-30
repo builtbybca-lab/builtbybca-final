@@ -213,10 +213,18 @@ const BlogPost = () => {
 
           <div
             className="prose prose-invert prose-lg max-w-none mb-12 whitespace-pre-wrap font-serif leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{
+              __html: post.content
+                ? post.content
+                    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+                    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+                    .replace(/\s*on\w+\s*=\s*(['"])(.*?)\1/gi, "")
+                    .replace(/\s*on\w+\s*=\s*[^>\s]+/gi, "")
+                : ""
+            }}
           />
 
-          {post.tags && post.tags.length > 0 && (
+          {Array.isArray(post.tags) && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-12">
               {post.tags.map((tag, index) => (
                 <span

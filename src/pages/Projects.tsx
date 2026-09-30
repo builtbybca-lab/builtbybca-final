@@ -158,14 +158,14 @@ const Projects = () => {
                     <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags.slice(0, 3).map((tag, index) => (
+                      {(project.tags || []).slice(0, 3).map((tag, index) => (
                         <Badge key={index} variant="outline" className="border-bca-red/30 text-bca-red">
                           {tag}
                         </Badge>
                       ))}
-                      {project.tags.length > 3 && (
+                      {(project.tags || []).length > 3 && (
                         <Badge variant="outline" className="border-border text-muted-foreground">
-                          +{project.tags.length - 3}
+                          +{(project.tags || []).length - 3}
                         </Badge>
                       )}
                     </div>
@@ -217,7 +217,7 @@ const Projects = () => {
                 <p className="text-muted-foreground leading-relaxed">{selectedProject.full_description}</p>
               </div>
 
-              {selectedProject.tech_stack && selectedProject.tech_stack.length > 0 && (
+              {Array.isArray(selectedProject.tech_stack) && selectedProject.tech_stack.length > 0 && (
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Tech Stack</h3>
                   <div className="flex flex-wrap gap-2">
@@ -230,7 +230,7 @@ const Projects = () => {
                 </div>
               )}
 
-              {selectedProject.tags && selectedProject.tags.length > 0 && (
+              {Array.isArray(selectedProject.tags) && selectedProject.tags.length > 0 && (
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Tags</h3>
                   <div className="flex flex-wrap gap-2">
@@ -243,7 +243,7 @@ const Projects = () => {
                 </div>
               )}
 
-              {selectedProject.screenshots && selectedProject.screenshots.length > 0 && (
+              {Array.isArray(selectedProject.screenshots) && selectedProject.screenshots.length > 0 && (
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-3">Screenshots</h3>
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
