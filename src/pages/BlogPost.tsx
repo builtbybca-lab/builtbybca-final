@@ -60,7 +60,7 @@ const BlogPost = () => {
         author_bio: 'Tech enthusiast and writer',
         date: data.created_at,
         category: data.category,
-        hero_image_url: data.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        hero_image_url: data.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
         tags: [],
         read_time: '5 min read'
       } as BlogPostFull;
@@ -87,7 +87,7 @@ const BlogPost = () => {
         title: p.title,
         slug: p.slug,
         excerpt: p.excerpt,
-        thumbnail_url: p.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        thumbnail_url: p.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
         category: p.category,
         read_time: '5 min read'
       })) as RelatedPost[];
@@ -203,11 +203,18 @@ const BlogPost = () => {
             </Button>
           </div>
 
-          <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg">
+          <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg aspect-video bg-gradient-to-br from-bca-red/20 to-muted">
             <img
               src={post.hero_image_url}
-              alt={post.title}
-              className="w-full h-auto object-cover"
+              alt=""
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (!target.dataset.failed) {
+                  target.dataset.failed = 'true';
+                  target.src = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80';
+                }
+              }}
+              className="w-full h-full object-cover"
             />
           </div>
 

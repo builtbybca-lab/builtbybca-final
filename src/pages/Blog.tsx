@@ -42,7 +42,7 @@ const Blog = () => {
         author: post.author_name,
         date: post.created_at,
         category: post.category,
-        thumbnail_url: post.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        thumbnail_url: post.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
         read_time: '5 min read'
       })) as BlogPost[];
     },
@@ -131,11 +131,14 @@ const Blog = () => {
                     <div className="aspect-video bg-gradient-to-br from-bca-red/20 to-muted relative overflow-hidden">
                       <img
                         src={post.thumbnail_url}
-                        alt={post.title}
+                        alt=""
                         loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97';
+                          if (!target.dataset.failed) {
+                            target.dataset.failed = 'true';
+                            target.src = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80';
+                          }
                         }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

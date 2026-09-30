@@ -50,16 +50,21 @@ const BlogsSection = () => {
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   {/* Blog Image */}
-                  {post.image_url && (
-                    <div className="aspect-video overflow-hidden">
-                      <img
-                        src={post.image_url}
-                        alt={post.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                  )}
+                  <div className="aspect-video overflow-hidden bg-gradient-to-br from-bca-red/20 to-muted">
+                    <img
+                      src={post.image_url || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80'}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.dataset.failed) {
+                          target.dataset.failed = 'true';
+                          target.src = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80';
+                        }
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
 
                   {/* Blog Content */}
                   <div className="p-6">
