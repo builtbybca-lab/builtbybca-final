@@ -326,6 +326,51 @@ export type Database = {
         }
         Relationships: []
       }
+      question_papers: {
+        Row: {
+          id: string
+          title: string
+          subject_name: string
+          subject_code: string | null
+          semester: number
+          year: number
+          exam_type: string
+          scheme: string | null
+          file_url: string
+          file_size: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          subject_name: string
+          subject_code?: string | null
+          semester: number
+          year: number
+          exam_type: string
+          scheme?: string | null
+          file_url: string
+          file_size?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          subject_name?: string
+          subject_code?: string | null
+          semester?: number
+          year?: number
+          exam_type?: string
+          scheme?: string | null
+          file_url?: string
+          file_size?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           active: boolean | null

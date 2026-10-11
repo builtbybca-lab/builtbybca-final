@@ -15,6 +15,7 @@ import { Loader2, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { MultiImageUpload } from '@/components/ui/MultiImageUpload';
 import { ResourcesManager } from '@/components/ResourcesManager';
+import { QuestionBankManager } from '@/components/QuestionBankManager';
 import { NotificationsManager } from '@/components/NotificationsManager';
 import {
   Dialog,
@@ -75,12 +76,13 @@ const Admin = () => {
 
         <Tabs defaultValue="blog" className="w-full">
           <div className="overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0">
-            <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-7 mb-6 sm:mb-8 h-auto">
+            <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-8 mb-6 sm:mb-8 h-auto">
               <TabsTrigger value="blog" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Blog Posts</TabsTrigger>
               <TabsTrigger value="events" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Events</TabsTrigger>
               <TabsTrigger value="team" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Team</TabsTrigger>
               <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Projects</TabsTrigger>
               <TabsTrigger value="resources" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Resources</TabsTrigger>
+              <TabsTrigger value="question_bank" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Question Bank</TabsTrigger>
               <TabsTrigger value="notifications" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Notifications</TabsTrigger>
               <TabsTrigger value="testimonials" className="text-xs sm:text-sm px-3 sm:px-4 whitespace-nowrap">Testimonials</TabsTrigger>
             </TabsList>
@@ -104,6 +106,10 @@ const Admin = () => {
 
           <TabsContent value="resources">
             <ResourcesManager />
+          </TabsContent>
+
+          <TabsContent value="question_bank">
+            <QuestionBankManager />
           </TabsContent>
 
           <TabsContent value="notifications">

@@ -26,6 +26,7 @@ import {
     Search,
     Pin
 } from "lucide-react";
+import { QuestionBankSection } from "@/components/QuestionBankSection";
 
 type ResourceCategory = "all" | "learning" | "tools" | "career" | "downloads";
 
@@ -149,7 +150,7 @@ const Resources = () => {
             </section>
 
             {/* Resources Grid */}
-            <section className="flex-1 px-4 pb-24 pt-8">
+            <section className="flex-1 px-4 pb-16 pt-8">
                 <div className="max-w-7xl mx-auto">
                     {isLoading ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -247,6 +248,13 @@ const Resources = () => {
                             </Button>
                         </div>
                     )}
+                </div>
+            </section>
+
+            {/* Question Bank Section (Next) */}
+            <section className="px-4 pb-24 pt-10 border-t border-border/40">
+                <div className="max-w-7xl mx-auto">
+                    <QuestionBankSection />
                 </div>
             </section>
 

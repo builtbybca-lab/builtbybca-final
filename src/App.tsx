@@ -30,6 +30,8 @@ import LoadingFallback from "@/components/ui/LoadingFallback";
 
 import { GlobalRealtimeSubscription } from "./components/GlobalRealtimeSubscription";
 import ScrollToTop from "./components/ScrollToTop";
+import { ScrollProgressBar } from "./components/motion/MotionWrapper";
+import ScrollToTopButton from "./components/motion/ScrollToTopButton";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,12 +49,14 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+        <ScrollProgressBar />
         <GlobalRealtimeSubscription />
         <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <ScrollToTop />
+            <ScrollToTopButton />
             <Suspense fallback={<LoadingFallback />}>
               <Routes>
                 <Route path="/" element={<Index />} />
