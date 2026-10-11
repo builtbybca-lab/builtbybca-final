@@ -36,7 +36,11 @@ const Footer = () => {
         {/* Brand Section */}
         <div className="lg:col-span-1 text-center sm:text-left">
           <div className="mb-6">
-            <img src="/logo.png" alt="BCA Logo" className="w-auto " />
+            <img
+              src="/logo.png"
+              alt="BuiltBy.BCA Logo"
+              className="h-10 sm:h-12 w-auto object-contain mx-auto sm:mx-0"
+            />
           </div>
           <p className="text-muted-foreground mb-6 leading-relaxed">
             Empowering students through hands-on learning, leadership, and industry exposure.
@@ -88,6 +92,22 @@ const Footer = () => {
                 builtby.bca@gmail.com
               </a>
             </div>
+          </div>
+
+          {/* College Logo in right bottom whitespace */}
+          <div className="mt-6 pt-2 flex justify-center sm:justify-start">
+            <a
+              href="https://aibmckm.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block hover:opacity-85 transition-opacity group"
+            >
+              <img
+                src="/aibm-logo.png"
+                alt="Adichunchanagiri Institute Of Business Management"
+                className="h-14 sm:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </a>
           </div>
         </div>
       </div>

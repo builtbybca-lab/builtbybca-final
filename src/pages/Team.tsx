@@ -1,10 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { Linkedin, Github, Instagram, Twitter } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  staggerContainerVariants,
+  staggerItemVariants,
+} from "@/components/motion/MotionWrapper";
 
 interface TeamMember {
   id: string;
@@ -23,7 +28,7 @@ interface TeamMember {
   division?: string;
 }
 
-const Team = () => {
+const Team: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   const { data: members = [], isLoading } = useQuery({
@@ -44,6 +49,8 @@ const Team = () => {
         image_url: m.image_url || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
         linkedin_url: m.linkedin_url,
         github_url: m.github_url,
+        instagram_url: m.instagram_url,
+        twitter_url: m.twitter_url,
         display_order: m.display_order,
         year: m.year,
         batch: m.batch,
@@ -105,87 +112,123 @@ const Team = () => {
     return acc;
   }, {} as Record<string, TeamMember[]>);
 
-  // Sort batches (assuming format YYYY-YYYY, sort descending)
+  // Sort batches descending
   const sortedBatches = Object.keys(groupedAlumni).sort().reverse();
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="pt-32 pb-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Meet Our <span className="text-bca-red">Team</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Get to know the passionate individuals driving innovation and fostering a vibrant tech community.
-          </p>
+      <section className="pt-36 sm:pt-40 pb-16 px-4 relative overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(229,9,20,0.04),transparent_60%)] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="inline-flex items-center space-x-2 bg-card/80 border border-border/80 px-3.5 py-1 rounded-full shadow-sm mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-bca-red" />
+              <span className="text-bca-red font-mono text-xs tracking-wider uppercase font-semibold">
+                THE PEOPLE
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 font-serif">
+              Meet Our <span className="text-bca-red">Team</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 font-light leading-relaxed">
+              Get to know the passionate builders, mentors, and student leaders driving the BuiltBy.BCA cohort.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      <section className="pb-24 px-4">
+      <section className="pb-28 px-4">
         <div className="max-w-7xl mx-auto">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-card/50 rounded-xl border border-border p-6 animate-pulse flex flex-col items-center"
+                  className="bg-card/50 rounded-2xl border border-border p-6 animate-pulse flex flex-col items-center"
                 >
-                  <div className="w-32 h-32 bg-muted rounded-full mb-4" />
+                  <div className="w-28 h-28 bg-muted rounded-full mb-4" />
                   <div className="h-6 w-3/4 bg-muted rounded mb-2" />
                   <div className="h-4 w-1/2 bg-muted rounded mb-4" />
-                  <div className="w-full space-y-2 mb-4">
-                    <div className="h-3 w-full bg-muted rounded" />
-                    <div className="h-3 w-5/6 bg-muted rounded mx-auto" />
-                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="space-y-20">
-              {/* Current Team Sections */}
+            <div className="space-y-24">
+              {/* Current Team Divisions */}
               {Object.entries(groupedCurrentMembers).map(([division, divisionMembers]) => (
-                <div key={division} className="animate-fade-up">
-                  <h2 className="text-3xl font-bold text-center mb-8 text-foreground relative inline-block left-1/2 transform -translate-x-1/2">
-                    <span className="border-b-4 border-bca-red pb-2">{division}</span>
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
+                <div key={division} className="space-y-10">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center"
+                  >
+                    <h2 className="text-2xl sm:text-3xl font-bold font-serif text-foreground inline-flex flex-col items-center">
+                      <span>{division}</span>
+                      <span className="w-10 h-0.5 bg-bca-red mt-2" />
+                    </h2>
+                  </motion.div>
+
+                  <motion.div
+                    variants={staggerContainerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-60px" }}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 justify-center"
+                  >
                     {divisionMembers.map((member) => (
-                      <div
+                      <motion.div
                         key={member.id}
-                        className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group"
+                        variants={staggerItemVariants}
+                        whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                        className="bg-card/90 backdrop-blur-sm rounded-2xl border border-border hover:border-bca-red/40 p-6 text-center shadow-sm hover:shadow-xl hover:shadow-bca-red/5 transition-colors duration-300 cursor-pointer group flex flex-col items-center justify-between"
                         onClick={() => setSelectedMember(member)}
                       >
-                        <div className="relative w-32 h-32 mx-auto mb-6">
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-bca-red to-purple-600 opacity-20 blur-lg group-hover:opacity-40 transition-opacity" />
-                          <img
-                            src={member.image_url || "/placeholder.svg"}
-                            alt={member.name}
-                            loading="lazy"
-                            className="w-full h-full object-cover rounded-full border-2 border-border group-hover:border-bca-red transition-colors relative z-10"
-                          />
-                        </div>
-                        <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-bca-red transition-colors">
-                          {member.name}
-                        </h3>
-                        <p className="text-muted-foreground font-medium mb-2">{member.role}</p>
-                        {member.year && member.year !== "Alumni" && member.year !== "Faculty" && (
-                          <span className="inline-block px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full mb-3">
-                            {member.year}
-                          </span>
-                        )}
+                        <div className="w-full flex flex-col items-center">
+                          <div className="relative w-28 h-28 mx-auto mb-5">
+                            <div className="absolute inset-0 rounded-full bg-bca-red/10 blur-md group-hover:bg-bca-red/20 transition-colors" />
+                            <img
+                              src={member.image_url || "/placeholder.svg"}
+                              alt={member.name}
+                              loading="lazy"
+                              className="w-full h-full object-cover rounded-full border-2 border-border group-hover:border-bca-red transition-colors relative z-10"
+                            />
+                          </div>
 
-                        <div className="flex gap-4 justify-center mt-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                          <h3 className="text-lg font-bold text-foreground mb-1 group-hover:text-bca-red transition-colors font-serif">
+                            {member.name}
+                          </h3>
+
+                          <p className="text-muted-foreground text-xs font-mono mb-2">{member.role}</p>
+
+                          {member.year && member.year !== "Alumni" && member.year !== "Faculty" && (
+                            <span className="inline-block px-2.5 py-0.5 bg-secondary text-muted-foreground text-[11px] font-mono rounded-full mb-3">
+                              {member.year}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex gap-3 justify-center mt-3 pt-3 border-t border-border/40 w-full">
                           {member.linkedin_url && (
                             <a
                               href={member.linkedin_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-muted-foreground hover:text-[#0077b5] transition-colors"
+                              className="text-muted-foreground hover:text-bca-red transition-colors p-1"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Linkedin className="w-5 h-5" />
+                              <Linkedin className="w-4 h-4" />
                             </a>
                           )}
                           {member.github_url && (
@@ -193,39 +236,67 @@ const Team = () => {
                               href={member.github_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              className="text-muted-foreground hover:text-foreground transition-colors p-1"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Github className="w-5 h-5" />
+                              <Github className="w-4 h-4" />
+                            </a>
+                          )}
+                          {member.instagram_url && (
+                            <a
+                              href={member.instagram_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-bca-red transition-colors p-1"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Instagram className="w-4 h-4" />
                             </a>
                           )}
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               ))}
 
               {/* Alumni Section */}
               {sortedBatches.length > 0 && (
-                <div className="pt-12 border-t border-border">
-                  <h2 className="text-4xl font-bold text-center mb-12 text-gradient font-display">
-                    Our Alumni
-                  </h2>
+                <div className="pt-16 border-t border-border/60">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    className="text-center mb-14"
+                  >
+                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground font-serif">
+                      Our <span className="text-bca-red">Alumni</span>
+                    </h2>
+                  </motion.div>
+
                   <div className="space-y-16">
                     {sortedBatches.map((batch) => (
-                      <div key={batch} className="animate-fade-up">
-                        <h3 className="text-2xl font-semibold text-center mb-8 text-muted-foreground">
-                          Batch of {batch}
+                      <div key={batch} className="space-y-8">
+                        <h3 className="text-xl font-mono text-center text-muted-foreground">
+                          // BATCH OF {batch}
                         </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                        <motion.div
+                          variants={staggerContainerVariants}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true, margin: "-60px" }}
+                          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                        >
                           {groupedAlumni[batch].map((member) => (
-                            <div
+                            <motion.div
                               key={member.id}
-                              className="bg-card/30 rounded-xl border border-border p-6 text-center opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+                              variants={staggerItemVariants}
+                              whileHover={{ y: -4 }}
+                              className="bg-card/70 backdrop-blur-sm rounded-2xl border border-border hover:border-bca-red/30 p-5 text-center cursor-pointer transition-colors"
                               onClick={() => setSelectedMember(member)}
                             >
-                              <div className="w-24 h-24 mx-auto mb-4 grayscale hover:grayscale-0 transition-all duration-300">
+                              <div className="w-20 h-20 mx-auto mb-3">
                                 <img
                                   src={member.image_url || "/placeholder.svg"}
                                   alt={member.name}
@@ -233,11 +304,11 @@ const Team = () => {
                                   className="w-full h-full object-cover rounded-full border border-border"
                                 />
                               </div>
-                              <h3 className="text-lg font-bold text-foreground">{member.name}</h3>
-                              <p className="text-sm text-muted-foreground">{member.role}</p>
-                            </div>
+                              <h4 className="text-base font-bold text-foreground font-serif">{member.name}</h4>
+                              <p className="text-xs text-muted-foreground font-mono mt-0.5">{member.role}</p>
+                            </motion.div>
                           ))}
-                        </div>
+                        </motion.div>
                       </div>
                     ))}
                   </div>
@@ -249,30 +320,32 @@ const Team = () => {
       </section>
 
       <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto bg-card border-border mx-2 sm:mx-auto">
           {selectedMember && (
             <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
                 <img
                   src={selectedMember.image_url}
                   alt={selectedMember.name}
-                  className="w-32 h-32 rounded-full object-cover border-4 border-bca-red/50"
+                  className="w-28 h-28 rounded-full object-cover border-2 border-bca-red"
                 />
                 <div className="flex-1 text-center sm:text-left">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{selectedMember.name}</h2>
-                  <p className="text-bca-red text-lg font-medium mb-1">{selectedMember.role}</p>
+                  <h2 className="text-2xl font-bold text-foreground font-serif mb-1">
+                    {selectedMember.name}
+                  </h2>
+                  <p className="text-bca-red text-sm font-mono mb-2">{selectedMember.role}</p>
                   {selectedMember.year && (
-                    <p className="text-muted-foreground text-sm mb-4">{selectedMember.year}</p>
+                    <p className="text-muted-foreground text-xs font-mono mb-3">{selectedMember.year}</p>
                   )}
-                  <div className="flex gap-3 justify-center sm:justify-start">
+                  <div className="flex gap-2.5 justify-center sm:justify-start">
                     {selectedMember.linkedin_url && (
                       <a
                         href={selectedMember.linkedin_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
+                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
                       >
-                        <Linkedin className="w-6 h-6" />
+                        <Linkedin className="w-4 h-4" />
                       </a>
                     )}
                     {selectedMember.github_url && (
@@ -280,9 +353,9 @@ const Team = () => {
                         href={selectedMember.github_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
+                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        <Github className="w-6 h-6" />
+                        <Github className="w-4 h-4" />
                       </a>
                     )}
                     {selectedMember.instagram_url && (
@@ -290,9 +363,9 @@ const Team = () => {
                         href={selectedMember.instagram_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
+                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
                       >
-                        <Instagram className="w-6 h-6" />
+                        <Instagram className="w-4 h-4" />
                       </a>
                     )}
                     {selectedMember.twitter_url && (
@@ -300,9 +373,9 @@ const Team = () => {
                         href={selectedMember.twitter_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-bca-red transition-colors"
+                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
                       >
-                        <Twitter className="w-6 h-6" />
+                        <Twitter className="w-4 h-4" />
                       </a>
                     )}
                   </div>
@@ -310,21 +383,21 @@ const Team = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-foreground mb-3">About</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <h3 className="text-base font-bold text-foreground mb-2 font-serif">About</h3>
+                <p className="text-muted-foreground font-light text-sm leading-relaxed">
                   {selectedMember.full_bio || selectedMember.bio}
                 </p>
               </div>
 
               {(selectedMember.batch || selectedMember.division) && (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-border/40">
                   {selectedMember.division && (
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-secondary text-foreground px-3 py-0.5 rounded-full text-xs font-mono">
                       {selectedMember.division}
                     </span>
                   )}
                   {selectedMember.batch && (
-                    <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-secondary text-foreground px-3 py-0.5 rounded-full text-xs font-mono">
                       Batch of {selectedMember.batch}
                     </span>
                   )}

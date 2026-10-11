@@ -1,92 +1,110 @@
-const PartnersSection = () => {
+import React from "react";
+import { motion } from "framer-motion";
+
+const PartnersSection: React.FC = () => {
   const techCompanies = [
     {
-      name: "GeeksforGeeks",
-      logo: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png",
-      bgColor: "bg-white"
+      name: "Flipkart",
+      logo: "/logos/flipkart.png",
+      bgColor: "bg-white",
     },
     {
       name: "Google",
-      logo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-      bgColor: "bg-white"
+      logo: "/logos/google.svg",
+      bgColor: "bg-white",
     },
     {
       name: "Microsoft",
-      logo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
-      bgColor: "bg-white"
+      logo: "/logos/microsoft.svg",
+      bgColor: "bg-white",
+    },
+    {
+      name: "GeeksforGeeks",
+      logo: "/logos/gfg.png",
+      bgColor: "bg-white",
     },
     {
       name: "Amazon",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-      bgColor: "bg-white"
+      logo: "/logos/amazon.svg",
+      bgColor: "bg-white",
     },
     {
       name: "Meta",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
-      bgColor: "bg-white"
+      logo: "/logos/meta.svg",
+      bgColor: "bg-white",
     },
     {
-      name: "OpenAI",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg",
-      bgColor: "bg-white"
+      name: "Netflix",
+      logo: "/logos/netflix.svg",
+      bgColor: "bg-white",
     },
     {
-      name: "Tesla",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
-      bgColor: "bg-white"
-    },
-    {
-      name: "IBM",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-      bgColor: "bg-white"
-    },
-    {
-      name: "Intel",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg",
-      bgColor: "bg-white"
+      name: "Spotify",
+      logo: "/logos/spotify.svg",
+      bgColor: "bg-white",
     },
   ];
 
-  return <section className="py-20 relative">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-          Partnering with{" "}
-          <span className="text-gradient">Alumni & companies</span>
-        </h2>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Strong connections with alumni and industry partners bring mentorship,
-          guest lectures, and career exposure.
-        </p>
-      </div>
-
-      <div className="mt-16">
-        <h3 className="text-center text-lg text-muted-foreground mb-8 font-medium">
-          Powered by Global Tech Companies
-        </h3>
-
-        <div className="relative overflow-hidden w-full">
-          <div className="flex animate-marquee-slow py-4">
-            {[...techCompanies, ...techCompanies, ...techCompanies].map((company, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 mx-8 md:mx-16 flex items-center justify-center group"
-              >
-                <img
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  width={150}
-                  height={48}
-                  className="h-10 md:h-12 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300 pointer-events-none"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+  return (
+    <section className="py-24 sm:py-28 relative overflow-hidden bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-16 space-y-4"
+        >
+          <div className="inline-flex items-center space-x-2 bg-card/80 border border-border/80 px-3.5 py-1 rounded-full shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-bca-red" />
+            <span className="text-bca-red font-mono text-xs tracking-wider uppercase font-semibold">
+              ECOSYSTEM & NETWORK
+            </span>
           </div>
-        </div>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground font-serif">
+            Partnering with <span className="text-bca-red">Alumni & Industry</span>
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            Strong connections with alumni and industry leaders bring high-impact mentorship, technical masterclasses, and career pathways.
+          </p>
+        </motion.div>
+
+        {/* Marquee with smooth gradient masks */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-8"
+        >
+          <div className="relative overflow-hidden w-full py-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex animate-marquee-slow hover:[animation-play-state:paused] py-3 items-center">
+              {[...techCompanies, ...techCompanies, ...techCompanies].map((company, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 mx-4 md:mx-6 flex items-center justify-center group/logo transition-transform duration-300 hover:scale-105"
+                >
+                  {/* Clean white pill card ensuring 100% original full colors with high contrast in both light and dark modes */}
+                  <div className="bg-white rounded-xl px-5 py-2.5 flex items-center justify-center shadow-md shadow-black/5 border border-border/40 hover:border-bca-red/40 transition-all duration-300 h-13 md:h-14 min-w-[130px]">
+                    <img
+                      src={company.logo}
+                      alt={`${company.name} logo`}
+                      width={140}
+                      height={40}
+                      className="h-7 md:h-8 w-auto max-w-[120px] object-contain pointer-events-none select-none transition-transform duration-300 group-hover/logo:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </div>
-  </section>;
+    </section>
+  );
 };
 
 export default PartnersSection;
