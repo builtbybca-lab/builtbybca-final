@@ -114,13 +114,25 @@ const Footer = () => {
 
       {/* Bottom Section */}
       <div className="border-t border-border mt-12 pt-8">
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 text-center sm:text-left">
           <p className="text-muted-foreground text-sm">
-            © 2024 BuiltBy.BCA. All rights reserved.
+            © 2025 BuiltBy.BCA. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-sm">
-            Made with ❤️ by BCA Students
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-muted-foreground text-sm">
+            <span>Made with ❤️ by BCA Students</span>
+            <span className="hidden sm:inline opacity-40">•</span>
+            <span>
+              Built by{" "}
+              <a
+                href="https://vikasacharya.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-bca-red font-medium transition-colors underline decoration-muted-foreground/40 hover:decoration-bca-red underline-offset-4"
+              >
+                vikasacharya.me
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
