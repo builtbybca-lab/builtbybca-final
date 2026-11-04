@@ -88,10 +88,9 @@ const Team: React.FC = () => {
     return (m.division || "Other") === activeDivisionTab;
   });
 
-  // Council Archive & Hall of Fame Members
-  // Includes past members (is_current === false OR year === Alumni) OR Founding members
+  // Council Archive & Hall of Fame Members (Past batches)
   const archiveMembers = members.filter(
-    (member) => member.is_current === false || member.year === "Alumni" || member.is_founding
+    (member) => member.is_current === false || member.year === "Alumni"
   );
 
   // Group Archive members by Tenure
@@ -109,7 +108,7 @@ const Team: React.FC = () => {
 
   // Active Council primary tenure term
   const activeTenure =
-    currentMembers.find((m) => m.tenure)?.tenure || "2025–2026";
+    currentMembers.find((m) => m.tenure)?.tenure || "2026–2027";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -218,7 +217,27 @@ const Team: React.FC = () => {
                 </div>
 
                 {/* Active Council Cards Grid */}
-                {filteredCurrentMembers.length > 0 ? (
+                {currentMembers.length === 0 ? (
+                  <div className="text-center py-16 px-6 border border-dashed border-border/80 bg-card/40 rounded-2xl max-w-xl mx-auto space-y-3">
+                    <p className="text-xs font-mono uppercase tracking-widest text-bca-red font-semibold">
+                      // {activeTenure} COUNCIL
+                    </p>
+                    <h3 className="text-xl font-bold font-serif text-foreground">
+                      Upcoming Council Under Formation
+                    </h3>
+                    <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                      Appointments for the new academic tenure will be announced here shortly. Browse our inaugural founding leaders in the Hall of Fame below.
+                    </p>
+                    <div className="pt-2">
+                      <a
+                        href="#hall-of-fame"
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-bca-red hover:underline"
+                      >
+                        <span>Explore Hall of Fame &darr;</span>
+                      </a>
+                    </div>
+                  </div>
+                ) : filteredCurrentMembers.length > 0 ? (
                   <motion.div
                     variants={staggerContainerVariants}
                     initial="hidden"

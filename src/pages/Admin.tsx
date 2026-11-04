@@ -892,7 +892,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     year: member?.year || '2nd Year',
     batch: member?.batch || '2023-2026',
     division: member?.division || 'Core Team',
-    tenure: member?.tenure || '2025–2026',
+    tenure: member?.tenure || '2026–2027',
     is_current: member?.is_current !== undefined && member?.is_current !== null ? member.is_current : true,
     is_founding: Boolean(member?.is_founding),
   });
@@ -910,7 +910,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       year: member?.year || '2nd Year',
       batch: member?.batch || '2023-2026',
       division: member?.division || 'Core Team',
-      tenure: member?.tenure || '2025–2026',
+      tenure: member?.tenure || '2026–2027',
       is_current: member?.is_current !== undefined && member?.is_current !== null ? member.is_current : true,
       is_founding: Boolean(member?.is_founding),
     });
@@ -1037,30 +1037,17 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/50">
+          <div className="pt-2 border-t border-border/50">
             <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-background">
               <div className="space-y-0.5 pr-2">
-                <Label className="text-xs font-mono font-medium text-foreground">ACTIVE COUNCIL</Label>
+                <Label className="text-xs font-mono font-medium text-foreground">ACTIVE COUNCIL STATUS</Label>
                 <p className="text-[11px] text-muted-foreground">
-                  {formData.is_current ? 'Featured in active council on top' : 'Archived in Hall of Fame below'}
+                  {formData.is_current ? 'Active: Featured in current active council on top' : 'Archived: Displayed in Hall of Fame / Past Councils below'}
                 </p>
               </div>
               <Switch
                 checked={formData.is_current}
                 onCheckedChange={(checked) => setFormData({ ...formData, is_current: checked })}
-              />
-            </div>
-
-            <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-background">
-              <div className="space-y-0.5 pr-2">
-                <Label className="text-xs font-mono font-medium text-foreground">FOUNDING MEMBER</Label>
-                <p className="text-[11px] text-muted-foreground">
-                  {formData.is_founding ? 'Marked as Founding Council member' : 'Standard term council member'}
-                </p>
-              </div>
-              <Switch
-                checked={formData.is_founding}
-                onCheckedChange={(checked) => setFormData({ ...formData, is_founding: checked })}
               />
             </div>
           </div>
