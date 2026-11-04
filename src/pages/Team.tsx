@@ -339,8 +339,8 @@ const Team: React.FC = () => {
               <div className="pt-16 border-t border-border/70 space-y-14" id="hall-of-fame">
                 <div className="text-center max-w-3xl mx-auto space-y-3">
                   <div className="inline-flex items-center space-x-2 bg-card border border-border px-3.5 py-1 rounded-full shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                    <span className="text-amber-400 font-mono text-xs tracking-widest uppercase font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-bca-red" />
+                    <span className="text-foreground font-mono text-xs tracking-widest uppercase font-semibold">
                       COUNCIL ARCHIVE & HALL OF FAME
                     </span>
                   </div>
@@ -363,20 +363,19 @@ const Team: React.FC = () => {
                       tenureKey === "2025–2026" || cohortMembers.some((m) => m.is_founding);
 
                     return (
-                      <div key={tenureKey} className="space-y-6">
-                        <div className="flex items-center gap-3 pb-3 border-b border-border/50">
-                          <h3 className="text-lg sm:text-xl font-bold font-serif text-foreground">
-                            Council Term: {tenureKey}
-                          </h3>
-                          {isFoundingCohort && (
-                            <Badge
-                              variant="outline"
-                              className="border-amber-500/30 bg-amber-500/10 text-amber-300 text-[10px] font-mono tracking-wider uppercase"
-                            >
-                              Inaugural Founding Council
-                            </Badge>
-                          )}
-                          <span className="text-xs font-mono text-muted-foreground ml-auto">
+                      <div key={tenureKey} className="space-y-8">
+                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-4 border-b border-border/60">
+                          <div>
+                            <h3 className="text-2xl sm:text-3xl font-bold font-serif text-foreground tracking-tight">
+                              {isFoundingCohort ? "Founding Team (2025–2026)" : `Council of ${tenureKey}`}
+                            </h3>
+                            <p className="text-xs font-mono text-muted-foreground mt-1">
+                              {isFoundingCohort
+                                ? "Charter leaders & inaugural executive council of BuiltBy.BCA"
+                                : `Term ${tenureKey} executive council members`}
+                            </p>
+                          </div>
+                          <span className="text-xs font-mono text-muted-foreground bg-secondary/60 border border-border/50 px-3 py-1 rounded-full w-fit">
                             {cohortMembers.length} Leaders
                           </span>
                         </div>
@@ -386,59 +385,62 @@ const Team: React.FC = () => {
                           initial="hidden"
                           whileInView="visible"
                           viewport={{ once: true, margin: "-40px" }}
-                          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+                          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                         >
                           {cohortMembers.map((member) => (
                             <motion.div
                               key={`${tenureKey}-${member.id}`}
                               variants={staggerItemVariants}
-                              whileHover={{ y: -4 }}
-                              className="bg-card/70 hover:bg-card/95 backdrop-blur-sm rounded-xl border border-border hover:border-amber-500/30 p-5 text-center cursor-pointer transition-all duration-200 group flex flex-col justify-between"
+                              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                              className="group bg-card/90 hover:bg-card rounded-2xl border border-border hover:border-bca-red/40 p-5 text-center shadow-sm hover:shadow-xl hover:shadow-bca-red/5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
                               onClick={() => setSelectedMember(member)}
                             >
                               <div className="flex flex-col items-center">
-                                <div className="w-20 h-20 mx-auto mb-3 relative">
+                                {/* Portrait with subtle shadow & ring */}
+                                <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4">
+                                  <div className="absolute inset-0 rounded-2xl bg-bca-red/5 group-hover:bg-bca-red/15 blur-sm transition-colors" />
                                   <img
                                     src={member.image_url || "/placeholder.svg"}
                                     alt={member.name}
                                     loading="lazy"
-                                    className="w-full h-full object-cover rounded-full border border-border group-hover:border-amber-400/50 transition-colors"
+                                    className="w-full h-full object-cover rounded-2xl border border-border group-hover:border-bca-red/50 transition-all duration-300 relative z-10 shadow-sm"
                                   />
                                 </div>
 
-                                <div className="mb-2">
-                                  {member.is_founding ? (
-                                    <Badge
-                                      variant="outline"
-                                      className="border-amber-500/30 bg-amber-500/10 text-amber-300 text-[9px] font-mono uppercase tracking-wider py-0 px-1.5"
-                                    >
-                                      Founding Leader
-                                    </Badge>
-                                  ) : (
-                                    <Badge
-                                      variant="outline"
-                                      className="border-border bg-secondary/40 text-muted-foreground text-[9px] font-mono uppercase tracking-wider py-0 px-1.5"
-                                    >
-                                      {member.division || "Council"}
-                                    </Badge>
-                                  )}
-                                </div>
-
-                                <h4 className="text-base font-bold text-foreground font-serif group-hover:text-amber-300 transition-colors">
+                                {/* Member Name */}
+                                <h4 className="text-base sm:text-lg font-bold text-foreground font-serif tracking-tight group-hover:text-bca-red transition-colors line-clamp-1">
                                   {member.name}
                                 </h4>
-                                <p className="text-xs text-muted-foreground font-mono mt-0.5">
+
+                                {/* Role */}
+                                <p className="text-xs font-mono font-medium text-bca-red mt-1 line-clamp-1">
                                   {member.role}
                                 </p>
+
+                                {/* Division / Batch Pill */}
+                                <div className="mt-3 flex items-center justify-center gap-1.5 flex-wrap">
+                                  {member.division && (
+                                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground bg-secondary/80 border border-border/60 px-2.5 py-0.5 rounded-full">
+                                      {member.division}
+                                    </span>
+                                  )}
+                                  {member.batch && (
+                                    <span className="text-[10px] font-mono text-muted-foreground/80">
+                                      Batch {member.batch}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
 
-                              <div className="mt-3 pt-2.5 border-t border-border/30 flex justify-center gap-2">
+                              {/* Clean Social Bar */}
+                              <div className="mt-4 pt-3 border-t border-border/40 flex justify-center items-center gap-2">
                                 {member.linkedin_url && (
                                   <a
                                     href={member.linkedin_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                                    aria-label="LinkedIn"
+                                    className="p-1.5 rounded-lg bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
                                     onClick={(e) => e.stopPropagation()}
                                   >
                                     <Linkedin className="w-3.5 h-3.5" />
@@ -449,7 +451,8 @@ const Team: React.FC = () => {
                                     href={member.github_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                                    aria-label="GitHub"
+                                    className="p-1.5 rounded-lg bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                                     onClick={(e) => e.stopPropagation()}
                                   >
                                     <Github className="w-3.5 h-3.5" />
@@ -485,7 +488,7 @@ const Team: React.FC = () => {
                     {selectedMember.is_founding && (
                       <Badge
                         variant="outline"
-                        className="border-amber-500/30 bg-amber-500/10 text-amber-300 text-[10px] font-mono uppercase tracking-wider"
+                        className="border-border bg-secondary/80 text-foreground text-[10px] font-mono uppercase tracking-wider"
                       >
                         Founding Council
                       </Badge>
