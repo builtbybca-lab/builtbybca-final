@@ -202,6 +202,9 @@ export type Database = {
           year: string | null
           batch: string | null
           division: string | null
+          tenure: string | null
+          is_current: boolean | null
+          is_founding: boolean | null
         }
         Insert: {
           bio?: string | null
@@ -216,6 +219,9 @@ export type Database = {
           year?: string | null
           batch?: string | null
           division?: string | null
+          tenure?: string | null
+          is_current?: boolean | null
+          is_founding?: boolean | null
         }
         Update: {
           bio?: string | null
@@ -230,6 +236,9 @@ export type Database = {
           year?: string | null
           batch?: string | null
           division?: string | null
+          tenure?: string | null
+          is_current?: boolean | null
+          is_founding?: boolean | null
         }
         Relationships: []
       }

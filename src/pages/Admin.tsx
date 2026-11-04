@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/select"
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 
 const Admin = () => {
   const { isAdmin, loading } = useAuth();
@@ -689,6 +690,7 @@ const TeamManager = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<any>(null);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
 
   const { data: members, isLoading } = useQuery({
     queryKey: ['admin-team'],
@@ -709,29 +711,80 @@ const TeamManager = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-team'] });
+      queryClient.invalidateQueries({ queryKey: ['team_members'] });
       toast({ title: 'Success', description: 'Team member deleted successfully' });
     },
   });
 
+  const filteredMembers = (members || []).filter((m) => {
+    if (filterStatus === 'current') return m.is_current !== false && m.year !== 'Alumni';
+    if (filterStatus === 'archived') return m.is_current === false || m.year === 'Alumni';
+    if (filterStatus === 'founding') return Boolean(m.is_founding);
+    return true;
+  });
+
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Team Members</h2>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingMember(null)}>
-              <Plus className="h-4 w-4 mr-2" />
-              New Member
-            </Button>
-          </DialogTrigger>
-          <TeamDialog
-            member={editingMember}
-            onClose={() => {
-              setIsDialogOpen(false);
-              setEditingMember(null);
-            }}
-          />
-        </Dialog>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-border/40">
+        <div>
+          <h2 className="text-2xl font-bold font-serif">Council & Team Members</h2>
+          <p className="text-sm text-muted-foreground">
+            Manage active council leaders, annual tenures, and hall of fame cohorts.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={() => setEditingMember(null)} className="bg-bca-red hover:bg-bca-red/90 text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Member
+              </Button>
+            </DialogTrigger>
+            <TeamDialog
+              member={editingMember}
+              onClose={() => {
+                setIsDialogOpen(false);
+                setEditingMember(null);
+              }}
+            />
+          </Dialog>
+        </div>
+      </div>
+
+      <div className="flex gap-2 flex-wrap items-center">
+        <span className="text-xs font-mono text-muted-foreground mr-1 uppercase">Filter:</span>
+        <Button
+          size="sm"
+          variant={filterStatus === 'all' ? 'default' : 'outline'}
+          onClick={() => setFilterStatus('all')}
+          className="text-xs h-7"
+        >
+          All ({members?.length || 0})
+        </Button>
+        <Button
+          size="sm"
+          variant={filterStatus === 'current' ? 'default' : 'outline'}
+          onClick={() => setFilterStatus('current')}
+          className="text-xs h-7"
+        >
+          Active Council
+        </Button>
+        <Button
+          size="sm"
+          variant={filterStatus === 'archived' ? 'default' : 'outline'}
+          onClick={() => setFilterStatus('archived')}
+          className="text-xs h-7"
+        >
+          Hall of Fame / Past
+        </Button>
+        <Button
+          size="sm"
+          variant={filterStatus === 'founding' ? 'default' : 'outline'}
+          onClick={() => setFilterStatus('founding')}
+          className="text-xs h-7"
+        >
+          Founding Cohort
+        </Button>
       </div>
 
       {isLoading ? (
@@ -739,26 +792,53 @@ const TeamManager = () => {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       ) : (
-        <div className="grid gap-4">
-          {members?.map((member) => (
-            <Card key={member.id} className="card-glass">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex gap-4">
-                    {member.image_url && (
+        <div className="grid gap-3">
+          {filteredMembers.map((member) => (
+            <Card key={member.id} className="card-glass border-border/60 hover:border-border transition-colors">
+              <CardHeader className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    {member.image_url ? (
                       <img
                         src={member.image_url}
                         alt={member.name}
-                        className="h-16 w-16 rounded-full object-cover"
+                        className="h-14 w-14 rounded-full object-cover border border-border"
                       />
+                    ) : (
+                      <div className="h-14 w-14 rounded-full bg-secondary flex items-center justify-center font-bold text-muted-foreground font-mono">
+                        {member.name.charAt(0)}
+                      </div>
                     )}
-                    <div>
-                      <CardTitle>{member.name}</CardTitle>
-                      <CardDescription>{member.role}</CardDescription>
-                      <p className="text-sm text-muted-foreground mt-2">{member.bio}</p>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <CardTitle className="text-base font-bold font-serif">{member.name}</CardTitle>
+                        {member.is_current !== false && member.year !== 'Alumni' ? (
+                          <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] uppercase font-mono tracking-wider">
+                            Active Council
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="border-border bg-secondary/50 text-muted-foreground text-[10px] uppercase font-mono tracking-wider">
+                            Hall of Fame
+                          </Badge>
+                        )}
+                        {member.is_founding && (
+                          <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-300 text-[10px] uppercase font-mono tracking-wider">
+                            Founding Member
+                          </Badge>
+                        )}
+                      </div>
+                      <CardDescription className="text-xs font-mono text-muted-foreground">
+                        {member.role} &bull; {member.division || 'General'}
+                      </CardDescription>
+                      <div className="flex items-center gap-2 text-[11px] font-mono text-muted-foreground/80">
+                        <span>Tenure: {member.tenure || '2025–2026'}</span>
+                        {member.year && <span>&bull; {member.year}</span>}
+                        {member.batch && <span>&bull; Batch {member.batch}</span>}
+                        <span>&bull; Order: {member.display_order ?? 0}</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 self-end sm:self-center">
                     <Button
                       variant="outline"
                       size="sm"
@@ -767,12 +847,17 @@ const TeamManager = () => {
                         setIsDialogOpen(true);
                       }}
                     >
-                      <Pencil className="h-4 w-4" />
+                      <Pencil className="h-4 w-4 mr-1" />
+                      Edit
                     </Button>
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => deleteMutation.mutate(member.id)}
+                      onClick={() => {
+                        if (confirm(`Are you sure you want to delete ${member.name}?`)) {
+                          deleteMutation.mutate(member.id);
+                        }
+                      }}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -781,6 +866,11 @@ const TeamManager = () => {
               </CardHeader>
             </Card>
           ))}
+          {filteredMembers.length === 0 && (
+            <div className="text-center py-12 border border-dashed border-border rounded-xl text-muted-foreground font-mono text-sm">
+              No team members found for this filter.
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -798,10 +888,15 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     image_url: member?.image_url || '',
     linkedin_url: member?.linkedin_url || '',
     github_url: member?.github_url || '',
-    display_order: member?.display_order || 0,
-    year: member?.year || '',
-    batch: member?.batch || '',
-    division: member?.division || '',
+    instagram_url: member?.instagram_url || '',
+    twitter_url: member?.twitter_url || '',
+    display_order: member?.display_order ?? 0,
+    year: member?.year || '2nd Year',
+    batch: member?.batch || '2023-2026',
+    division: member?.division || 'Core Team',
+    tenure: member?.tenure || '2025–2026',
+    is_current: member?.is_current !== undefined && member?.is_current !== null ? member.is_current : true,
+    is_founding: Boolean(member?.is_founding),
   });
 
   // Sync formData when member prop changes (for edit mode)
@@ -813,24 +908,46 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       image_url: member?.image_url || '',
       linkedin_url: member?.linkedin_url || '',
       github_url: member?.github_url || '',
-      display_order: member?.display_order || 0,
-      year: member?.year || '',
-      batch: member?.batch || '',
-      division: member?.division || '',
+      instagram_url: member?.instagram_url || '',
+      twitter_url: member?.twitter_url || '',
+      display_order: member?.display_order ?? 0,
+      year: member?.year || '2nd Year',
+      batch: member?.batch || '2023-2026',
+      division: member?.division || 'Core Team',
+      tenure: member?.tenure || '2025–2026',
+      is_current: member?.is_current !== undefined && member?.is_current !== null ? member.is_current : true,
+      is_founding: Boolean(member?.is_founding),
     });
   }, [member]);
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      // Validation
       if (!data.name?.trim()) throw new Error('Name is required');
       if (!data.role?.trim()) throw new Error('Role is required');
 
+      const payload = {
+        name: data.name.trim(),
+        role: data.role.trim(),
+        bio: data.bio || '',
+        image_url: data.image_url || '',
+        linkedin_url: data.linkedin_url || null,
+        github_url: data.github_url || null,
+        instagram_url: data.instagram_url || null,
+        twitter_url: data.twitter_url || null,
+        display_order: Number(data.display_order) || 0,
+        year: data.year || null,
+        batch: data.batch || null,
+        division: data.division || 'Core Team',
+        tenure: data.tenure || '2025–2026',
+        is_current: Boolean(data.is_current),
+        is_founding: Boolean(data.is_founding),
+      };
+
       if (member) {
-        const { error } = await supabase.from('team_members').update(data).eq('id', member.id);
+        const { error } = await supabase.from('team_members').update(payload).eq('id', member.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('team_members').insert([data]);
+        const { error } = await supabase.from('team_members').insert([payload]);
         if (error) throw error;
       }
     },
@@ -845,133 +962,234 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       toast({
         title: 'Error',
         description: error.message || 'Failed to save team member',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     },
   });
 
   return (
-    <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
+    <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col bg-card border-border">
       <DialogHeader>
-        <DialogTitle className="text-foreground">{member ? 'Edit' : 'Add'} Team Member</DialogTitle>
+        <DialogTitle className="text-foreground font-serif text-xl">
+          {member ? 'Edit Member Profile' : 'Add New Council Member'}
+        </DialogTitle>
+        <DialogDescription className="text-muted-foreground text-xs font-mono">
+          Configure profile, role division, tenure cycle, and council hierarchy.
+        </DialogDescription>
       </DialogHeader>
-      <div className="space-y-4 overflow-y-auto flex-1 pr-2">
-        <div>
-          <Label htmlFor="name" className="text-foreground">Name</Label>
-          <Input
-            id="name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="bg-background border-border text-foreground"
-          />
+
+      <div className="space-y-5 overflow-y-auto flex-1 pr-2 py-2">
+        {/* Core Identity */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="name" className="text-foreground text-xs font-mono">FULL NAME *</Label>
+            <Input
+              id="name"
+              placeholder="e.g. Vikas U U"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="bg-background border-border text-foreground"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="role" className="text-foreground text-xs font-mono">ROLE / POSITION *</Label>
+            <Input
+              id="role"
+              placeholder="e.g. President, Technical Lead"
+              value={formData.role}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              className="bg-background border-border text-foreground"
+            />
+          </div>
         </div>
-        <div>
-          <Label htmlFor="role" className="text-foreground">Role</Label>
-          <Input
-            id="role"
-            value={formData.role}
-            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-            className="bg-background border-border text-foreground"
-          />
+
+        {/* Hierarchy & Lifecycle Settings (Tenure & Council Placement) */}
+        <div className="p-4 rounded-xl border border-border/80 bg-secondary/30 space-y-4">
+          <h4 className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-semibold">
+            Council Placement & Tenure
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="tenure" className="text-foreground text-xs font-mono">
+                TENURE TERM (e.g. 2025–2026, 2026–2027)
+              </Label>
+              <Input
+                id="tenure"
+                placeholder="2025–2026"
+                value={formData.tenure}
+                onChange={(e) => setFormData({ ...formData, tenure: e.target.value })}
+                className="bg-background border-border text-foreground font-mono"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="division" className="text-foreground text-xs font-mono">DIVISION</Label>
+              <Select
+                value={formData.division}
+                onValueChange={(value) => setFormData({ ...formData, division: value })}
+              >
+                <SelectTrigger className="bg-background border-border text-foreground">
+                  <SelectValue placeholder="Select Division" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Core Team">Core Team</SelectItem>
+                  <SelectItem value="Technical Team">Technical Team</SelectItem>
+                  <SelectItem value="Design Team">Design Team</SelectItem>
+                  <SelectItem value="Media Team">Media Team</SelectItem>
+                  <SelectItem value="Events Team">Events Team</SelectItem>
+                  <SelectItem value="Faculty">Faculty</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/50">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-background">
+              <div className="space-y-0.5 pr-2">
+                <Label className="text-xs font-mono font-medium text-foreground">ACTIVE COUNCIL</Label>
+                <p className="text-[11px] text-muted-foreground">
+                  {formData.is_current ? 'Featured in active council on top' : 'Archived in Hall of Fame below'}
+                </p>
+              </div>
+              <Switch
+                checked={formData.is_current}
+                onCheckedChange={(checked) => setFormData({ ...formData, is_current: checked })}
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-background">
+              <div className="space-y-0.5 pr-2">
+                <Label className="text-xs font-mono font-medium text-foreground">FOUNDING MEMBER</Label>
+                <p className="text-[11px] text-muted-foreground">
+                  {formData.is_founding ? 'Marked as Founding Council member' : 'Standard term council member'}
+                </p>
+              </div>
+              <Switch
+                checked={formData.is_founding}
+                onCheckedChange={(checked) => setFormData({ ...formData, is_founding: checked })}
+              />
+            </div>
+          </div>
         </div>
-        <div>
-          <Label htmlFor="year" className="text-foreground">Year</Label>
-          <select
-            id="year"
-            value={formData.year}
-            onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-            className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground"
-          >
-            <option value="">Select Year</option>
-            <option value="1st Year">1st Year</option>
-            <option value="2nd Year">2nd Year</option>
-            <option value="3rd Year">3rd Year</option>
-            <option value="Alumni">Alumni</option>
-            <option value="Faculty">Faculty</option>
-          </select>
+
+        {/* Academic Details */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="year" className="text-foreground text-xs font-mono">STUDENT YEAR</Label>
+            <select
+              id="year"
+              value={formData.year}
+              onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+              className="w-full px-3 py-2 bg-background border border-border rounded-md text-foreground text-sm"
+            >
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="Alumni">Alumni</option>
+              <option value="Faculty">Faculty</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="batch" className="text-foreground text-xs font-mono">STUDENT BATCH</Label>
+            <Input
+              id="batch"
+              placeholder="e.g. 2023-2026"
+              value={formData.batch}
+              onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
+              className="bg-background border-border text-foreground text-sm font-mono"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="display_order" className="text-foreground text-xs font-mono">DISPLAY ORDER</Label>
+            <Input
+              id="display_order"
+              type="number"
+              value={formData.display_order}
+              onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
+              className="bg-background border-border text-foreground text-sm font-mono"
+            />
+          </div>
         </div>
-        <div>
-          <Label htmlFor="batch" className="text-foreground">Batch (e.g., 2023-2026)</Label>
-          <Input
-            id="batch"
-            value={formData.batch}
-            onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
-            className="bg-background border-border text-foreground"
-          />
-        </div>
-        <div>
-          <Label htmlFor="division" className="text-foreground">Division (e.g., Core Team)</Label>
-          <Select
-            value={formData.division}
-            onValueChange={(value) => setFormData({ ...formData, division: value })}
-          >
-            <SelectTrigger className="bg-background border-border text-foreground">
-              <SelectValue placeholder="Select Division" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Core Team">Core Team</SelectItem>
-              <SelectItem value="Technical Team">Technical Team</SelectItem>
-              <SelectItem value="Design Team">Design Team</SelectItem>
-              <SelectItem value="Media Team">Media Team</SelectItem>
-              <SelectItem value="Events Team">Events Team</SelectItem>
-              <SelectItem value="Faculty">Faculty</SelectItem>
-              <SelectItem value="Other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="bio" className="text-foreground">Bio</Label>
-          <Textarea
-            id="bio"
-            value={formData.bio}
-            onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-            rows={3}
-            className="bg-background border-border text-foreground"
-          />
-        </div>
-        <div>
-          <Label htmlFor="image_url" className="text-foreground">Profile Picture</Label>
+
+        {/* Profile Image */}
+        <div className="space-y-1.5">
+          <Label htmlFor="image_url" className="text-foreground text-xs font-mono">PORTRAIT PHOTO</Label>
           <ImageUpload
             value={formData.image_url}
             onChange={(url) => setFormData({ ...formData, image_url: url })}
             bucket="team-images"
           />
         </div>
-        <div>
-          <Label htmlFor="linkedin_url" className="text-foreground">LinkedIn URL</Label>
-          <Input
-            id="linkedin_url"
-            value={formData.linkedin_url}
-            onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-            className="bg-background border-border text-foreground"
+
+        {/* Biography */}
+        <div className="space-y-1.5">
+          <Label htmlFor="bio" className="text-foreground text-xs font-mono">BIOGRAPHY</Label>
+          <Textarea
+            id="bio"
+            placeholder="Brief bio or council contributions..."
+            value={formData.bio}
+            onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+            rows={3}
+            className="bg-background border-border text-foreground text-sm"
           />
         </div>
-        <div>
-          <Label htmlFor="github_url" className="text-foreground">GitHub URL</Label>
-          <Input
-            id="github_url"
-            value={formData.github_url}
-            onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
-            className="bg-background border-border text-foreground"
-          />
-        </div>
-        <div>
-          <Label htmlFor="display_order" className="text-foreground">Display Order</Label>
-          <Input
-            id="display_order"
-            type="number"
-            value={formData.display_order}
-            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
-            className="bg-background border-border text-foreground"
-          />
+
+        {/* Social Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="linkedin_url" className="text-foreground text-xs font-mono">LINKEDIN URL</Label>
+            <Input
+              id="linkedin_url"
+              placeholder="https://linkedin.com/in/username"
+              value={formData.linkedin_url}
+              onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
+              className="bg-background border-border text-foreground text-sm"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="github_url" className="text-foreground text-xs font-mono">GITHUB URL</Label>
+            <Input
+              id="github_url"
+              placeholder="https://github.com/username"
+              value={formData.github_url}
+              onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
+              className="bg-background border-border text-foreground text-sm"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="instagram_url" className="text-foreground text-xs font-mono">INSTAGRAM URL</Label>
+            <Input
+              id="instagram_url"
+              placeholder="https://instagram.com/username"
+              value={formData.instagram_url}
+              onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+              className="bg-background border-border text-foreground text-sm"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="twitter_url" className="text-foreground text-xs font-mono">TWITTER / X URL</Label>
+            <Input
+              id="twitter_url"
+              placeholder="https://x.com/username"
+              value={formData.twitter_url}
+              onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
+              className="bg-background border-border text-foreground text-sm"
+            />
+          </div>
         </div>
       </div>
-      <DialogFooter className="mt-4">
+
+      <DialogFooter className="mt-4 pt-3 border-t border-border flex justify-between sm:justify-end gap-2">
         <Button variant="outline" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={() => saveMutation.mutate(formData)}>
-          {saveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+        <Button
+          onClick={() => saveMutation.mutate(formData)}
+          className="bg-bca-red hover:bg-bca-red/90 text-white"
+          disabled={saveMutation.isPending}
+        >
+          {saveMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+          Save Member
         </Button>
       </DialogFooter>
     </DialogContent>
