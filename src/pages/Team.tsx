@@ -77,23 +77,44 @@ const Team: React.FC = () => {
     },
   });
 
-  // Active Council Members (Current tenure)
-  const currentMembers = members.filter(
-    (member) => member.is_current !== false && member.year !== "Alumni"
+  // Helper to sort members strictly by display_order (1 is 1st, 2 is 2nd, unset/0 at end)
+  const sortMembersByOrder = (memberList: TeamMember[]) => {
+    return [...memberList].sort((a, b) => {
+      const orderA =
+        a.display_order !== null && a.display_order !== undefined && Number(a.display_order) > 0
+          ? Number(a.display_order)
+          : 999999;
+      const orderB =
+        b.display_order !== null && b.display_order !== undefined && Number(b.display_order) > 0
+          ? Number(b.display_order)
+          : 999999;
+
+      if (orderA !== orderB) return orderA - orderB;
+      return (a.name || "").localeCompare(b.name || "");
+    });
+  };
+
+  // Active Council Members (Current tenure) - sorted strictly by display_order
+  const currentMembers = sortMembersByOrder(
+    members.filter(
+      (member) => member.is_current !== false && member.year !== "Alumni"
+    )
   );
 
   // Filtered by selected division tab
-  const filteredCurrentMembers = currentMembers.filter((m) => {
-    if (activeDivisionTab === "All") return true;
-    return (m.division || "Other") === activeDivisionTab;
-  });
+  const filteredCurrentMembers =
+    activeDivisionTab === "All"
+      ? currentMembers
+      : currentMembers.filter(
+          (m) => (m.division || "Other") === activeDivisionTab
+        );
 
   // Council Archive & Hall of Fame Members (Past batches)
   const archiveMembers = members.filter(
     (member) => member.is_current === false || member.year === "Alumni"
   );
 
-  // Group Archive members by Tenure
+  // Group Archive members by Tenure and sort each cohort strictly by display_order
   const groupedArchive = archiveMembers.reduce((acc, member) => {
     const tenureKey = member.tenure || "2025–2026";
     if (!acc[tenureKey]) {
@@ -102,6 +123,11 @@ const Team: React.FC = () => {
     acc[tenureKey].push(member);
     return acc;
   }, {} as Record<string, TeamMember[]>);
+
+  // Sort each cohort's members by display order
+  Object.keys(groupedArchive).forEach((key) => {
+    groupedArchive[key] = sortMembersByOrder(groupedArchive[key]);
+  });
 
   // Sort tenures in descending order
   const sortedTenures = Object.keys(groupedArchive).sort().reverse();

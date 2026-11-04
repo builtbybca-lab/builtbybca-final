@@ -716,12 +716,28 @@ const TeamManager = () => {
     },
   });
 
-  const filteredMembers = (members || []).filter((m) => {
-    if (filterStatus === 'current') return m.is_current !== false && m.year !== 'Alumni';
-    if (filterStatus === 'archived') return m.is_current === false || m.year === 'Alumni';
-    if (filterStatus === 'founding') return Boolean(m.is_founding);
-    return true;
-  });
+  const sortMembers = (list: any[]) => {
+    return [...list].sort((a, b) => {
+      const orderA = a.display_order !== null && a.display_order !== undefined && Number(a.display_order) > 0
+        ? Number(a.display_order)
+        : 999999;
+      const orderB = b.display_order !== null && b.display_order !== undefined && Number(b.display_order) > 0
+        ? Number(b.display_order)
+        : 999999;
+
+      if (orderA !== orderB) return orderA - orderB;
+      return (a.name || '').localeCompare(b.name || '');
+    });
+  };
+
+  const filteredMembers = sortMembers(
+    (members || []).filter((m) => {
+      if (filterStatus === 'current') return m.is_current !== false && m.year !== 'Alumni';
+      if (filterStatus === 'archived') return m.is_current === false || m.year === 'Alumni';
+      if (filterStatus === 'founding') return Boolean(m.is_founding);
+      return true;
+    })
+  );
 
   return (
     <div className="space-y-6">
@@ -928,7 +944,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
         image_url: data.image_url || '',
         linkedin_url: data.linkedin_url?.trim() || null,
         github_url: data.github_url?.trim() || null,
-        display_order: Number(data.display_order) || 0,
+        display_order: data.display_order !== null && data.display_order !== undefined && Number(data.display_order) > 0 ? Number(data.display_order) : null,
         year: data.year || null,
         batch: data.batch || null,
         division: data.division || 'Core Team',
@@ -1081,12 +1097,19 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="display_order" className="text-foreground text-xs font-mono">DISPLAY ORDER</Label>
+            <Label htmlFor="display_order" className="text-foreground text-xs font-mono">
+              DISPLAY ORDER <span className="text-muted-foreground font-normal">(1 for first, 2 for second...)</span>
+            </Label>
             <Input
               id="display_order"
               type="number"
-              value={formData.display_order}
-              onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
+              min="1"
+              placeholder="e.g. 1, 2, 3..."
+              value={formData.display_order && formData.display_order > 0 ? formData.display_order : ''}
+              onChange={(e) => {
+                const val = e.target.value === '' ? null : parseInt(e.target.value, 10);
+                setFormData({ ...formData, display_order: val as any });
+              }}
               className="bg-background border-border text-foreground text-sm font-mono"
             />
           </div>
