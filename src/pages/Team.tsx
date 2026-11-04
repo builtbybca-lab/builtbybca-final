@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import {
   Linkedin,
   Github,
-  Instagram,
-  Twitter,
   ArrowUpRight,
-  Sparkles,
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -28,8 +25,6 @@ interface TeamMember {
   image_url: string;
   linkedin_url?: string;
   github_url?: string;
-  instagram_url?: string;
-  twitter_url?: string;
   display_order: number;
   year?: string;
   batch?: string;
@@ -71,8 +66,6 @@ const Team: React.FC = () => {
         image_url: m.image_url || "/placeholder.svg",
         linkedin_url: m.linkedin_url,
         github_url: m.github_url,
-        instagram_url: m.instagram_url,
-        twitter_url: m.twitter_url,
         display_order: m.display_order ?? 0,
         year: m.year,
         batch: m.batch,
@@ -312,30 +305,6 @@ const Team: React.FC = () => {
                               <Github className="w-4 h-4" />
                             </a>
                           )}
-                          {member.instagram_url && (
-                            <a
-                              href={member.instagram_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label="Instagram"
-                              className="text-muted-foreground hover:text-bca-red transition-colors p-1"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Instagram className="w-4 h-4" />
-                            </a>
-                          )}
-                          {member.twitter_url && (
-                            <a
-                              href={member.twitter_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label="Twitter / X"
-                              className="text-muted-foreground hover:text-bca-red transition-colors p-1"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Twitter className="w-4 h-4" />
-                            </a>
-                          )}
                         </div>
                       </motion.div>
                     ))}
@@ -557,26 +526,6 @@ const Team: React.FC = () => {
                         className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                       >
                         <Github className="w-4 h-4" />
-                      </a>
-                    )}
-                    {selectedMember.instagram_url && (
-                      <a
-                        href={selectedMember.instagram_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Instagram className="w-4 h-4" />
-                      </a>
-                    )}
-                    {selectedMember.twitter_url && (
-                      <a
-                        href={selectedMember.twitter_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-secondary text-muted-foreground hover:text-bca-red transition-colors"
-                      >
-                        <Twitter className="w-4 h-4" />
                       </a>
                     )}
                   </div>

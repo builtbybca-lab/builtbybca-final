@@ -888,8 +888,6 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
     image_url: member?.image_url || '',
     linkedin_url: member?.linkedin_url || '',
     github_url: member?.github_url || '',
-    instagram_url: member?.instagram_url || '',
-    twitter_url: member?.twitter_url || '',
     display_order: member?.display_order ?? 0,
     year: member?.year || '2nd Year',
     batch: member?.batch || '2023-2026',
@@ -908,8 +906,6 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
       image_url: member?.image_url || '',
       linkedin_url: member?.linkedin_url || '',
       github_url: member?.github_url || '',
-      instagram_url: member?.instagram_url || '',
-      twitter_url: member?.twitter_url || '',
       display_order: member?.display_order ?? 0,
       year: member?.year || '2nd Year',
       batch: member?.batch || '2023-2026',
@@ -930,10 +926,8 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
         role: data.role.trim(),
         bio: data.bio || '',
         image_url: data.image_url || '',
-        linkedin_url: data.linkedin_url || null,
-        github_url: data.github_url || null,
-        instagram_url: data.instagram_url || null,
-        twitter_url: data.twitter_url || null,
+        linkedin_url: data.linkedin_url?.trim() || null,
+        github_url: data.github_url?.trim() || null,
         display_order: Number(data.display_order) || 0,
         year: data.year || null,
         batch: data.batch || null,
@@ -1134,10 +1128,12 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
           />
         </div>
 
-        {/* Social Links */}
+        {/* Social Links (Optional) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label htmlFor="linkedin_url" className="text-foreground text-xs font-mono">LINKEDIN URL</Label>
+            <Label htmlFor="linkedin_url" className="text-foreground text-xs font-mono">
+              LINKEDIN URL <span className="text-muted-foreground font-normal">(Optional)</span>
+            </Label>
             <Input
               id="linkedin_url"
               placeholder="https://linkedin.com/in/username"
@@ -1147,32 +1143,14 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="github_url" className="text-foreground text-xs font-mono">GITHUB URL</Label>
+            <Label htmlFor="github_url" className="text-foreground text-xs font-mono">
+              GITHUB URL <span className="text-muted-foreground font-normal">(Optional)</span>
+            </Label>
             <Input
               id="github_url"
               placeholder="https://github.com/username"
               value={formData.github_url}
               onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
-              className="bg-background border-border text-foreground text-sm"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="instagram_url" className="text-foreground text-xs font-mono">INSTAGRAM URL</Label>
-            <Input
-              id="instagram_url"
-              placeholder="https://instagram.com/username"
-              value={formData.instagram_url}
-              onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-              className="bg-background border-border text-foreground text-sm"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="twitter_url" className="text-foreground text-xs font-mono">TWITTER / X URL</Label>
-            <Input
-              id="twitter_url"
-              placeholder="https://x.com/username"
-              value={formData.twitter_url}
-              onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
               className="bg-background border-border text-foreground text-sm"
             />
           </div>
