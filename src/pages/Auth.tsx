@@ -67,7 +67,7 @@ const Auth = () => {
 
     try {
       if (isStudentPasscode) {
-        // Attempt login with canonical student password
+        // 1. Attempt login with canonical student password
         const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
           email: trimmedEmail,
           password: CANONICAL_STUDENT_PASSWORD,
@@ -78,7 +78,35 @@ const Auth = () => {
           return;
         }
 
-        // If user does not exist yet, automatically register them!
+        // 2. If login failed, account might be an existing user created with an old custom password.
+        // Try invoking sync_student_password RPC to update their password to the centralized passcode.
+        try {
+          // @ts-expect-error - RPC defined in Supabase
+          const { data: synced } = await supabase.rpc("sync_student_password", {
+            user_email: trimmedEmail,
+            passcode: CANONICAL_STUDENT_PASSWORD,
+          });
+
+          if (synced) {
+            const { data: retrySyncData, error: retrySyncError } = await supabase.auth.signInWithPassword({
+              email: trimmedEmail,
+              password: CANONICAL_STUDENT_PASSWORD,
+            });
+
+            if (!retrySyncError && retrySyncData?.session) {
+              toast({
+                title: "Account Updated",
+                description: "Your account has been synchronized with the centralized student passcode.",
+              });
+              navigate(redirectTarget);
+              return;
+            }
+          }
+        } catch {
+          // Continue to auto-registration if RPC is not present
+        }
+
+        // 3. If user does not exist yet, automatically register them!
         const autoName = fullName.trim() || trimmedEmail.split("@")[0].replace(/[._-]/g, " ");
         const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: trimmedEmail,
@@ -92,12 +120,15 @@ const Auth = () => {
         });
 
         if (signUpError) {
-          if (!signUpError.message.toLowerCase().includes("already registered")) {
-            throw signUpError;
+          if (signUpError.message.toLowerCase().includes("already registered")) {
+            throw new Error(
+              "This email is already registered with an earlier custom password. Please log in with your previous password once (which will automatically migrate your account) or contact council."
+            );
           }
+          throw signUpError;
         }
 
-        // Try signing in immediately after sign up
+        // 4. Try signing in immediately after sign up
         const { error: retryError } = await supabase.auth.signInWithPassword({
           email: trimmedEmail,
           password: CANONICAL_STUDENT_PASSWORD,
@@ -116,18 +147,44 @@ const Auth = () => {
 
         navigate(redirectTarget);
       } else {
-        // Attempt standard login (for admins or custom accounts)
+        // Attempt login with custom/previous password
         if (isLogin) {
-          const { error } = await supabase.auth.signInWithPassword({
+          const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
             email: trimmedEmail,
             password: enteredPassword,
           });
 
-          if (error) {
+          if (loginError) {
             throw new Error(
               "Invalid login credentials. If you are a student, please use the official student passcode (BCAstudent@2026)."
             );
           }
+
+          // If this is an existing student (not admin), auto-migrate their password to the centralized passcode!
+          try {
+            if (loginData?.user) {
+              const { data: adminRole } = await supabase
+                .from("user_roles")
+                .select("role")
+                .eq("user_id", loginData.user.id)
+                .eq("role", "admin")
+                .maybeSingle();
+
+              if (!adminRole) {
+                // Non-admin student: update password to centralized passcode for future logins
+                await supabase.auth.updateUser({
+                  password: CANONICAL_STUDENT_PASSWORD,
+                });
+                toast({
+                  title: "Password Updated",
+                  description: "Your password has been updated to the centralized student passcode (BCAstudent@2026).",
+                });
+              }
+            }
+          } catch {
+            // Silently continue if update fails
+          }
+
           navigate(redirectTarget);
         } else {
           // Normal manual signup
