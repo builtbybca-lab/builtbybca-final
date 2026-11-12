@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -24,13 +26,18 @@ import {
     Link2,
     GraduationCap,
     Search,
-    Pin
+    Pin,
+    Lock,
+    ShieldCheck,
+    ArrowRight,
+    Sparkles
 } from "lucide-react";
 import { QuestionBankSection } from "@/components/QuestionBankSection";
 
 type ResourceCategory = "all" | "learning" | "tools" | "career" | "downloads";
 
 const Resources = () => {
+    const { user } = useAuth();
     const [activeCategory, setActiveCategory] = useState<ResourceCategory>("all");
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -251,10 +258,65 @@ const Resources = () => {
                 </div>
             </section>
 
-            {/* Question Bank Section (Next) */}
-            <section className="px-4 pb-24 pt-10 border-t border-border/40">
+            {/* Question Bank Section (Gated for logged-in students) */}
+            <section id="question-bank" className="px-4 pb-24 pt-10 border-t border-border/40 scroll-mt-20">
                 <div className="max-w-7xl mx-auto">
-                    <QuestionBankSection />
+                    {user ? (
+                        <QuestionBankSection />
+                    ) : (
+                        <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 via-card/50 to-background p-8 md:p-14 text-center shadow-xl">
+                            {/* Decorative background glow */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-bca-red/10 rounded-full blur-3xl pointer-events-none" />
+
+                            <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-bca-red/10 text-bca-red border border-bca-red/20 shadow-sm">
+                                    <Lock className="w-3.5 h-3.5" />
+                                    <span>Exclusive Student Resource</span>
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                                        BCA Semester Question Bank
+                                    </h2>
+                                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                                        Access verified previous years question papers, model papers, and scheme-wise examination materials. This section is reserved for verified BCA students.
+                                    </p>
+                                </div>
+
+                                {/* Feature checklist pills */}
+                                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-secondary/60 border border-border/60 text-xs font-medium text-foreground">
+                                        <ShieldCheck className="w-3.5 h-3.5 text-bca-red" />
+                                        Semesters 1 to 6
+                                    </div>
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-secondary/60 border border-border/60 text-xs font-medium text-foreground">
+                                        <ShieldCheck className="w-3.5 h-3.5 text-bca-red" />
+                                        NEP & Autonomous Schemes
+                                    </div>
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-secondary/60 border border-border/60 text-xs font-medium text-foreground">
+                                        <ShieldCheck className="w-3.5 h-3.5 text-bca-red" />
+                                        Direct PDF Downloads
+                                    </div>
+                                </div>
+
+                                <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                                    <Button
+                                        asChild
+                                        className="w-full sm:w-auto bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground font-medium px-6 h-11 shadow-lg group"
+                                    >
+                                        <Link to="/auth?redirect=/resources#question-bank">
+                                            Sign In to Unlock Question Bank
+                                            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                                        </Link>
+                                    </Button>
+                                </div>
+
+                                <p className="text-xs text-muted-foreground">
+                                    Students can sign in instantly using the centralized student passcode (<code className="text-bca-red font-mono font-medium">BCAstudent@2026</code>).
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
 

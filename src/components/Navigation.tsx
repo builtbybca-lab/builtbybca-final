@@ -167,16 +167,41 @@ const Navigation = () => {
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button */}
-                <div className="md:hidden flex items-center gap-2">
+                {/* Mobile Controls */}
+                <div className="md:hidden flex items-center gap-1.5">
+                    {/* Direct Quick Dashboard Access for logged in mobile users */}
+                    {user ? (
+                        <Link to="/dashboard" aria-label="Student Dashboard">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-bca-red hover:bg-bca-red/10 h-8 w-8 rounded-full border border-bca-red/30 shadow-sm"
+                                title="Dashboard"
+                            >
+                                <LayoutDashboard className="h-4 w-4" />
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Link to="/auth">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-xs font-mono h-8 px-2 text-muted-foreground hover:text-bca-red"
+                            >
+                                <LogIn className="h-3.5 w-3.5 mr-1" />
+                                Login
+                            </Button>
+                        </Link>
+                    )}
+
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                         className="text-foreground hover:text-bca-red h-8 w-8"
                     >
-                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <Sun className="h-[1.1rem] w-[1.1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.1rem] w-[1.1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                         <span className="sr-only">Toggle theme</span>
                     </Button>
                     <Button
@@ -193,77 +218,105 @@ const Navigation = () => {
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
                 <div className="absolute top-full mt-2 left-2 right-2 sm:left-4 sm:right-4 bg-popover border border-border rounded-2xl p-3 sm:p-4 md:hidden animate-fade-in shadow-2xl pointer-events-auto max-h-[calc(100vh-120px)] overflow-y-auto">
-                    <div className="flex flex-col space-y-2">
-                        {mobileNavItems.map(item => (
-                            <Link
-                                key={item.label}
-                                to={item.href}
-                                className="text-muted-foreground hover:text-foreground hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                <item.icon className="w-5 h-5 mr-3" />
-                                {item.label}
-                            </Link>
-                        ))}
+                    <div className="flex flex-col space-y-1.5">
+                        {/* Prominent Top Status Banner */}
+                        {user ? (
+                            <div className="p-3 mb-2 rounded-xl bg-secondary/60 border border-border flex items-center justify-between">
+                                <div className="flex items-center gap-2.5 overflow-hidden">
+                                    <div className="w-8 h-8 rounded-full bg-bca-red/15 border border-bca-red/30 flex items-center justify-center text-bca-red font-mono text-xs font-bold shrink-0">
+                                        {user.email ? user.email.charAt(0).toUpperCase() : 'U'}
+                                    </div>
+                                    <div className="overflow-hidden">
+                                        <p className="text-xs font-medium text-foreground truncate">{user.email}</p>
+                                        <p className="text-[10px] font-mono text-muted-foreground">BCA Student</p>
+                                    </div>
+                                </div>
+                                <Link
+                                    to="/dashboard"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-2.5 py-1 bg-bca-red text-white text-xs font-mono font-medium rounded-lg hover:bg-bca-red/90 transition-colors shrink-0"
+                                >
+                                    Dashboard
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="p-3 mb-2 rounded-xl bg-bca-red/10 border border-bca-red/20 flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-semibold text-foreground">BCA Student Portal</p>
+                                    <p className="text-[10px] text-muted-foreground">Sign in with student passcode</p>
+                                </div>
+                                <Link
+                                    to="/auth"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-3 py-1 bg-bca-red text-white text-xs font-mono font-medium rounded-lg hover:bg-bca-red/90 transition-colors shrink-0"
+                                >
+                                    Sign In
+                                </Link>
+                            </div>
+                        )}
+
+                        {/* If user logged in: quick student dashboard links right at top */}
+                        {user && (
+                            <div className="grid grid-cols-2 gap-1.5 mb-2 pb-2 border-b border-border/60">
+                                <Link
+                                    to="/dashboard"
+                                    className="flex items-center gap-2 p-2.5 rounded-xl bg-accent/60 hover:bg-accent text-xs font-medium text-foreground transition-all"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <LayoutDashboard className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>Dashboard</span>
+                                </Link>
+                                <Link
+                                    to="/submit-project"
+                                    className="flex items-center gap-2 p-2.5 rounded-xl bg-accent/60 hover:bg-accent text-xs font-medium text-foreground transition-all"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <FolderPlus className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>Submit Work</span>
+                                </Link>
+                            </div>
+                        )}
 
                         {/* Admin Link for Mobile */}
                         {isAdmin && (
                             <Link
                                 to="/admin"
-                                className="text-bca-red hover:text-bca-red-hover hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
+                                className="text-bca-red hover:bg-bca-red/10 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center border border-bca-red/20 mb-1"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
+                                <span className="w-2 h-2 rounded-full bg-bca-red mr-2.5" />
                                 Admin Panel
                             </Link>
                         )}
 
-                        {/* User Account Links for Mobile */}
-                        {user && (
-                            <div className="border-t border-border pt-2 mt-2">
-                                <p className="text-xs text-muted-foreground px-4 py-2 uppercase tracking-wider">Account</p>
-                                <Link
-                                    to="/dashboard"
-                                    className="text-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <LayoutDashboard className="w-5 h-5 mr-3" />
-                                    Dashboard
-                                </Link>
-                                <Link
-                                    to="/submit-project"
-                                    className="text-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px] flex items-center"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <FolderPlus className="w-5 h-5 mr-3" />
-                                    Submit Project
-                                </Link>
-                            </div>
-                        )}
+                        {/* Navigation Links */}
+                        {mobileNavItems.map(item => (
+                            <Link
+                                key={item.label}
+                                to={item.href}
+                                className="text-muted-foreground hover:text-foreground hover:bg-accent px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                <item.icon className="w-4 h-4 mr-3 opacity-70" />
+                                {item.label}
+                            </Link>
+                        ))}
 
                         {/* Mobile Auth Button */}
-                        <div className="border-t border-border pt-2 mt-2">
-                            {user ? (
+                        {user && (
+                            <div className="border-t border-border pt-2 mt-2">
                                 <button
                                     onClick={() => {
                                         handleSignOut();
                                         setIsMobileMenuOpen(false);
                                     }}
-                                    className="w-full flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px]"
+                                    className="w-full flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-3 py-2.5 rounded-xl text-sm font-medium transition-all"
                                 >
-                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <LogOut className="w-4 h-4 mr-2.5" />
                                     Logout
                                 </button>
-                            ) : (
-                                <Link
-                                    to="/auth"
-                                    className="flex items-center text-muted-foreground hover:text-bca-red hover:bg-accent px-4 py-4 rounded-xl text-base font-medium transition-all min-h-[48px]"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <LogIn className="w-4 h-4 mr-2" />
-                                    Login
-                                </Link>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
