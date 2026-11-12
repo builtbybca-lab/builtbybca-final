@@ -699,12 +699,79 @@ const TeamManager = () => {
         .select('*')
         .order('display_order', { ascending: true });
       if (error) throw error;
-      return data;
+
+      const list = [...(data || [])];
+      const missingMembers: any[] = [];
+
+      // Check if Vaibhav is missing in Supabase
+      if (!list.some((m) => m.name?.toLowerCase().includes('vaibhav'))) {
+        missingMembers.push({
+          name: 'Vaibhav B.H',
+          role: 'Technical Lead',
+          division: 'Technical Team',
+          image_url: 'https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ggyorm3pt4-1771308681046.jpeg',
+          tenure: '2025–2026',
+          is_founding: true,
+          is_current: false,
+          display_order: 10,
+          year: '2nd Year',
+          batch: '2024–2027',
+          bio: 'Technical Lead of the Founding Council (2025–2026). Dedicated to driving technical excellence, guiding student initiatives, and architecting real-world web solutions.'
+        });
+      }
+
+      // Check if Chandana is missing in Supabase
+      if (!list.some((m) => m.name?.toLowerCase().includes('chandana'))) {
+        missingMembers.push({
+          name: 'Chandana B.M',
+          role: 'Vice-President',
+          division: 'Core Team',
+          image_url: 'https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ql6a5ncorsf-1771308053372.jpeg',
+          tenure: '2025–2026',
+          is_founding: true,
+          is_current: false,
+          display_order: 2,
+          year: '2nd Year',
+          batch: '2024–2027',
+          bio: 'Vice-President of the Founding Council (2025–2026). Dedicated to leadership, student community development, and operational coordination for BuiltBy.BCA.'
+        });
+      }
+
+      // If missing, auto-insert into Supabase via active admin session
+      if (missingMembers.length > 0) {
+        try {
+          const { data: inserted, error: insertErr } = await supabase
+            .from('team_members')
+            .insert(missingMembers)
+            .select();
+          if (!insertErr && inserted && inserted.length > 0) {
+            list.push(...inserted);
+            queryClient.invalidateQueries({ queryKey: ['team_members'] });
+            return list;
+          }
+        } catch (e) {
+          console.warn('Auto-sync team members note:', e);
+        }
+
+        // In-memory fallback so admin immediately views and manages them
+        missingMembers.forEach((mm, idx) => {
+          list.push({
+            id: `temp-${idx}-${Date.now()}`,
+            ...mm,
+            created_at: new Date().toISOString()
+          });
+        });
+      }
+
+      return list;
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      if (id.startsWith('temp-')) {
+        return;
+      }
       const { error } = await supabase.from('team_members').delete().eq('id', id);
       if (error) throw error;
     },
@@ -952,7 +1019,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
         is_founding: Boolean(data.is_founding),
       };
 
-      if (member) {
+      if (member && !String(member.id).startsWith('temp-')) {
         const { error } = await supabase.from('team_members').update(payload).eq('id', member.id);
         if (error) throw error;
       } else {
