@@ -57,7 +57,7 @@ const Team: React.FC = () => {
         .order("display_order", { ascending: true });
 
       if (error) throw error;
-      return (data || []).map((m: any) => ({
+      const rawList = (data || []).map((m: any) => ({
         id: m.id,
         name: m.name,
         role: m.role,
@@ -74,6 +74,42 @@ const Team: React.FC = () => {
         is_current: m.is_current !== undefined && m.is_current !== null ? m.is_current : true,
         is_founding: Boolean(m.is_founding),
       })) as TeamMember[];
+
+      // Ensure Vaibhav B.H is included as Technical Lead in Founding Team (2025–2026)
+      const vaibhavIndex = rawList.findIndex((m) =>
+        m.name.toLowerCase().includes("vaibhav")
+      );
+      if (vaibhavIndex >= 0) {
+        rawList[vaibhavIndex].name = "Vaibhav B.H";
+        rawList[vaibhavIndex].image_url =
+          "https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ggyorm3pt4-1771308681046.jpeg";
+        rawList[vaibhavIndex].role = "Technical Lead";
+        rawList[vaibhavIndex].division = "Technical Team";
+        rawList[vaibhavIndex].tenure = "2025–2026";
+        rawList[vaibhavIndex].is_founding = true;
+        rawList[vaibhavIndex].is_current = false;
+      } else {
+        rawList.push({
+          id: "vaibhav-bh-founding",
+          name: "Vaibhav B.H",
+          role: "Technical Lead",
+          bio: "Technical Lead of the Founding Council (2025–2026). Dedicated to driving technical excellence, guiding student initiatives, and architecting real-world web solutions.",
+          full_bio: "Technical Lead of the Founding Council (2025–2026). Dedicated to driving technical excellence, guiding student initiatives, and architecting real-world web solutions.",
+          image_url:
+            "https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ggyorm3pt4-1771308681046.jpeg",
+          linkedin_url: null,
+          github_url: null,
+          display_order: 10,
+          year: "2nd Year",
+          batch: "2024–2027",
+          division: "Technical Team",
+          tenure: "2025–2026",
+          is_current: false,
+          is_founding: true,
+        });
+      }
+
+      return rawList;
     },
   });
 
