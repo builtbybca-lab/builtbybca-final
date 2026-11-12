@@ -95,7 +95,7 @@ const Resources = () => {
             <Navigation />
 
             {/* Hero Section */}
-            <section className="pt-32 pb-8 px-4 relative overflow-hidden">
+            <section className="pt-24 sm:pt-32 pb-8 px-3.5 sm:px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-900/[0.04] -z-10" />
                 <div className="max-w-7xl mx-auto text-center space-y-8">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 text-secondary-foreground text-sm font-medium animate-fade-in">
@@ -259,12 +259,12 @@ const Resources = () => {
             </section>
 
             {/* Question Bank Section (Gated for logged-in students) */}
-            <section id="question-bank" className="px-4 pb-24 pt-10 border-t border-border/40 scroll-mt-20">
+            <section id="question-bank" className="px-3.5 sm:px-6 pb-20 pt-8 sm:pt-12 border-t border-border/40 scroll-mt-20">
                 <div className="max-w-7xl mx-auto">
                     {user ? (
                         <QuestionBankSection />
                     ) : (
-                        <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 via-card/50 to-background p-8 md:p-14 text-center shadow-xl">
+                        <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-b from-card/90 via-card/50 to-background p-6 sm:p-12 text-center shadow-xl">
                             {/* Decorative background glow */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-bca-red/10 rounded-full blur-3xl pointer-events-none" />
 

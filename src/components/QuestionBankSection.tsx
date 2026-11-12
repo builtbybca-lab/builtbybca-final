@@ -108,10 +108,10 @@ export const QuestionBankSection: React.FC = () => {
       </div>
 
       {/* Semester Filter Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none mb-5 border-b border-border/40">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none mb-5 border-b border-border/40 -mx-1 px-1">
         <button
           onClick={() => setSelectedSemester("all")}
-          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+          className={`px-3.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
             selectedSemester === "all"
               ? "bg-foreground text-background font-semibold"
               : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
@@ -124,7 +124,7 @@ export const QuestionBankSection: React.FC = () => {
           <button
             key={sem}
             onClick={() => setSelectedSemester(sem)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
+            className={`px-3.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
               selectedSemester === sem
                 ? "bg-foreground text-background font-semibold"
                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
@@ -242,17 +242,17 @@ export const QuestionBankSection: React.FC = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto pt-2.5 sm:pt-0 border-t sm:border-t-0 border-border/30 justify-end sm:justify-start shrink-0">
                 <a
                   href={paper.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex"
+                  className="flex-1 sm:flex-initial inline-flex"
                 >
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 text-xs gap-1.5"
+                    className="w-full sm:w-auto h-9 text-xs gap-1.5"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     View
@@ -263,11 +263,11 @@ export const QuestionBankSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   download={`${paper.subject_code || 'Paper'}_${paper.year}.pdf`}
-                  className="inline-flex"
+                  className="flex-1 sm:flex-initial inline-flex"
                 >
                   <Button
                     size="sm"
-                    className="h-8 text-xs gap-1.5"
+                    className="w-full sm:w-auto bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-9 text-xs gap-1.5 shadow-sm"
                   >
                     <Download className="w-3.5 h-3.5" />
                     Download

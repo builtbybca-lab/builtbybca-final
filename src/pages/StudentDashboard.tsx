@@ -34,31 +34,31 @@ const NotificationsList = () => {
     const { notifications, dismiss } = useNotifications();
 
     if (notifications.length === 0) {
-        return <div className="text-muted-foreground text-sm">No new announcements at this time.</div>;
+        return <div className="text-muted-foreground text-xs sm:text-sm">No new announcements at this time.</div>;
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
             {notifications.map((n: any) => (
-                <div key={n.id} className="flex gap-4 items-start p-3 rounded-lg bg-secondary/30 relative group">
+                <div key={n.id} className="flex gap-3 items-start p-3 rounded-xl bg-secondary/40 border border-border/40 relative group">
                     <button
                         onClick={(e) => {
                             e.preventDefault();
                             dismiss(n.id);
                         }}
-                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
+                        className="absolute top-2 right-2 opacity-70 hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
                         title="Dismiss"
                     >
-                        <X className="w-3 h-3" />
+                        <X className="w-3.5 h-3.5" />
                     </button>
                     <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
                         ${n.type === 'urgent' ? 'bg-red-500' :
                             n.type === 'warning' ? 'bg-yellow-500' :
                                 n.type === 'event' ? 'bg-purple-500' : 'bg-blue-500'}`}
                     />
-                    <div>
-                        <h4 className="font-semibold text-sm">{n.title}</h4>
-                        <p className="text-muted-foreground text-sm mt-0.5">{n.message}</p>
+                    <div className="pr-6">
+                        <h4 className="font-semibold text-xs sm:text-sm text-foreground">{n.title}</h4>
+                        <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 leading-relaxed">{n.message}</p>
                         <p className="text-[10px] text-muted-foreground mt-1 opacity-70">
                             {new Date(n.created_at).toLocaleDateString()}
                         </p>
@@ -149,7 +149,6 @@ const StudentDashboard = () => {
     // Upload event images mutation
     const uploadEventImagesMutation = useMutation({
         mutationFn: async ({ eventId, images }: { eventId: string; images: string[] }) => {
-            // Get existing images first
             const { data: event, error: fetchError } = await supabase
                 .from("events")
                 .select("gallery_images")
@@ -192,17 +191,17 @@ const StudentDashboard = () => {
             if (!user) throw new Error("User not authenticated");
 
             const { data: profile } = await supabase
-                .from('profiles')
-                .select('avatar_url, full_name')
-                .eq('id', user.id)
+                .from("profiles")
+                .select("avatar_url, full_name")
+                .eq("id", user.id)
                 .single();
 
             const { error } = await supabase.from("testimonials").insert({
-                name: profile?.full_name || user.user_metadata.full_name || "Anonymous",
+                name: profile?.full_name || user.user_metadata?.full_name || "Anonymous",
                 role: data.role,
                 content: data.content,
                 rating: data.rating,
-                avatar_url: profile?.avatar_url || user.user_metadata.avatar_url
+                avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
             });
 
             if (error) throw error;
@@ -214,10 +213,9 @@ const StudentDashboard = () => {
         onError: (error) => {
             console.error(error);
             toast({ title: "Failed to submit testimonial", variant: "destructive" });
-        }
+        },
     });
 
-    // Show loading state
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
@@ -226,7 +224,6 @@ const StudentDashboard = () => {
         );
     }
 
-    // Show nothing while redirecting
     if (!user) {
         return null;
     }
@@ -235,116 +232,120 @@ const StudentDashboard = () => {
         <div className="min-h-screen bg-background">
             <Navigation />
 
-            <section className="pt-32 pb-16 px-4">
+            <section className="pt-24 sm:pt-32 pb-16 px-3.5 sm:px-6">
                 <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                    <div className="text-center mb-6 sm:mb-8">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-2 sm:mb-3 tracking-tight">
                             Student <span className="text-bca-red">Dashboard</span>
                         </h1>
-                        <p className="text-muted-foreground text-lg">
-                            Manage your blogs, projects, and contribute to event galleries
+                        <p className="text-muted-foreground text-xs sm:text-base max-w-xl mx-auto">
+                            Manage your blogs, projects, and contribute to club events and galleries
                         </p>
                     </div>
 
-
                     {/* Announcements Card */}
-                    <Card className="mb-8 border-l-4 border-l-bca-red bg-card/50 backdrop-blur-sm">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <Bell className="w-5 h-5 text-bca-red" />
+                    <Card className="mb-6 sm:mb-8 border-l-4 border-l-bca-red bg-card/60 backdrop-blur-sm shadow-sm">
+                        <CardHeader className="pb-2 p-4 sm:p-6">
+                            <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-bca-red shrink-0" />
                                 Latest Announcements
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-4 sm:p-6 pt-0">
                             <NotificationsList />
                         </CardContent>
                     </Card>
 
                     <Tabs defaultValue="blogs" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-                            <TabsTrigger value="blogs" className="flex items-center gap-2">
-                                <PenSquare className="w-4 h-4" />
-                                My Blogs
-                            </TabsTrigger>
-                            <TabsTrigger value="events" className="flex items-center gap-2">
-                                <ImageIcon className="w-4 h-4" />
-                                Add Event Photos
-                            </TabsTrigger>
-                            <TabsTrigger value="projects" className="flex items-center gap-2">
-                                <FolderOpen className="w-4 h-4" />
-                                My Projects
-                            </TabsTrigger>
-                            <TabsTrigger value="testimonial" className="flex items-center gap-2">
-                                <Quote className="w-4 h-4" />
-                                Testimonial
-                            </TabsTrigger>
-                        </TabsList>
+                        {/* Mobile Scrollable Tabs */}
+                        <div className="overflow-x-auto pb-2 -mx-1 px-1 mb-6 scrollbar-none">
+                            <TabsList className="inline-flex w-full min-w-max md:grid md:grid-cols-4 p-1 bg-secondary/60 rounded-xl h-auto">
+                                <TabsTrigger value="blogs" className="flex items-center gap-2 py-2.5 px-3.5 text-xs sm:text-sm font-medium rounded-lg">
+                                    <PenSquare className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>My Blogs</span>
+                                </TabsTrigger>
+                                <TabsTrigger value="events" className="flex items-center gap-2 py-2.5 px-3.5 text-xs sm:text-sm font-medium rounded-lg">
+                                    <ImageIcon className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>Event Photos</span>
+                                </TabsTrigger>
+                                <TabsTrigger value="projects" className="flex items-center gap-2 py-2.5 px-3.5 text-xs sm:text-sm font-medium rounded-lg">
+                                    <FolderOpen className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>My Projects</span>
+                                </TabsTrigger>
+                                <TabsTrigger value="testimonial" className="flex items-center gap-2 py-2.5 px-3.5 text-xs sm:text-sm font-medium rounded-lg">
+                                    <Quote className="w-4 h-4 text-bca-red shrink-0" />
+                                    <span>Testimonial</span>
+                                </TabsTrigger>
+                            </TabsList>
+                        </div>
 
                         {/* My Blogs Tab */}
                         <TabsContent value="blogs">
-                            <Card className="bg-card/50 backdrop-blur-sm border-border">
-                                <CardHeader className="flex flex-row items-center justify-between">
+                            <Card className="bg-card/50 backdrop-blur-sm border-border shadow-sm">
+                                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:p-6">
                                     <div>
-                                        <CardTitle className="text-foreground">My Blog Posts</CardTitle>
-                                        <CardDescription>Create and manage your blog posts</CardDescription>
+                                        <CardTitle className="text-base sm:text-lg text-foreground">My Blog Posts</CardTitle>
+                                        <CardDescription className="text-xs sm:text-sm">Create and manage your blog posts</CardDescription>
                                     </div>
-                                    <Link to="/create-blog">
-                                        <Button className="bg-bca-red hover:bg-bca-red-hover">
-                                            <Plus className="w-4 h-4 mr-2" />
+                                    <Link to="/create-blog" className="w-full sm:w-auto">
+                                        <Button className="w-full sm:w-auto bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-9 text-xs sm:text-sm font-medium">
+                                            <Plus className="w-4 h-4 mr-1.5" />
                                             New Blog
                                         </Button>
                                     </Link>
                                 </CardHeader>
-                                <CardContent>
+                                <CardContent className="p-4 sm:p-6 pt-0">
                                     {blogsLoading ? (
                                         <div className="flex justify-center py-8">
                                             <Loader2 className="h-6 w-6 animate-spin text-bca-red" />
                                         </div>
                                     ) : myBlogs.length === 0 ? (
-                                        <div className="text-center py-8">
-                                            <PenSquare className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                                            <p className="text-muted-foreground mb-4">You haven't written any blog posts yet.</p>
+                                        <div className="text-center py-8 sm:py-12">
+                                            <PenSquare className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-muted-foreground/40 mb-3" />
+                                            <p className="text-muted-foreground text-xs sm:text-sm mb-4">You haven't written any blog posts yet.</p>
                                             <Link to="/create-blog">
-                                                <Button variant="outline" className="border-border">
+                                                <Button variant="outline" className="border-border text-xs sm:text-sm">
                                                     Write Your First Blog
                                                 </Button>
                                             </Link>
                                         </div>
                                     ) : (
-                                        <div className="space-y-4">
+                                        <div className="space-y-3">
                                             {myBlogs.map((blog: any) => (
                                                 <div
                                                     key={blog.id}
-                                                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border border-border"
+                                                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-muted/30 hover:bg-muted/50 rounded-xl border border-border transition-colors"
                                                 >
-                                                    <div className="flex-1">
-                                                        <h3 className="font-semibold text-foreground">{blog.title}</h3>
-                                                        <div className="flex items-center gap-2 mt-1">
-                                                            <Badge variant={blog.published ? "default" : "secondary"}>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-semibold text-sm sm:text-base text-foreground truncate">{blog.title}</h3>
+                                                        <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                                                            <Badge variant={blog.published ? "default" : "secondary"} className="text-[10px] sm:text-[11px] py-0 px-2 font-normal">
                                                                 {blog.published ? (
                                                                     <><Eye className="w-3 h-3 mr-1" /> Published</>
                                                                 ) : (
                                                                     <><EyeOff className="w-3 h-3 mr-1" /> Pending Approval</>
                                                                 )}
                                                             </Badge>
-                                                            <span className="text-xs text-muted-foreground">
+                                                            <span className="text-[11px] sm:text-xs text-muted-foreground">
                                                                 {new Date(blog.created_at).toLocaleDateString()}
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-2">
+                                                    <div className="flex items-center gap-1.5 self-end sm:self-center shrink-0">
                                                         <Button
-                                                            variant="ghost"
+                                                            variant="outline"
                                                             size="sm"
                                                             onClick={() => navigate(`/blog/${blog.slug}`)}
+                                                            className="h-8 px-2.5 text-xs"
                                                         >
-                                                            <Eye className="w-4 h-4" />
+                                                            <Eye className="w-3.5 h-3.5 mr-1" /> View
                                                         </Button>
                                                         <Button
                                                             variant="ghost"
-                                                            size="sm"
+                                                            size="icon"
                                                             onClick={() => deleteBlogMutation.mutate(blog.id)}
-                                                            className="text-destructive hover:text-destructive"
+                                                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                            aria-label="Delete blog"
                                                         >
                                                             <Trash2 className="w-4 h-4" />
                                                         </Button>
@@ -359,28 +360,28 @@ const StudentDashboard = () => {
 
                         {/* Add Event Photos Tab */}
                         <TabsContent value="events">
-                            <Card className="bg-card/50 backdrop-blur-sm border-border">
-                                <CardHeader>
-                                    <CardTitle className="text-foreground">Upload Event Photos</CardTitle>
-                                    <CardDescription>
+                            <Card className="bg-card/50 backdrop-blur-sm border-border shadow-sm">
+                                <CardHeader className="p-4 sm:p-6">
+                                    <CardTitle className="text-base sm:text-lg text-foreground">Upload Event Photos</CardTitle>
+                                    <CardDescription className="text-xs sm:text-sm">
                                         Contribute photos to event galleries. Select an event and upload your photos.
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="space-y-6">
+                                <CardContent className="space-y-5 p-4 sm:p-6 pt-0">
                                     <div>
-                                        <label className="text-sm font-medium text-foreground mb-2 block">
+                                        <label className="text-xs sm:text-sm font-medium text-foreground mb-1.5 block">
                                             Select Event
                                         </label>
                                         <Select value={selectedEventId} onValueChange={setSelectedEventId}>
-                                            <SelectTrigger className="bg-secondary border-border">
+                                            <SelectTrigger className="bg-secondary border-border h-11 text-xs sm:text-sm">
                                                 <SelectValue placeholder="Choose an event..." />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {events.map((event: any) => (
-                                                    <SelectItem key={event.id} value={event.id}>
-                                                        <div className="flex items-center gap-2">
-                                                            <Calendar className="w-4 h-4 text-muted-foreground" />
-                                                            {event.title} - {new Date(event.date).toLocaleDateString()}
+                                                    <SelectItem key={event.id} value={event.id} className="text-xs sm:text-sm">
+                                                        <div className="flex items-center gap-2 truncate">
+                                                            <Calendar className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                                                            <span className="truncate">{event.title} - {new Date(event.date).toLocaleDateString()}</span>
                                                         </div>
                                                     </SelectItem>
                                                 ))}
@@ -391,7 +392,7 @@ const StudentDashboard = () => {
                                     {selectedEventId && (
                                         <>
                                             <div>
-                                                <label className="text-sm font-medium text-foreground mb-2 block">
+                                                <label className="text-xs sm:text-sm font-medium text-foreground mb-1.5 block">
                                                     Upload Photos
                                                 </label>
                                                 <MultiImageUpload
@@ -402,7 +403,7 @@ const StudentDashboard = () => {
                                             </div>
 
                                             <Button
-                                                className="w-full bg-bca-red hover:bg-bca-red-hover"
+                                                className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-11 text-xs sm:text-sm font-medium shadow-md"
                                                 onClick={handleUploadEventImages}
                                                 disabled={uploadImages.length === 0 || uploadEventImagesMutation.isPending}
                                             >
@@ -421,59 +422,57 @@ const StudentDashboard = () => {
 
                         {/* My Projects Tab */}
                         <TabsContent value="projects">
-                            <Card className="bg-card/50 backdrop-blur-sm border-border">
-                                <CardHeader className="flex flex-row items-center justify-between">
+                            <Card className="bg-card/50 backdrop-blur-sm border-border shadow-sm">
+                                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:p-6">
                                     <div>
-                                        <CardTitle className="text-foreground">My Projects</CardTitle>
-                                        <CardDescription>View and manage your submitted projects</CardDescription>
+                                        <CardTitle className="text-base sm:text-lg text-foreground">My Projects</CardTitle>
+                                        <CardDescription className="text-xs sm:text-sm">View and manage your submitted projects</CardDescription>
                                     </div>
-                                    <Link to="/submit-project">
-                                        <Button className="bg-bca-red hover:bg-bca-red-hover">
-                                            <Plus className="w-4 h-4 mr-2" />
+                                    <Link to="/submit-project" className="w-full sm:w-auto">
+                                        <Button className="w-full sm:w-auto bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-9 text-xs sm:text-sm font-medium">
+                                            <Plus className="w-4 h-4 mr-1.5" />
                                             New Project
                                         </Button>
                                     </Link>
                                 </CardHeader>
-                                <CardContent>
+                                <CardContent className="p-4 sm:p-6 pt-0">
                                     {projectsLoading ? (
                                         <div className="flex justify-center py-8">
                                             <Loader2 className="h-6 w-6 animate-spin text-bca-red" />
                                         </div>
                                     ) : myProjects.length === 0 ? (
-                                        <div className="text-center py-8">
-                                            <FolderOpen className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                                            <p className="text-muted-foreground mb-4">You haven't submitted any projects yet.</p>
+                                        <div className="text-center py-8 sm:py-12">
+                                            <FolderOpen className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-muted-foreground/40 mb-3" />
+                                            <p className="text-muted-foreground text-xs sm:text-sm mb-4">You haven't submitted any projects yet.</p>
                                             <Link to="/submit-project">
-                                                <Button variant="outline" className="border-border">
+                                                <Button variant="outline" className="border-border text-xs sm:text-sm">
                                                     Submit Your First Project
                                                 </Button>
                                             </Link>
                                         </div>
                                     ) : (
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                             {myProjects.map((project: any) => (
                                                 <div
                                                     key={project.id}
-                                                    className="p-4 bg-muted/50 rounded-lg border border-border"
+                                                    className="p-3.5 sm:p-4 bg-muted/30 hover:bg-muted/50 rounded-xl border border-border transition-colors flex flex-col sm:flex-row gap-3 sm:gap-4"
                                                 >
-                                                    <div className="flex items-start gap-4">
-                                                        {project.thumbnail_url && (
-                                                            <img
-                                                                src={project.thumbnail_url}
-                                                                alt={project.name}
-                                                                className="w-20 h-20 object-cover rounded-lg"
-                                                            />
-                                                        )}
-                                                        <div className="flex-1">
-                                                            <h3 className="font-semibold text-foreground">{project.name}</h3>
-                                                            <p className="text-sm text-muted-foreground line-clamp-2">
-                                                                {project.description}
-                                                            </p>
-                                                            <div className="mt-2">
-                                                                <Badge variant={project.approved ? "default" : "secondary"}>
-                                                                    {project.approved ? "Approved" : "Pending Approval"}
-                                                                </Badge>
-                                                            </div>
+                                                    {project.thumbnail_url && (
+                                                        <img
+                                                            src={project.thumbnail_url}
+                                                            alt={project.name}
+                                                            className="w-full sm:w-24 h-36 sm:h-24 object-cover rounded-lg shrink-0"
+                                                        />
+                                                    )}
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-semibold text-sm sm:text-base text-foreground truncate">{project.name}</h3>
+                                                        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mt-1">
+                                                            {project.description}
+                                                        </p>
+                                                        <div className="mt-2.5">
+                                                            <Badge variant={project.approved ? "default" : "secondary"} className="text-[10px] sm:text-[11px] py-0 px-2 font-normal">
+                                                                {project.approved ? "Approved" : "Pending Approval"}
+                                                            </Badge>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -486,26 +485,26 @@ const StudentDashboard = () => {
 
                         {/* Testimonial Tab */}
                         <TabsContent value="testimonial">
-                            <Card className="bg-card/50 backdrop-blur-sm border-border">
-                                <CardHeader>
-                                    <CardTitle className="text-foreground">Share Your Experience</CardTitle>
-                                    <CardDescription>
-                                        Let others know what you think about the community.
+                            <Card className="bg-card/50 backdrop-blur-sm border-border shadow-sm">
+                                <CardHeader className="p-4 sm:p-6">
+                                    <CardTitle className="text-base sm:text-lg text-foreground">Share Your Experience</CardTitle>
+                                    <CardDescription className="text-xs sm:text-sm">
+                                        Let others know what you think about the BuiltByBCA community.
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="space-y-6">
+                                <CardContent className="space-y-4 sm:space-y-5 p-4 sm:p-6 pt-0">
                                     <div>
-                                        <label className="text-sm font-medium text-foreground mb-2 block">Rating</label>
+                                        <label className="text-xs sm:text-sm font-medium text-foreground mb-1.5 block">Rating</label>
                                         <div className="flex gap-2">
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <button
                                                     key={star}
                                                     type="button"
                                                     onClick={() => setTestimonialForm(prev => ({ ...prev, rating: star }))}
-                                                    className="focus:outline-none transition-transform hover:scale-110"
+                                                    className="focus:outline-none transition-transform hover:scale-110 p-1"
                                                 >
                                                     <Star
-                                                        className={`w-8 h-8 ${star <= testimonialForm.rating ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground"}`}
+                                                        className={`w-6 h-6 sm:w-7 sm:h-7 ${star <= testimonialForm.rating ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground/40"}`}
                                                     />
                                                 </button>
                                             ))}
@@ -513,29 +512,29 @@ const StudentDashboard = () => {
                                     </div>
 
                                     <div>
-                                        <label className="text-sm font-medium text-foreground mb-2 block">Role / Title</label>
+                                        <label className="text-xs sm:text-sm font-medium text-foreground mb-1.5 block">Role / Title</label>
                                         <input
                                             type="text"
                                             value={testimonialForm.role}
                                             onChange={(e) => setTestimonialForm(prev => ({ ...prev, role: e.target.value }))}
-                                            placeholder="e.g. 2nd Year Student, Alumni, Developer"
-                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            placeholder="e.g. 2nd Year Student, Developer"
+                                            className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-xs sm:text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="text-sm font-medium text-foreground mb-2 block">Your Message</label>
+                                        <label className="text-xs sm:text-sm font-medium text-foreground mb-1.5 block">Your Message</label>
                                         <textarea
                                             value={testimonialForm.content}
                                             onChange={(e) => setTestimonialForm(prev => ({ ...prev, content: e.target.value }))}
                                             placeholder="Share your thoughts..."
                                             rows={4}
-                                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-xs sm:text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
                                         />
                                     </div>
 
                                     <Button
-                                        className="w-full bg-bca-red hover:bg-bca-red-hover"
+                                        className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-11 text-xs sm:text-sm font-medium shadow-md mt-2"
                                         onClick={() => submitTestimonialMutation.mutate(testimonialForm)}
                                         disabled={!testimonialForm.content || !testimonialForm.role || submitTestimonialMutation.isPending}
                                     >
@@ -555,7 +554,7 @@ const StudentDashboard = () => {
                     {isAdmin && (
                         <div className="mt-8 text-center">
                             <Link to="/admin">
-                                <Button variant="outline" className="border-bca-red text-bca-red hover:bg-bca-red hover:text-white">
+                                <Button variant="outline" className="border-bca-red text-bca-red hover:bg-bca-red hover:text-white text-xs sm:text-sm">
                                     Go to Admin Dashboard
                                 </Button>
                             </Link>

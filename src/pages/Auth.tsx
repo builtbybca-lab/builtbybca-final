@@ -184,13 +184,13 @@ const Auth = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="pt-28 md:pt-36 pb-20 px-4">
+      <section className="pt-24 sm:pt-32 pb-16 px-3.5 sm:px-6">
         <div className="max-w-md mx-auto">
-          <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-border/80 shadow-2xl p-6 md:p-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 text-center tracking-tight">
+          <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-border/80 shadow-2xl p-5 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 text-center tracking-tight">
               Sign In
             </h1>
-            <p className="text-muted-foreground text-center text-sm mb-6">
+            <p className="text-muted-foreground text-center text-xs sm:text-sm mb-6">
               Enter your email and password to access your dashboard and resources
             </p>
 
