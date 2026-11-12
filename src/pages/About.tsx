@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import React from "react";
 import { motion } from "framer-motion";
 import { Users, Target, Lightbulb } from "lucide-react";
@@ -206,10 +207,10 @@ const About: React.FC = () => {
                 className="w-full sm:w-72 lg:w-80 bg-card/90 backdrop-blur-sm rounded-2xl border border-border hover:border-bca-red/40 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-bca-red/5 transition-colors duration-300 group"
               >
                 <div className="aspect-square bg-secondary overflow-hidden relative">
-                  <img
+                  <OptimizedImage
                     src={member.image}
                     alt={member.name}
-                    loading="lazy"
+                    containerClassName="w-full h-full"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />

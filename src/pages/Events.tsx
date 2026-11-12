@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -167,11 +168,12 @@ const Events = () => {
                   >
                     <div>
                       <div className="relative h-48 overflow-hidden bg-secondary">
-                        <img
+                        <OptimizedImage
                           src={event.image_url}
                           alt={event.title}
+                          fallbackSrc="/placeholder.svg"
+                          containerClassName="w-full h-full"
                           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                          loading="lazy"
                         />
                         <div className="absolute top-3 left-3">
                           <span className="bg-bca-red text-white px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider shadow-sm">
@@ -237,10 +239,10 @@ const Events = () => {
           {selectedEvent && (
             <div className="space-y-6">
               <div className="relative">
-                <img
+                <OptimizedImage
                   src={selectedEvent.image_url}
                   alt={selectedEvent.title}
-                  loading="lazy"
+                  fallbackSrc="/placeholder.svg"
                   className="w-full h-48 sm:h-64 object-cover rounded-xl"
                 />
               </div>

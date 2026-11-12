@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, ArrowLeft, Clock, Share2, Edit } from "lucide-react";
@@ -204,16 +205,12 @@ const BlogPost = () => {
           </div>
 
           <div className="relative mb-12 rounded-xl overflow-hidden shadow-lg aspect-video bg-gradient-to-br from-bca-red/20 to-muted">
-            <img
+            <OptimizedImage
               src={post.hero_image_url}
-              alt=""
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                if (!target.dataset.failed) {
-                  target.dataset.failed = 'true';
-                  target.src = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80';
-                }
-              }}
+              alt={post.title}
+              priority={true}
+              fallbackSrc="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80"
+              containerClassName="w-full h-full"
               className="w-full h-full object-cover"
             />
           </div>

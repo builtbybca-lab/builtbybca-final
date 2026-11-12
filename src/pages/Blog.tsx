@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -173,18 +174,11 @@ const Blog: React.FC = () => {
                     className="flex flex-col h-full bg-card/90 backdrop-blur-sm rounded-2xl border border-border hover:border-bca-red/40 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-bca-red/5 transition-all duration-300 group"
                   >
                     <div className="aspect-video bg-secondary relative overflow-hidden">
-                      <img
+                      <OptimizedImage
                         src={post.thumbnail_url}
-                        alt=""
-                        loading="lazy"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (!target.dataset.failed) {
-                            target.dataset.failed = "true";
-                            target.src =
-                              "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80";
-                          }
-                        }}
+                        alt={post.title}
+                        fallbackSrc="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80"
+                        containerClassName="w-full h-full"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                       <div className="absolute top-3 left-3">

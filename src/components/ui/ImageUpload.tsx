@@ -3,6 +3,7 @@ import { Upload, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { compressImage } from "@/lib/imageCompression";
 
 interface ImageUploadProps {
   value?: string;
@@ -43,15 +44,16 @@ export const ImageUpload = ({ value, onChange, bucket, className = "" }: ImageUp
     setUploading(true);
 
     try {
-      // Generate unique filename
-      const fileExt = file.name.split(".").pop();
+      // Automatically downscale and compress image for fast loading
+      const compressedFile = await compressImage(file, { maxWidth: 1200, quality: 0.82 });
+      const fileExt = compressedFile.name.split(".").pop();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
 
-      // Upload to Supabase Storage
+      // Upload to Supabase Storage with 1-year immutable caching
       const { data, error } = await supabase.storage
         .from(bucket)
-        .upload(fileName, file, {
-          cacheControl: "3600",
+        .upload(fileName, compressedFile, {
+          cacheControl: "31536000, immutable",
           upsert: false,
         });
 

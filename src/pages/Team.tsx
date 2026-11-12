@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -361,10 +362,11 @@ const Team: React.FC = () => {
                         <div>
                           {/* Editorial Portrait Container */}
                           <div className="relative aspect-[4/3.8] w-full overflow-hidden bg-secondary">
-                            <img
-                              src={member.image_url || "/placeholder.svg"}
+                            <OptimizedImage
+                              src={member.image_url}
                               alt={member.name}
-                              loading="lazy"
+                              fallbackSrc="/placeholder.svg"
+                              containerClassName="w-full h-full"
                               className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-transparent to-transparent pointer-events-none" />
@@ -497,10 +499,11 @@ const Team: React.FC = () => {
                               <div>
                                 {/* Editorial Portrait Container */}
                                 <div className="relative aspect-[4/3.8] w-full overflow-hidden bg-secondary">
-                                  <img
-                                    src={member.image_url || "/placeholder.svg"}
+                                  <OptimizedImage
+                                    src={member.image_url}
                                     alt={member.name}
-                                    loading="lazy"
+                                    fallbackSrc="/placeholder.svg"
+                                    containerClassName="w-full h-full"
                                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
                                   />
                                   <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-transparent to-transparent pointer-events-none" />

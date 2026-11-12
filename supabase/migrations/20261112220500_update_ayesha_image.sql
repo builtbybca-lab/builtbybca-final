@@ -2,3 +2,4 @@
 UPDATE public.team_members
 SET image_url = '/ayesha.jpg'
 WHERE name ILIKE '%ayesha%';
+

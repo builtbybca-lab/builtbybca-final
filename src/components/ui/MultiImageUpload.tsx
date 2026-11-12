@@ -3,6 +3,7 @@ import { Upload, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { compressImage } from "@/lib/imageCompression";
 
 interface MultiImageUploadProps {
   value?: string[];
@@ -63,13 +64,14 @@ export const MultiImageUpload = ({
 
     try {
       const uploadPromises = files.map(async (file) => {
-        const fileExt = file.name.split(".").pop();
+        const compressedFile = await compressImage(file, { maxWidth: 1200, quality: 0.82 });
+        const fileExt = compressedFile.name.split(".").pop();
         const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
 
         const { data, error } = await supabase.storage
           .from(bucket)
-          .upload(fileName, file, {
-            cacheControl: "3600",
+          .upload(fileName, compressedFile, {
+            cacheControl: "31536000, immutable",
             upsert: false,
           });
 

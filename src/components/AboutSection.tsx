@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -89,10 +90,10 @@ const AboutSection: React.FC = () => {
             className="relative"
           >
             <div className="aspect-video rounded-2xl bg-card border border-border/80 overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-bca-red/10 transition-shadow duration-500 relative group">
-              <img
+              <OptimizedImage
                 src="/who-we-are.jpg"
                 alt="BuiltBy.BCA Students"
-                loading="lazy"
+                containerClassName="w-full h-full"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-500" />

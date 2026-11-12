@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -174,10 +175,11 @@ const Projects = () => {
                 >
                   <div>
                     <div className="aspect-video relative overflow-hidden bg-secondary">
-                      <img
+                      <OptimizedImage
                         src={project.thumbnail_url}
                         alt={project.name}
-                        loading="lazy"
+                        fallbackSrc="/placeholder.svg"
+                        containerClassName="w-full h-full"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                       {project.featured && (
@@ -255,9 +257,10 @@ const Projects = () => {
           {selectedProject && (
             <div className="space-y-6">
               <div className="relative">
-                <img
+                <OptimizedImage
                   src={selectedProject.thumbnail_url}
                   alt={selectedProject.name}
+                  fallbackSrc="/placeholder.svg"
                   className="w-full h-48 sm:h-72 object-cover rounded-xl"
                 />
                 {selectedProject.featured && (
@@ -299,10 +302,11 @@ const Projects = () => {
                   <h3 className="text-lg font-bold text-foreground mb-3 font-serif">Screenshots</h3>
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     {selectedProject.screenshots.map((screenshot, index) => (
-                      <img
+                      <OptimizedImage
                         key={index}
                         src={screenshot}
                         alt={`Screenshot ${index + 1}`}
+                        fallbackSrc="/placeholder.svg"
                         className="w-full h-40 object-cover rounded-xl border border-border"
                       />
                     ))}
