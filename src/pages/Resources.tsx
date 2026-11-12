@@ -310,10 +310,6 @@ const Resources = () => {
                                         </Link>
                                     </Button>
                                 </div>
-
-                                <p className="text-xs text-muted-foreground">
-                                    Students can sign in instantly using the centralized student passcode (<code className="text-bca-red font-mono font-medium">BCAstudent@2026</code>).
-                                </p>
                             </div>
                         </div>
                     )}
