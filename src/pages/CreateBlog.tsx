@@ -36,7 +36,7 @@ const CreateBlog = () => {
     // Redirect effect for unauthenticated users
     useEffect(() => {
         if (!loading && !user) {
-            navigate("/auth");
+            navigate("/auth?redirect=/create-blog");
         }
     }, [loading, user, navigate]);
 

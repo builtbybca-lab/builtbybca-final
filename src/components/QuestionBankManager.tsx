@@ -59,11 +59,9 @@ export const QuestionBankManager: React.FC = () => {
   const {
     data: papers = [],
     isLoading,
-    isError,
   } = useQuery<QuestionPaperItem[]>({
     queryKey: ["question_papers"],
     queryFn: async () => {
-      // @ts-expect-error - question_papers table in Database types
       const { data, error } = await supabase
         .from("question_papers")
         .select("*")
@@ -81,7 +79,6 @@ export const QuestionBankManager: React.FC = () => {
   // Insert mutation
   const createMutation = useMutation({
     mutationFn: async (newPaper: any) => {
-      // @ts-expect-error - question_papers table in Database types
       const { error } = await supabase.from("question_papers").insert([newPaper]);
       if (error) throw error;
     },
@@ -104,7 +101,6 @@ export const QuestionBankManager: React.FC = () => {
   const updateMutation = useMutation({
     mutationFn: async (paperData: any) => {
       if (!editingPaper) return;
-      // @ts-expect-error - question_papers table in Database types
       const { error } = await supabase
         .from("question_papers")
         .update(paperData)
@@ -129,7 +125,6 @@ export const QuestionBankManager: React.FC = () => {
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      // @ts-expect-error - question_papers table in Database types
       const { error } = await supabase.from("question_papers").delete().eq("id", id);
       if (error) throw error;
     },

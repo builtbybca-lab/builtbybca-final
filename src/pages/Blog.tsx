@@ -58,9 +58,10 @@ const Blog: React.FC = () => {
   const categories = ["All", ...Array.from(new Set(blogPosts.map((post) => post.category)))];
 
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const title = (post.title || "").toLowerCase();
+    const excerpt = (post.excerpt || "").toLowerCase();
+    const query = searchTerm.toLowerCase();
+    const matchesSearch = title.includes(query) || excerpt.includes(query);
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });

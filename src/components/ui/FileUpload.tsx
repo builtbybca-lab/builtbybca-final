@@ -93,7 +93,7 @@ export const FileUpload = ({
         try {
             const parts = url.split("/");
             return decodeURIComponent(parts[parts.length - 1]);
-        } catch (e) {
+        } catch {
             return "Uploaded File";
         }
     };

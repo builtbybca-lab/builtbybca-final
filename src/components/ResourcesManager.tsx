@@ -20,7 +20,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Loader2, Plus, Pencil, Trash2, ExternalLink, Image as ImageIcon, Database, FileText, Pin } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, ExternalLink, Database, FileText, Pin } from "lucide-react";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { FileUpload } from "@/components/ui/FileUpload";
 

@@ -41,7 +41,6 @@ const Admin = () => {
   const { isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!loading && !isAdmin) {
@@ -948,7 +947,7 @@ const TeamDialog = ({ member, onClose }: { member: any; onClose: () => void }) =
         year: data.year || null,
         batch: data.batch || null,
         division: data.division || 'Core Team',
-        tenure: data.tenure || '2025–2026',
+        tenure: data.tenure || '2026–2027',
         is_current: Boolean(data.is_current),
         is_founding: Boolean(data.is_founding),
       };

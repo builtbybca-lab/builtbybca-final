@@ -19,7 +19,6 @@ import {
     Download,
     ExternalLink,
     Code,
-    Database,
     Globe,
     Briefcase,
     Video,
@@ -29,8 +28,7 @@ import {
     Pin,
     Lock,
     ShieldCheck,
-    ArrowRight,
-    Sparkles
+    ArrowRight
 } from "lucide-react";
 import { QuestionBankSection } from "@/components/QuestionBankSection";
 

@@ -34,7 +34,7 @@ const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { user, isAdmin, signOut } = useAuth();
-    const { theme, setTheme } = useTheme();
+    const { setTheme } = useTheme();
     const navigate = useNavigate();
 
     const toggleTheme = () => {
