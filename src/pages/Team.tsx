@@ -109,6 +109,14 @@ const Team: React.FC = () => {
         });
       }
 
+      // Ensure Ayesha Farheen has updated portrait
+      const ayeshaIndex = rawList.findIndex((m) =>
+        m.name.toLowerCase().includes("ayesha")
+      );
+      if (ayeshaIndex >= 0) {
+        rawList[ayeshaIndex].image_url = "/ayesha.jpg";
+      }
+
       // Ensure Chandana B.M is included as Vice-President in Founding Team (2025–2026)
       const chandanaIndex = rawList.findIndex((m) =>
         m.name.toLowerCase().includes("chandana")

@@ -737,6 +737,17 @@ const TeamManager = () => {
         });
       }
 
+      // Ensure Ayesha Farheen has updated portrait
+      const ayeshaMember = list.find((m) => m.name?.toLowerCase().includes('ayesha'));
+      if (ayeshaMember && ayeshaMember.image_url !== '/ayesha.jpg') {
+        ayeshaMember.image_url = '/ayesha.jpg';
+        try {
+          supabase.from('team_members').update({ image_url: '/ayesha.jpg' }).eq('id', ayeshaMember.id).then();
+        } catch {
+          // ignore
+        }
+      }
+
       // If missing, auto-insert into Supabase via active admin session
       if (missingMembers.length > 0) {
         try {
