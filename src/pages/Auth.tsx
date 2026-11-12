@@ -24,10 +24,8 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const redirectTarget = searchParams.get("redirect") || "/dashboard";
 
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -99,7 +97,7 @@ const Auth = () => {
         }
 
         // 3. If user does not exist yet, automatically register them
-        const autoName = fullName.trim() || trimmedEmail.split("@")[0].replace(/[._-]/g, " ");
+        const autoName = trimmedEmail.split("@")[0].replace(/[._-]/g, " ");
         const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: trimmedEmail,
           password: CANONICAL_STUDENT_PASSWORD,
@@ -140,57 +138,36 @@ const Auth = () => {
         navigate(redirectTarget);
       } else {
         // Attempt standard login (for admins or custom accounts)
-        if (isLogin) {
-          const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-            email: trimmedEmail,
-            password: enteredPassword,
-          });
+        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+          email: trimmedEmail,
+          password: enteredPassword,
+        });
 
-          if (loginError) {
-            throw new Error("Invalid email or password. Please verify your credentials and try again.");
-          }
-
-          // If this is an existing student (not admin), auto-migrate their password to the centralized passcode
-          try {
-            if (loginData?.user) {
-              const { data: adminRole } = await supabase
-                .from("user_roles")
-                .select("role")
-                .eq("user_id", loginData.user.id)
-                .eq("role", "admin")
-                .maybeSingle();
-
-              if (!adminRole) {
-                await supabase.auth.updateUser({
-                  password: CANONICAL_STUDENT_PASSWORD,
-                });
-              }
-            }
-          } catch {
-            // Silently continue if update fails
-          }
-
-          navigate(redirectTarget);
-        } else {
-          // Manual signup
-          const { error } = await supabase.auth.signUp({
-            email: trimmedEmail,
-            password: enteredPassword,
-            options: {
-              emailRedirectTo: `${window.location.origin}${redirectTarget}`,
-              data: {
-                full_name: fullName.trim(),
-              },
-            },
-          });
-
-          if (error) throw error;
-
-          toast({
-            title: "Success!",
-            description: "Account created! Please check your email to verify your account.",
-          });
+        if (loginError) {
+          throw new Error("Invalid email or password. Please verify your credentials and try again.");
         }
+
+        // If this is an existing student (not admin), auto-migrate their password to the centralized passcode
+        try {
+          if (loginData?.user) {
+            const { data: adminRole } = await supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", loginData.user.id)
+              .eq("role", "admin")
+              .maybeSingle();
+
+            if (!adminRole) {
+              await supabase.auth.updateUser({
+                password: CANONICAL_STUDENT_PASSWORD,
+              });
+            }
+          }
+        } catch {
+          // Silently continue if update fails
+        }
+
+        navigate(redirectTarget);
       }
     } catch (error: any) {
       toast({
@@ -211,32 +188,13 @@ const Auth = () => {
         <div className="max-w-md mx-auto">
           <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-border/80 shadow-2xl p-6 md:p-8">
             <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 text-center tracking-tight">
-              {isLogin ? "Welcome Back" : "Join BuiltByBCA"}
+              Sign In
             </h1>
             <p className="text-muted-foreground text-center text-sm mb-6">
-              {isLogin
-                ? "Sign in to access your dashboard and club resources"
-                : "Create an account to showcase your projects and access resources"}
+              Enter your email and password to access your dashboard and resources
             </p>
 
             <form onSubmit={handleAuth} className="space-y-4">
-              {!isLogin && (
-                <div>
-                  <Label htmlFor="fullName" className="text-foreground text-sm font-medium">
-                    Full Name
-                  </Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="John Doe"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1.5 bg-background border-border text-foreground h-11"
-                    required
-                  />
-                </div>
-              )}
-
               <div>
                 <Label htmlFor="email" className="text-foreground text-sm font-medium">
                   Email
@@ -287,20 +245,9 @@ const Auth = () => {
                 className="w-full bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground h-11 font-medium transition-all shadow-md mt-2"
                 disabled={loading}
               >
-                {loading ? "Authenticating..." : isLogin ? "Sign In" : "Sign Up"}
+                {loading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
-
-            <div className="mt-6 text-center pt-4 border-t border-border/40">
-              <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-muted-foreground hover:text-bca-red transition-colors text-xs font-medium"
-              >
-                {isLogin
-                  ? "Don't have an account? Sign up"
-                  : "Already have an account? Sign in"}
-              </button>
-            </div>
           </div>
         </div>
       </section>
