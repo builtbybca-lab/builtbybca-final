@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import {
     Menu,
     X,
@@ -36,6 +36,11 @@ const Navigation = () => {
     const { user, isAdmin, signOut } = useAuth();
     const { theme, setTheme } = useTheme();
     const navigate = useNavigate();
+
+    const toggleTheme = () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        setTheme(isDark ? "light" : "dark");
+    };
 
     useEffect(() => {
         let ticking = false;
@@ -134,7 +139,7 @@ const Navigation = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            onClick={toggleTheme}
                             className="text-foreground hover:text-bca-red hover:bg-accent/50"
                         >
                             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -233,7 +238,7 @@ const Navigation = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            onClick={toggleTheme}
                             className="text-foreground hover:text-bca-red h-8 w-8 rounded-full"
                         >
                             <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
