@@ -43,7 +43,6 @@ export const QuestionBankSection: React.FC = () => {
     queryKey: ["question_papers"],
     queryFn: async () => {
       try {
-        // @ts-expect-error - question_papers table in Database types
         const { data, error } = await supabase
           .from("question_papers")
           .select("*")
