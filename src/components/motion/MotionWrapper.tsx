@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring, HTMLMotionProps } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, HTMLMotionProps, Variants } from "framer-motion";
 
 // 1. Sleek Global Scroll Progress Bar
 export const ScrollProgressBar: React.FC = () => {
@@ -76,7 +76,7 @@ export const FadeInWhenVisible: React.FC<FadeInWhenVisibleProps> = ({
 };
 
 // 3. Staggered Container & Items for Grids
-export const staggerContainerVariants = {
+export const staggerContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: (custom: { delayChildren?: number; staggerChildren?: number } = {}) => ({
     opacity: 1,
@@ -87,14 +87,14 @@ export const staggerContainerVariants = {
   }),
 };
 
-export const staggerItemVariants = {
+export const staggerItemVariants: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 120,
       damping: 20,
     },

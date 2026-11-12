@@ -60,3 +60,4 @@ $$;
 
 -- Grant execution permission to anonymous and authenticated users
 GRANT EXECUTE ON FUNCTION public.sync_student_password(text, text) TO anon, authenticated;
+
