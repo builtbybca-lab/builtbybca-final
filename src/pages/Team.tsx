@@ -109,6 +109,41 @@ const Team: React.FC = () => {
         });
       }
 
+      // Ensure Chandana B.M is included as Vice-President in Founding Team (2025–2026)
+      const chandanaIndex = rawList.findIndex((m) =>
+        m.name.toLowerCase().includes("chandana")
+      );
+      if (chandanaIndex >= 0) {
+        rawList[chandanaIndex].name = "Chandana B.M";
+        rawList[chandanaIndex].image_url =
+          "https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ql6a5ncorsf-1771308053372.jpeg";
+        rawList[chandanaIndex].role = "Vice-President";
+        rawList[chandanaIndex].division = "Core Team";
+        rawList[chandanaIndex].tenure = "2025–2026";
+        rawList[chandanaIndex].is_founding = true;
+        rawList[chandanaIndex].is_current = false;
+        rawList[chandanaIndex].display_order = 2;
+      } else {
+        rawList.push({
+          id: "chandana-bm-founding",
+          name: "Chandana B.M",
+          role: "Vice-President",
+          bio: "Vice-President of the Founding Council (2025–2026). Dedicated to leadership, student community development, and operational coordination for BuiltBy.BCA.",
+          full_bio: "Vice-President of the Founding Council (2025–2026). Dedicated to leadership, student community development, and operational coordination for BuiltBy.BCA.",
+          image_url:
+            "https://rzqkhomoeoihxlqokeek.supabase.co/storage/v1/object/public/team-images/ql6a5ncorsf-1771308053372.jpeg",
+          linkedin_url: null,
+          github_url: null,
+          display_order: 2,
+          year: "2nd Year",
+          batch: "2024–2027",
+          division: "Core Team",
+          tenure: "2025–2026",
+          is_current: false,
+          is_founding: true,
+        });
+      }
+
       return rawList;
     },
   });
