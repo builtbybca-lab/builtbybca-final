@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -72,6 +72,7 @@ const NotificationsList = () => {
 const StudentDashboard = () => {
     const { user, loading, isAdmin } = useAuth();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { toast } = useToast();
     const queryClient = useQueryClient();
 
@@ -190,29 +191,73 @@ const StudentDashboard = () => {
         mutationFn: async (data: typeof testimonialForm) => {
             if (!user) throw new Error("User not authenticated");
 
+            // Fetch profile safely using maybeSingle so missing profiles don't error
             const { data: profile } = await supabase
                 .from("profiles")
                 .select("avatar_url, full_name")
                 .eq("id", user.id)
-                .single();
+                .maybeSingle();
 
-            const { error } = await supabase.from("testimonials").insert({
-                name: profile?.full_name || user.user_metadata?.full_name || "Anonymous",
-                role: data.role,
-                content: data.content,
+            const authorName =
+                profile?.full_name?.trim() ||
+                user.user_metadata?.full_name?.trim() ||
+                (user.email ? user.email.split("@")[0].replace(/[._-]/g, " ") : "Community Member");
+
+            const avatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url || null;
+
+            // 1. Try calling the secure RPC function first (bypasses RLS issues)
+            try {
+                // @ts-expect-error - RPC defined in Supabase
+                const { data: rpcId, error: rpcError } = await supabase.rpc("submit_testimonial", {
+                    p_name: authorName,
+                    p_role: data.role.trim(),
+                    p_content: data.content.trim(),
+                    p_rating: data.rating,
+                    p_avatar_url: avatarUrl,
+                });
+
+                if (!rpcError && rpcId) {
+                    return rpcId;
+                }
+                if (rpcError) {
+                    console.warn("RPC submit_testimonial attempt:", rpcError.message);
+                }
+            } catch (rpcErr) {
+                console.warn("RPC submit_testimonial fallback:", rpcErr);
+            }
+
+            // 2. Fallback to direct table insert
+            const { error: insertError } = await supabase.from("testimonials").insert({
+                name: authorName,
+                role: data.role.trim(),
+                content: data.content.trim(),
                 rating: data.rating,
-                avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url,
+                avatar_url: avatarUrl,
             });
 
-            if (error) throw error;
+            if (insertError) {
+                throw insertError;
+            }
         },
         onSuccess: () => {
-            toast({ title: "Testimonial submitted successfully!" });
+            queryClient.invalidateQueries({ queryKey: ["testimonials"] });
+            queryClient.invalidateQueries({ queryKey: ["admin-testimonials"] });
+            toast({
+                title: "Testimonial submitted successfully!",
+                description: "Thank you for sharing your experience with the community.",
+            });
             setTestimonialForm({ rating: 5, role: "", content: "" });
         },
-        onError: (error) => {
-            console.error(error);
-            toast({ title: "Failed to submit testimonial", variant: "destructive" });
+        onError: (error: any) => {
+            console.error("Testimonial submission error:", error);
+            const isRlsError = error?.code === "42501" || error?.message?.toLowerCase().includes("row-level security");
+            toast({
+                title: "Failed to submit testimonial",
+                description: isRlsError
+                    ? "Database permission check failed. Please apply the testimonial migration in Supabase."
+                    : (error?.message || "Please check your inputs and try again."),
+                variant: "destructive",
+            });
         },
     });
 
@@ -256,7 +301,7 @@ const StudentDashboard = () => {
                         </CardContent>
                     </Card>
 
-                    <Tabs defaultValue="blogs" className="w-full">
+                    <Tabs defaultValue={searchParams.get("tab") || "blogs"} onValueChange={(val) => setSearchParams({ tab: val }, { replace: true })} className="w-full">
                         {/* Mobile Scrollable Tabs */}
                         <div className="overflow-x-auto pb-2 -mx-1 px-1 mb-6 scrollbar-none">
                             <TabsList className="inline-flex w-full min-w-max md:grid md:grid-cols-4 p-1 bg-secondary/60 rounded-xl h-auto">

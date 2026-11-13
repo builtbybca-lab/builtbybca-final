@@ -1,3 +1,6 @@
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import React from "react";
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
@@ -48,13 +51,31 @@ const TestimonialsSection: React.FC = () => {
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
             Real feedback from community members and student builders about their growth and journey with us.
           </p>
+          <div className="pt-2">
+            <Link to="/dashboard?tab=testimonial">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-border hover:border-bca-red/50 hover:bg-bca-red/10 text-foreground font-mono text-xs rounded-full px-4 h-8 transition-colors"
+              >
+                <Quote className="w-3.5 h-3.5 mr-1.5 text-bca-red" />
+                Share Your Experience
+              </Button>
+            </Link>
+          </div>
         </motion.div>
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.length === 0 ? (
-            <div className="col-span-full text-center py-16">
+            <div className="col-span-full text-center py-16 space-y-4">
               <p className="text-muted-foreground text-base sm:text-lg">No testimonials available yet.</p>
+              <Link to="/dashboard?tab=testimonial">
+                <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground font-mono text-xs rounded-full px-5 h-9 shadow-md">
+                  <Quote className="w-3.5 h-3.5 mr-1.5" />
+                  Be the First to Share
+                </Button>
+              </Link>
             </div>
           ) : (
             <motion.div
@@ -78,10 +99,12 @@ const TestimonialsSection: React.FC = () => {
                     {/* Header: Avatar & Info */}
                     <div className="flex items-center mb-5 relative z-10">
                       {testimonial.avatar_url ? (
-                        <img
+                        <OptimizedImage
                           src={testimonial.avatar_url}
                           alt={testimonial.name}
-                          className="w-12 h-12 rounded-full mr-4 object-cover border border-border group-hover:border-bca-red/40 transition-colors"
+                          fallbackSrc="/placeholder.svg"
+                          containerClassName="w-12 h-12 rounded-full mr-4 shrink-0"
+                          className="w-12 h-12 rounded-full object-cover border border-border group-hover:border-bca-red/40 transition-colors"
                         />
                       ) : (
                         <div className="w-12 h-12 rounded-full mr-4 bg-secondary border border-border flex items-center justify-center font-mono text-sm font-semibold text-bca-red">

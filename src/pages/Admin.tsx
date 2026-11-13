@@ -1541,6 +1541,7 @@ const TestimonialsManager = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-testimonials'] });
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
       toast({ title: 'Success', description: 'Testimonial deleted successfully' });
     },
   });
