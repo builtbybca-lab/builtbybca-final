@@ -25,18 +25,18 @@ const TestimonialsSection: React.FC = () => {
   });
 
   return (
-    <section className="py-24 sm:py-32 px-4 bg-secondary/15 relative overflow-hidden">
+    <section className="py-20 sm:py-28 px-4 bg-secondary/15 relative overflow-hidden">
       {/* Background ambient accent */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.02),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Header */}
+        {/* Minimal Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-16 sm:mb-20 space-y-4"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-12 sm:mb-16 space-y-3"
         >
           <div className="inline-flex items-center space-x-2 bg-card/80 border border-border/80 px-3.5 py-1 rounded-full shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-bca-red" />
@@ -48,100 +48,107 @@ const TestimonialsSection: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground font-serif">
             Student <span className="text-bca-red">Testimonials</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto font-light leading-relaxed">
             Real feedback from community members and student builders about their growth and journey with us.
           </p>
-          <div className="pt-2">
-            <Link to="/dashboard?tab=testimonial">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-border hover:border-bca-red/50 hover:bg-bca-red/10 text-foreground font-mono text-xs rounded-full px-4 h-8 transition-colors"
-              >
-                <Quote className="w-3.5 h-3.5 mr-1.5 text-bca-red" />
-                Share Your Experience
-              </Button>
-            </Link>
-          </div>
         </motion.div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {testimonials.length === 0 ? (
-            <div className="col-span-full text-center py-16 space-y-4">
-              <p className="text-muted-foreground text-base sm:text-lg">No testimonials available yet.</p>
+        {/* Testimonials Grid or Minimal Empty State */}
+        {testimonials.length === 0 ? (
+          <div className="max-w-md mx-auto text-center py-10 px-6 rounded-2xl border border-dashed border-border/80 bg-card/40 backdrop-blur-sm space-y-3.5">
+            <div className="w-9 h-9 rounded-full bg-secondary/80 border border-border flex items-center justify-center mx-auto text-bca-red">
+              <Quote className="w-4 h-4" />
+            </div>
+            <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
+              No testimonials available yet. Be the first to share your experience with the community.
+            </p>
+            <div className="pt-1">
               <Link to="/dashboard?tab=testimonial">
-                <Button className="bg-[#7a0000] hover:bg-[#6a0000] text-primary-foreground font-mono text-xs rounded-full px-5 h-9 shadow-md">
-                  <Quote className="w-3.5 h-3.5 mr-1.5" />
-                  Be the First to Share
+                <Button
+                  size="sm"
+                  className="bg-bca-red hover:bg-bca-red/90 text-white font-mono text-xs rounded-full px-5 h-8.5 shadow-sm transition-all"
+                >
+                  Share Your Experience
                 </Button>
               </Link>
             </div>
-          ) : (
+          </div>
+        ) : (
+          <>
             <motion.div
               variants={staggerContainerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              className="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
             >
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={index}
                   variants={staggerItemVariants}
-                  whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
-                  className="bg-card/90 backdrop-blur-sm border border-border hover:border-bca-red/40 rounded-2xl p-6 sm:p-7 transition-colors duration-300 shadow-sm hover:shadow-xl hover:shadow-bca-red/5 relative flex flex-col justify-between group overflow-hidden"
+                  whileHover={{ y: -4, transition: { duration: 0.2, ease: "easeOut" } }}
+                  className="bg-card/90 backdrop-blur-sm border border-border hover:border-bca-red/40 rounded-2xl p-6 transition-colors duration-300 shadow-sm hover:shadow-xl hover:shadow-bca-red/5 relative flex flex-col justify-between group overflow-hidden"
                 >
-                  {/* Subtle quote watermark */}
-                  <Quote className="absolute top-4 right-4 w-12 h-12 text-border/30 group-hover:text-bca-red/10 transition-colors pointer-events-none" />
+                  <Quote className="absolute top-4 right-4 w-10 h-10 text-border/20 group-hover:text-bca-red/10 transition-colors pointer-events-none" />
 
                   <div>
                     {/* Header: Avatar & Info */}
-                    <div className="flex items-center mb-5 relative z-10">
+                    <div className="flex items-center mb-4 relative z-10">
                       {testimonial.avatar_url ? (
                         <OptimizedImage
                           src={testimonial.avatar_url}
                           alt={testimonial.name}
                           fallbackSrc="/placeholder.svg"
-                          containerClassName="w-12 h-12 rounded-full mr-4 shrink-0"
-                          className="w-12 h-12 rounded-full object-cover border border-border group-hover:border-bca-red/40 transition-colors"
+                          containerClassName="w-11 h-11 rounded-full mr-3.5 shrink-0"
+                          className="w-11 h-11 rounded-full object-cover border border-border group-hover:border-bca-red/40 transition-colors"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full mr-4 bg-secondary border border-border flex items-center justify-center font-mono text-sm font-semibold text-bca-red">
+                        <div className="w-11 h-11 rounded-full mr-3.5 bg-secondary border border-border flex items-center justify-center font-mono text-xs font-semibold text-bca-red shrink-0">
                           {testimonial.name?.slice(0, 2).toUpperCase()}
                         </div>
                       )}
                       <div>
-                        <h3 className="text-foreground font-semibold text-base group-hover:text-bca-red transition-colors">
+                        <h3 className="text-foreground font-semibold text-sm group-hover:text-bca-red transition-colors">
                           {testimonial.name}
                         </h3>
-                        <p className="text-muted-foreground text-xs font-mono">{testimonial.role}</p>
+                        <p className="text-muted-foreground text-[11px] font-mono">{testimonial.role}</p>
                       </div>
                     </div>
 
                     {/* Star Rating */}
-                    <div className="flex mb-4 space-x-1">
+                    <div className="flex mb-3 space-x-1">
                       {[...Array(testimonial.rating || 5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-bca-red text-bca-red" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-bca-red text-bca-red" />
                       ))}
                     </div>
 
                     {/* Content */}
-                    <p className="text-muted-foreground text-sm font-light leading-relaxed relative z-10 italic">
+                    <p className="text-muted-foreground text-xs sm:text-sm font-light leading-relaxed relative z-10 italic">
                       "{testimonial.content}"
                     </p>
                   </div>
 
                   {/* Corner indicator */}
-                  <div className="mt-6 pt-4 border-t border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/50">
+                  <div className="mt-5 pt-3.5 border-t border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/50">
                     <span>VERIFIED MEMBER</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-border group-hover:bg-bca-red transition-colors" />
                   </div>
                 </motion.div>
               ))}
             </motion.div>
-          )}
-        </div>
+
+            {/* Minimal footer action */}
+            <div className="text-center pt-8">
+              <Link
+                to="/dashboard?tab=testimonial"
+                className="inline-flex items-center text-xs font-mono text-muted-foreground hover:text-bca-red transition-colors gap-1"
+              >
+                <span>Share your experience with BuiltByBCA</span>
+                <span>&rarr;</span>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
